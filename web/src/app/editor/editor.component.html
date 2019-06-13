@@ -1,0 +1,43 @@
+<mat-card>
+  <form class="word-form" ngNoForm>
+    <mat-form-field appearance="outline">
+      <mat-label>Sözcük</mat-label>
+      <input matInput placeholder="Sözcük" [formControl]="wordForm" [errorStateMatcher]="matcher" [(ngModel)]="etymon.word">
+      <mat-hint>Etimolojisi Girilecek Sözcük</mat-hint>
+      <mat-error *ngIf="wordForm.hasError('required')">
+        Sözcük girilmesi <strong>zorunludur</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Orijinal Yazılışı</mat-label>
+      <input matInput placeholder="Orijinal Yazılışı" [(ngModel)]="etymon.spelling">
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Okunuşu</mat-label>
+      <input matInput placeholder="Okunuşu" [(ngModel)]="etymon.pronunciation">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="wordTypes" appearance="outline">
+      <mat-label>Sözcük Türü</mat-label>
+      <mat-select [(value)]="etymon.type">
+        <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
+          <span>{{wordType.name}}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="regions" appearance="outline">
+      <mat-label>Köken</mat-label>
+      <mat-select [(value)]="etymon.origin">
+        <mat-option *ngFor="let region of objectKeys(regions)" [value]="region">
+          <span>{{region}}</span>
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    Tarihi Kaynaklar[], Referans
+    <button (click)="save()">Kaydet</button>
+  </form>
+</mat-card>

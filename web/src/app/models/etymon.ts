@@ -3,7 +3,10 @@ export interface Etymon {
   origin: number;
   pronunciation: string;
   reference: string;
-  source: [];
+  sources: [{
+    sample: string,
+    reference: string
+  }];
   spelling: string;
   type: number;
   word: string;

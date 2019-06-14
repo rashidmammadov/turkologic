@@ -9,7 +9,5 @@ if (environment.production) {
   enableProdMode();
 }
 
-export const apiUrl:string = environment.apiUrl;
-
 platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => console.error(err));

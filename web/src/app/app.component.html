@@ -1,3 +1,12 @@
-<a uiSref="editor" uiSrefActive="active">Editor</a>
-<ui-view></ui-view>
-
+<mat-toolbar color="primary">
+  <mat-toolbar-row>
+    <span>Custom Toolbar</span>
+  </mat-toolbar-row>
+</mat-toolbar>
+<div *ngIf="progress.circular" class="progress-circular">
+  <mat-spinner></mat-spinner>
+</div>
+<div disabled="true" class="app-container" [ngClass]="{'blur-filter': progress.circular}">
+  <a uiSref="editor" uiSrefActive="active">Editor</a>
+  <ui-view></ui-view>
+</div>

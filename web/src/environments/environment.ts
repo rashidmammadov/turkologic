@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://api.ozelden.com/api/v1/'
+  apiUrl: 'http://api.ozelden.com/api/v1/',
+  tdkUrl: {
+    dialect: 'http://sozluk.gov.tr/lehceler'
+  }
 };
 
 

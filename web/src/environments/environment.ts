@@ -4,9 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://api.ozelden.com/api/v1/',
+  apiUrl: 'http://127.0.0.1:8000/api/v1/',
   tdkUrl: {
-    dialect: 'http://sozluk.gov.tr/lehceler'
+    dialect: 'http://sozluk.gov.tr/lehceler',
+    general: 'http://sozluk.gov.tr/gts'
   }
 };
 

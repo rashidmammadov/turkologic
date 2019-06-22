@@ -19,6 +19,10 @@ class Language extends Model {
         LANGUAGE_ID, NAME, CODE, FLAG, COUNTRY, CENTURY, PARENT_LANGUAGE_ID, STATUS
     ];
 
+    public function lexeme() {
+        return $this->hasMany('App\Lexeme');
+    }
+
     /** SELECT * FROM `users` WHERE `name` REGEXP '[adni]{2,}'
      * girilecek karakter dizisi
      * karakter sayısının en az yarısı kadar uymalıdır

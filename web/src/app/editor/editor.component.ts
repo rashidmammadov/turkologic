@@ -1,19 +1,21 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule }
-  from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule, MatSelectModule,
+  MatTooltipModule } from '@angular/material';
 import { LanguageService } from "../services/language.service";
+import { NotificationService } from "../services/notification.service";
 import { ProgressService } from "../services/progress.service";
 import { TDKService } from "../services/tdk.service";
 import { Etymon } from "../models/etymon";
+import { Lexeme } from "../models/lexeme";
 import { WordType, WordTypes } from "../models/word-type";
 import { InputErrorStateMatcher } from "../services/error.service";
 
 @NgModule({
   imports: [FormsModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule,
-    MatSelectModule, ReactiveFormsModule],
+    MatSelectModule, ReactiveFormsModule, MatTooltipModule],
   exports: [FormsModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatFormFieldModule, MatInputModule,
-    MatSelectModule, ReactiveFormsModule]
+    MatSelectModule, ReactiveFormsModule, MatTooltipModule]
 })
 @Component({
   selector: 'app-editor',
@@ -22,43 +24,54 @@ import { InputErrorStateMatcher } from "../services/error.service";
 })
 export class EditorComponent implements OnInit {
   etymon = <Etymon>{};
-  objectKeys = Object.keys;
-  regions: Object;
-  dialects: Object;
+  lexeme = <Lexeme>{};
+
+  languages: Object;
+  show = {etymology: true};
   tdkWord: string;
   wordForm = new FormControl('', [Validators.required]);
   wordTypes: WordType[] = WordTypes;
 
-  constructor(private languageService: LanguageService, private progress: ProgressService, private tdkService: TDKService) {}
+  constructor(private languageService: LanguageService, private progress: ProgressService, private tdkService: TDKService,
+              private notificationService: NotificationService) {}
 
   matcher = new InputErrorStateMatcher();
 
-  getCities() {
+  addMoreSource() {
+    if (this.etymon.sources.length < 3) {
+      this.etymon.sources.push({sample: '', reference: ''});
+    }
+  }
+
+  getLanguages() {
     this.progress.circular = true;
-    this.languageService.getRegions().subscribe((res : any) => {
+    this.languageService.getLanguages().subscribe((res : any) => {
       this.progress.circular = false;
       if (res.status === 'success') {
-        this.regions = res.data.regions;
+        this.languages = res.data;
       }
     });
   }
 
   fetchFromTDK(word) {
     this.progress.circular = true;
-    this.tdkService.getDialects(word).subscribe((res : any) => {
+    this.tdkService.getMeans(word).subscribe((res : any) => {
       this.progress.circular = false;
       if (!res.error && res.length) {
-        this.dialects = res[0];
+        this.lexeme.lexeme = res[0].madde;
+      } else {
+        this.lexeme = <Lexeme>{};
+        notificationService.show(res.error);
       }
     });
   }
 
-  save(etymon) {
-    this.etymon;
+  removeSource(id) {
+    this.etymon.sources.splice(id, 1);
   }
 
   ngOnInit() {
-    this.getCities();
+    this.getLanguages();
     this.etymon.sources = [{sample: '', reference: ''}];
   }
 

@@ -9,7 +9,7 @@ export class LanguageService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getRegions() {
-    return this.httpClient.get(environment.apiUrl + 'data?regions=true');
+  public getLanguages() {
+    return this.httpClient.get(environment.apiUrl + 'languages');
   }
 }

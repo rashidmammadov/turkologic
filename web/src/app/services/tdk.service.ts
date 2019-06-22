@@ -9,6 +9,14 @@ export class TDKService {
 
   constructor(private httpClient: HttpClient) { }
 
+  public getMeans(word) {
+    return this.httpClient.get(environment.tdkUrl.general, {
+      params: {
+        ara: word
+      }
+    })
+  }
+
   public getDialects(word, dialectId = null) {
     !dialectId && (dialectId = 1);
     return this.httpClient.get(environment.tdkUrl.dialect, {

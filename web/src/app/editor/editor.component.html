@@ -1,80 +1,96 @@
 <div fxLayout="column" fxLayoutGap="16px">
   <mat-card>
-    <form class="word-form" ngNoForm fxLayout="row">
-      <mat-form-field appearance="outline" fxFlex.gt-md="80%" fxFlex="60%">
-        <mat-label>Arama</mat-label>
-        <input [disabled]="progress.circular" matInput placeholder="Arama (Türkçe)" [(ngModel)]="tdkWord">
-      </mat-form-field>
+    <mat-card-content>
+      <mat-card-title>Sözcük: {{lexeme.lexeme}}</mat-card-title>
+    </mat-card-content>
+    <mat-card-content>
+      <form class="word-form" ngNoForm fxLayout="row">
+        <mat-form-field appearance="outline" fxFlex.gt-xs="80%" fxFlex="60%">
+          <mat-label>TDK'dan Sorgulama</mat-label>
+          <input [disabled]="progress.circular" matInput placeholder="TDK'dan Sorgulama" [(ngModel)]="tdkWord">
+        </mat-form-field>
 
-      <button mat-raised-button color="primary" fxFlex.gt-md="20%" fxFlex="40%" (click)="fetchFromTDK(tdkWord)"
-              [disabled]="!tdkWord || progress.circular" style="height: 48px; margin-top: 8px; margin-left: 8px;">TDK`da Sorgula</button>
-    </form>
+        <button mat-raised-button color="primary" fxFlex.gt-xs="20%" fxFlex="40%" (click)="fetchFromTDK(tdkWord)"
+                [disabled]="!tdkWord || progress.circular" style="height: 48px; margin-top: 4px; margin-left: 8px;">Getir</button>
+      </form>
+    </mat-card-content>
   </mat-card>
 
   <mat-card>
-    <form class="word-form" ngNoForm fxLayout="column" fxLayoutGap="8px">
-      <div fxLayout="row" fxLayout.xs="column" fxLayoutWrap fxLayoutGap="8px" fxLayoutAlign="center">
-        <mat-form-field appearance="outline" fxFlex="20%">
-          <mat-label>Sözcük</mat-label>
-          <input [disabled]="progress.circular" matInput placeholder="Sözcük" [formControl]="wordForm"
-                 [errorStateMatcher]="matcher" [(ngModel)]="etymon.word">
-          <mat-hint>Etimolojisi Girilecek Sözcük</mat-hint>
-          <mat-error *ngIf="wordForm.hasError('required')">
-            Sözcük girilmesi <strong>zorunludur</strong>
-          </mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" fxFlex="20%">
-          <mat-label>Orijinal Yazılışı</mat-label>
-          <input [disabled]="progress.circular" matInput placeholder="Orijinal Yazılışı" [(ngModel)]="etymon.spelling">
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" fxFlex="20%">
-          <mat-label>Okunuşu</mat-label>
-          <input [disabled]="progress.circular" matInput placeholder="Okunuşu" [(ngModel)]="etymon.pronunciation">
-        </mat-form-field>
-
-        <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="20%">
-          <mat-label>Sözcük Türü</mat-label>
-          <mat-select [disabled]="progress.circular" [(value)]="etymon.type">
-            <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
-              <span>{{wordType.name}}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field *ngIf="regions" appearance="outline" fxFlex="20%">
-          <mat-label>Köken</mat-label>
-          <mat-select [disabled]="progress.circular" [(value)]="etymon.origin">
-            <mat-option *ngFor="let region of objectKeys(regions)" [value]="region">
-              <span>{{region}}</span>
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
-
-      <mat-form-field appearance="outline" fxFlex="100%">
-        <mat-label>Açıklama</mat-label>
-        <textarea [disabled]="progress.circular" matInput placeholder="Açıklama" [(ngModel)]="etymon.description"></textarea>
-      </mat-form-field>
-
-      <div fxFlex="column" class="box-border">
-        <p>Kaynaklar</p>
-        <div *ngFor="let source of etymon.sources" fxLayoutGap="8px">
-          <mat-form-field appearance="outline" fxFlex="60%">
-            <mat-label>Örnek</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="source.sample">
+    <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
+      <mat-card-title>Etimolojik Köken</mat-card-title>
+      <button mat-icon-button>
+        <mat-icon svgIcon="{{show.etymology ? 'expand-less' : 'expand-more'}}" (click)="show.etymology = !show.etymology"></mat-icon>
+      </button>
+    </mat-card-content>
+    <mat-card-content *ngIf="show.etymology">
+      <form class="word-form" ngNoForm fxLayout="column" fxLayoutGap="8px">
+        <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center">
+          <mat-form-field appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+            <mat-label>Sözcük</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Sözcük" [formControl]="wordForm"
+                   [errorStateMatcher]="matcher" [(ngModel)]="etymon.word">
+            <mat-hint>Etimolojisi Girilecek Sözcük</mat-hint>
+            <mat-error *ngIf="wordForm.hasError('required')">
+              Sözcük girilmesi <strong>zorunludur</strong>
+            </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" fxFlex="40%">
-            <mat-label>Kaynak</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Kaynak" [(ngModel)]="source.reference">
+          <mat-form-field appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+            <mat-label>Orijinal Yazılışı</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Orijinal Yazılışı" [(ngModel)]="etymon.spelling">
+          </mat-form-field>
+
+          <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+            <mat-label>Sözcük Türü</mat-label>
+            <mat-select [disabled]="progress.circular" [(value)]="etymon.type">
+              <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
+                <span>{{wordType.name}}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="languages" appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+            <mat-label>Köken</mat-label>
+            <mat-select [disabled]="progress.circular" [(value)]="etymon.origin">
+              <mat-option *ngFor="let language of languages" [value]="language.language_id">
+                <span>{{language.name}}</span>
+              </mat-option>
+            </mat-select>
           </mat-form-field>
         </div>
-      </div>
 
-      <!--Tarihi Kaynaklar[], Referans-->
-      <!--<button (click)="save()">Kaydet</button>-->
-    </form>
+        <mat-form-field appearance="outline" fxFlex="100%">
+          <mat-label>Açıklama</mat-label>
+          <textarea [disabled]="progress.circular" matInput placeholder="Açıklama" [(ngModel)]="etymon.description"></textarea>
+        </mat-form-field>
+
+        <div fxLayout="column" class="box-border">
+          <div fxLayout="row" fxLayoutAlign="space-between center">
+            <p>Kaynaklar</p>
+            <button mat-raised-button color="primary" (click)="addMoreSource()"
+                    [disabled]="etymon.sources.length === 3">
+              <mat-icon svgIcon="add"></mat-icon>
+              daha fazla ekle
+            </button>
+          </div>
+          <div *ngFor="let source of etymon.sources; let i = index" fxLayoutGap="8px">
+            <mat-form-field appearance="outline" fxFlex.gt-xs="55%" fxFlex="50%">
+              <mat-label>Örnek</mat-label>
+              <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="source.sample">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" fxFlex="40%">
+              <mat-label>Kaynak / Referans</mat-label>
+              <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="source.reference">
+            </mat-form-field>
+
+            <button mat-icon-button color="primary" (click)="removeSource(i)" matTooltip="Kaldır" fxFlex.gt-xs="5%" fxFlex="10%">
+              <mat-icon svgIcon="remove"></mat-icon>
+            </button>
+          </div>
+        </div>
+      </form>
+    </mat-card-content>
   </mat-card>
 </div>

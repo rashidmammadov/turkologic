@@ -93,4 +93,9 @@
       </form>
     </mat-card-content>
   </mat-card>
+
+  <div *ngFor="let semantic of lexeme.semantics">
+    <p><b>{{semantic.type}}:</b> {{semantic.meaning}}</p>
+    <p><i>"{{semantic.sample}}"</i> - <b>{{semantic.reference}}</b></p>
+  </div>
 </div>

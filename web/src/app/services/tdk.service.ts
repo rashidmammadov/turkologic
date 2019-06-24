@@ -10,7 +10,7 @@ export class TDKService {
   constructor(private httpClient: HttpClient) { }
 
   public getMeans(word) {
-    return this.httpClient.get(environment.tdkUrl.general, {
+    return this.httpClient.get(environment.apiUrl + 'tdk', {
       params: {
         ara: word
       }

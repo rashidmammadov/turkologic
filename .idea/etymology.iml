@@ -97,6 +97,8 @@
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/tymon/jwt-auth" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/vlucas/phpdotenv" />
       <excludeFolder url="file://$MODULE_DIR$/api/vendor/webmozart/assert" />
+      <excludeFolder url="file://$MODULE_DIR$/web/dist" />
+      <excludeFolder url="file://$MODULE_DIR$/web/tmp" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

@@ -18,8 +18,10 @@ define('DB_SEMANTICS_TABLE', 'semantics');
 define('EQUAL_SIGN', '=');
 define('ERROR', 'error');
 define('ETYMON_ID', 'etymon_id');
+define('FIELDS_VALIDATION_FAILED', 'Alanları doğrulama hatası');
 define('FLAG', 'flag');
 define('LANGUAGE_ID', 'language_id');
+define('LATIN', 'latin');
 define('LATIN_TEXT', 'latin_text');
 define('LEXEME', 'lexeme');
 define('LEXEME_ID', 'lexeme_id');
@@ -32,8 +34,14 @@ define('PRONUNCIATION', 'pronunciation');
 define('REFERENCE', 'reference');
 define('REMEMBER_TOKEN', 'remember_token');
 define('SAMPLE', 'sample');
+define('SEMANTICS', 'semantics');
 define('SEMANTIC_ID', 'semantic_id');
 define('STATUS', 'status');
 define('STATUS_CODE', 'status_code');
 define('SUCCESS', 'success');
 define('TYPE', 'type');
+define('WORD', 'word');
+
+/** constants on tdk standards. */
+define('TDK_MEANING_LIST', 'anlamlarListe');
+

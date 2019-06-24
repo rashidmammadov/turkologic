@@ -49,6 +49,8 @@ export class EditorComponent implements OnInit {
       this.progress.circular = false;
       if (res.status === 'success') {
         this.languages = res.data;
+      } else {
+        this.notificationService.show(res.message);
       }
     });
   }
@@ -57,11 +59,12 @@ export class EditorComponent implements OnInit {
     this.progress.circular = true;
     this.tdkService.getMeans(word).subscribe((res : any) => {
       this.progress.circular = false;
-      if (!res.error && res.length) {
-        this.lexeme.lexeme = res[0].madde;
+      if (res.status === 'success') {
+        this.lexeme = res.data.lexeme;
+        this.lexeme.semantics = res.data.semantics;
+        this.notificationService.show(res.message);
       } else {
-        this.lexeme = <Lexeme>{};
-        notificationService.show(res.error);
+        this.notificationService.show(res.message);
       }
     });
   }

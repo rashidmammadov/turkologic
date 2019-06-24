@@ -22,4 +22,6 @@ header('Access-Control-Allow-Methods:*');
 
 Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
     Route::get('/languages', 'LanguageController@get');
+
+    Route::get('/tdk', 'TDKController@get');
 });

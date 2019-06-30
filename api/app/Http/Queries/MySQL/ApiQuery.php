@@ -15,7 +15,7 @@ class ApiQuery {
     /** -------------------- LANGUAGE QUERIES -------------------- **/
 
     /**
-     * @description query to get language data
+     * @description query to get dialect.ts data
      * @param integer $status - the status if only true of all
      * @return mixed
      */

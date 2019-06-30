@@ -6,8 +6,8 @@ import { LanguageService } from "../services/language.service";
 import { NotificationService } from "../services/notification.service";
 import { ProgressService } from "../services/progress.service";
 import { TDKService } from "../services/tdk.service";
+import { Dialect, Dialects } from "../models/dialect";
 import { Etymon } from "../models/etymon";
-import { Language, Languages } from "../models/language";
 import { Lexeme } from "../models/lexeme";
 import { Semantics } from "../models/semantics";
 import { WordType, WordTypes } from "../models/word-type";
@@ -32,7 +32,7 @@ export class EditorComponent implements OnInit {
   show = {etymology: true};
   tdkWord: string;
   wordForm = new FormControl('', [Validators.required]);
-  languagesList: Languages[] = Language;
+  dialects: Dialect[] = Dialects;
   wordTypes: WordType[] = WordTypes;
 
   constructor(private languageService: LanguageService, private progress: ProgressService, private tdkService: TDKService,

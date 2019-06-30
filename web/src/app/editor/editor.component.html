@@ -118,13 +118,14 @@
         </mat-form-field>
       </form>
       <mat-divider></mat-divider>
-      <div fxLayout="column">
+
+      <div fxLayout="column" *ngFor="let dialect of dialects">
         <div fxLayout="row">
-          <button mat-raised-button (click)="addConnections(semanticId, 22)" [disabled]="etymon.sources.length === 3" fxFlex="10%">
-            <mat-icon svgIcon="azerbaijan"></mat-icon> Azerice
+          <button mat-raised-button (click)="addConnections(semanticId, dialect.language_id)" [disabled]="etymon.sources.length === 3" fxFlex="10%">
+            <mat-icon svgIcon="{{dialect.flag}}"></mat-icon> {{dialect.name}}
           </button>
         </div>
-        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantic.connects, 22); let connectId = index">
+        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantic.connects, dialect.language_id); let connectId = index">
           <div fxFlex="10%" fxLayoutAlign="center start" style="padding-top: 8px;">
             <button mat-icon-button color="primary" (click)="removeConnect(semantic.connects, connectId)" matTooltip="Kaldır">
               <mat-icon svgIcon="remove"></mat-icon>
@@ -152,21 +153,6 @@
           </mat-form-field>
         </div>
         <mat-divider></mat-divider>
-        <div fxLayout="row">
-          <button mat-raised-button (click)="addMoreSource()"
-                  [disabled]="etymon.sources.length === 3" fxFlex="10%">
-            <mat-icon svgIcon="kazakhstan"></mat-icon>
-            Kazakça
-          </button>
-        </div>
-        <mat-divider></mat-divider>
-        <div fxLayout="row">
-          <button mat-raised-button (click)="addMoreSource()"
-                  [disabled]="etymon.sources.length === 3" fxFlex="10%">
-            <mat-icon svgIcon="uzbekistan"></mat-icon>
-            Özbekçe
-          </button>
-        </div>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

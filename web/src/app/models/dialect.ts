@@ -1,10 +1,10 @@
-export interface Language {
+export interface Dialect {
   language_id: number;
   name: string;
   flag: string;
 }
 
-export const Languages:Language[] = [
+export const Dialects:Dialect[] = [
   {
     language_id: 22,
     name: 'Azerice',

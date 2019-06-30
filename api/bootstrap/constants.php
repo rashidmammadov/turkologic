@@ -13,7 +13,7 @@ define('CODE', 'code');
 define('CONNECTS', 'connects');
 define('COUNTRY', 'country');
 define('DATA', 'data');
-define('DB_LANGUAGE_TABLE', 'language');
+define('DB_LANGUAGE_TABLE', 'dialect.ts');
 define('DB_LEXEME_TABLE', 'lexeme');
 define('DB_SEMANTICS_TABLE', 'semantics');
 define('EQUAL_SIGN', '=');

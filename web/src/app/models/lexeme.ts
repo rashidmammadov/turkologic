@@ -1,4 +1,4 @@
-import { Semantics } from "./semantics";
+import {Semantics} from "./semantics";
 
 export interface Lexeme {
   lexeme_id: number;

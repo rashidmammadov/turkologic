@@ -28,5 +28,8 @@ export const WordTypes:WordType[] = [
   }, {
     id: 7,
     name: 'Ünlem'
+  }, {
+    id: 8,
+    name: 'Mecaz'
   }
 ];

@@ -12,7 +12,7 @@ export class TDKService {
   public getMeans(word) {
     return this.httpClient.get(environment.apiUrl + 'tdk', {
       params: {
-        ara: word
+        word: word
       }
     })
   }

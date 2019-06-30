@@ -1,0 +1,15 @@
+export interface Language {
+  language_id: number;
+  name: string;
+  flag: string;
+}
+
+export const Languages:Language[] = [
+  {
+    language_id: 22,
+    name: 'Azerice',
+    flag: 'azerbaijan'
+  }
+];
+
+

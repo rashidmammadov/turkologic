@@ -10,6 +10,7 @@ define('ALPHABET', 'alphabet');
 define('BELONG_TO', 'belong_to');
 define('CENTURY', 'century');
 define('CODE', 'code');
+define('CONNECTS', 'connects');
 define('COUNTRY', 'country');
 define('DATA', 'data');
 define('DB_LANGUAGE_TABLE', 'language');
@@ -20,6 +21,7 @@ define('ERROR', 'error');
 define('ETYMON_ID', 'etymon_id');
 define('FIELDS_VALIDATION_FAILED', 'Alanları doğrulama hatası');
 define('FLAG', 'flag');
+define('ID', 'id');
 define('LANGUAGE_ID', 'language_id');
 define('LATIN', 'latin');
 define('LATIN_TEXT', 'latin_text');
@@ -41,6 +43,9 @@ define('STATUS_CODE', 'status_code');
 define('SUCCESS', 'success');
 define('TYPE', 'type');
 define('WORD', 'word');
+
+/** LANGUAGES ID */
+define('TUR_ID', 21);
 
 /** constants on tdk standards. */
 define('TDK_MEANING_LIST', 'anlamlarListe');

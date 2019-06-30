@@ -16,17 +16,14 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card>
-    <mat-card-content fxLayout="row" fxLayoutAlign="space-between center">
-      <mat-card-title>Etimolojik Köken</mat-card-title>
-      <button mat-icon-button>
-        <mat-icon svgIcon="{{show.etymology ? 'expand-less' : 'expand-more'}}" (click)="show.etymology = !show.etymology"></mat-icon>
-      </button>
-    </mat-card-content>
-    <mat-card-content *ngIf="show.etymology">
+  <mat-accordion>
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title>Etimolojik Köken</mat-panel-title>
+      </mat-expansion-panel-header>
       <form class="word-form" ngNoForm fxLayout="column" fxLayoutGap="8px">
         <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center">
-          <mat-form-field appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+          <mat-form-field appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
             <mat-label>Sözcük</mat-label>
             <input [disabled]="progress.circular" matInput placeholder="Sözcük" [formControl]="wordForm"
                    [errorStateMatcher]="matcher" [(ngModel)]="etymon.word">
@@ -36,12 +33,12 @@
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+          <mat-form-field appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
             <mat-label>Orijinal Yazılışı</mat-label>
             <input [disabled]="progress.circular" matInput placeholder="Orijinal Yazılışı" [(ngModel)]="etymon.spelling">
           </mat-form-field>
 
-          <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+          <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
             <mat-label>Sözcük Türü</mat-label>
             <mat-select [disabled]="progress.circular" [(value)]="etymon.type">
               <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
@@ -50,7 +47,7 @@
             </mat-select>
           </mat-form-field>
 
-          <mat-form-field *ngIf="languages" appearance="outline" fxFlex.gt-xs="24%" fxFlex="100%">
+          <mat-form-field *ngIf="languages" appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
             <mat-label>Köken</mat-label>
             <mat-select [disabled]="progress.circular" [(value)]="etymon.origin">
               <mat-option *ngFor="let language of languages" [value]="language.language_id">
@@ -68,11 +65,8 @@
         <div fxLayout="column" class="box-border">
           <div fxLayout="row" fxLayoutAlign="space-between center">
             <p>Kaynaklar</p>
-            <button mat-raised-button color="primary" (click)="addMoreSource()"
-                    [disabled]="etymon.sources.length === 3">
-              <mat-icon svgIcon="add"></mat-icon>
-              daha fazla ekle
-            </button>
+            <button mat-raised-button color="primary" (click)="addMoreSource()" [disabled]="etymon.sources.length === 3">
+              <mat-icon svgIcon="add"></mat-icon> daha fazla ekle</button>
           </div>
           <div *ngFor="let source of etymon.sources; let i = index" fxLayoutGap="8px">
             <mat-form-field appearance="outline" fxFlex.gt-xs="55%" fxFlex="50%">
@@ -91,11 +85,89 @@
           </div>
         </div>
       </form>
-    </mat-card-content>
-  </mat-card>
+    </mat-expansion-panel>
+  </mat-accordion>
 
-  <div *ngFor="let semantic of lexeme.semantics">
-    <p><b>{{semantic.type}}:</b> {{semantic.meaning}}</p>
-    <p><i>"{{semantic.sample}}"</i> - <b>{{semantic.reference}}</b></p>
-  </div>
+  <mat-accordion *ngFor="let semantic of lexeme.semantics; let semanticId = index">
+    <mat-expansion-panel>
+      <mat-expansion-panel-header>
+        <mat-panel-title><b style="margin-right: 8px">
+          ({{wordTypes[semantic.type] ? wordTypes[semantic.type].name : '-'}})</b>
+          {{semantic.meaning}}</mat-panel-title>
+      </mat-expansion-panel-header>
+      <form class="word-form" ngNoForm fxLayout="row" fxLayoutGap="8px">
+        <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
+          <mat-label>Sözcük Türü</mat-label>
+          <mat-select [disabled]="progress.circular" [(value)]="semantic.type">
+            <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
+              <span>{{wordType.name}}</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="40%">
+          <mat-label>Anlam</mat-label>
+          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantic.meaning">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="40%">
+          <mat-label>Örnek</mat-label>
+          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantic.sample">
+        </mat-form-field>
+        <mat-form-field appearance="outline" fxFlex="10%">
+          <mat-label>Kaynak / Referans</mat-label>
+          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantic.reference">
+        </mat-form-field>
+      </form>
+      <mat-divider></mat-divider>
+      <div fxLayout="column">
+        <div fxLayout="row">
+          <button mat-raised-button (click)="addConnections(semanticId, 22)" [disabled]="etymon.sources.length === 3" fxFlex="10%">
+            <mat-icon svgIcon="azerbaijan"></mat-icon> Azerice
+          </button>
+        </div>
+        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantic.connects, 22); let connectId = index">
+          <div fxFlex="10%" fxLayoutAlign="center start" style="padding-top: 8px;">
+            <button mat-icon-button color="primary" (click)="removeConnect(semantic.connects, connectId)" matTooltip="Kaldır">
+              <mat-icon svgIcon="remove"></mat-icon>
+            </button>
+          </div>
+          <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
+            <mat-label>Sözcük Türü</mat-label>
+            <mat-select [disabled]="progress.circular" [(value)]="connect.type">
+              <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
+                <span>{{wordType.name}}</span>
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="35%">
+            <mat-label>Anlam</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.meaning">
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="35%">
+            <mat-label>Örnek</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.sample">
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="10%">
+            <mat-label>Kaynak / Referans</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.reference">
+          </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <div fxLayout="row">
+          <button mat-raised-button (click)="addMoreSource()"
+                  [disabled]="etymon.sources.length === 3" fxFlex="10%">
+            <mat-icon svgIcon="kazakhstan"></mat-icon>
+            Kazakça
+          </button>
+        </div>
+        <mat-divider></mat-divider>
+        <div fxLayout="row">
+          <button mat-raised-button (click)="addMoreSource()"
+                  [disabled]="etymon.sources.length === 3" fxFlex="10%">
+            <mat-icon svgIcon="uzbekistan"></mat-icon>
+            Özbekçe
+          </button>
+        </div>
+      </div>
+    </mat-expansion-panel>
+  </mat-accordion>
 </div>

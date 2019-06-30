@@ -10,6 +10,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Lexeme;
 use App\Http\Models\Semantics;
+use App\Http\Models\WordType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Validator;
@@ -60,10 +61,12 @@ class TDKController extends ApiController {
 
     private function setLexeme($result) {
         $lexeme = new Lexeme();
-        $lexeme->setLexeme($result[0]->madde);
-        $lexeme->setLatinText($result[0]->madde);
-        $lexeme->setPronunciation($result[0]->telaffuz);
-        $lexeme->setAlphabet(LATIN);
+        if (isset($result[0]->madde)) {
+            $lexeme->setLexeme($result[0]->madde);
+            $lexeme->setLatinText($result[0]->madde);
+            $lexeme->setPronunciation($result[0]->telaffuz);
+            $lexeme->setAlphabet(LATIN);
+        }
         return $lexeme->get();
     }
 
@@ -73,8 +76,10 @@ class TDKController extends ApiController {
             $type = null;
             foreach ($result[0]->anlamlarListe as $anlam) {
                 $semantics = new Semantics();
+                $semantics->setLanguageId(TUR_ID);
                 if (isset($anlam->ozelliklerListe)) {
                     $type = $anlam->ozelliklerListe[0]->tam_adi;
+                    $type = WordType::getTypeByName($type);
                 }
                 $semantics->setType($type);
                 $semantics->setMeaning($anlam->anlam);

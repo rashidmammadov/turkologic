@@ -16,7 +16,7 @@ class Semantics extends Model {
     protected $primaryKey = SEMANTIC_ID;
 
     protected $fillable = [
-        SEMANTIC_ID, LEXEME_ID, TYPE, MEANING, SAMPLE, REFERENCE, BELONG_TO, METAPHOR
+        SEMANTIC_ID, LEXEME_ID, LANGUAGE_ID, TYPE, MEANING, SAMPLE, REFERENCE, BELONG_TO, METAPHOR
     ];
 
     public function lexeme() {

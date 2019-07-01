@@ -6,30 +6,30 @@ export interface WordType {
 export const WordTypes:WordType[] = [
   {
     id: 0,
-    name: 'Bağlaç'
+    name: 'bağlaç'
   }, {
     id: 1,
-    name: 'Edat'
+    name: 'edat'
   }, {
     id: 2,
-    name: 'Fiil'
+    name: 'fiil'
   }, {
     id: 3,
-    name: 'İsim'
+    name: 'isim'
   }, {
     id: 4,
-    name: 'Sıfat'
+    name: 'sıfat'
   }, {
     id: 5,
-    name: 'Zamir'
+    name: 'zamir'
   }, {
     id: 6,
-    name: 'Zarf'
+    name: 'zarf'
   }, {
     id: 7,
-    name: 'Ünlem'
+    name: 'ünlem'
   }, {
     id: 8,
-    name: 'Mecaz'
+    name: 'mecaz'
   }
 ];

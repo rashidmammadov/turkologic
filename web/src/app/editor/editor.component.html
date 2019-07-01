@@ -19,7 +19,7 @@
   <mat-accordion>
     <mat-expansion-panel>
       <mat-expansion-panel-header>
-        <mat-panel-title>Etimolojik Köken</mat-panel-title>
+        <mat-panel-title>Etimoloji</mat-panel-title>
       </mat-expansion-panel-header>
       <form class="word-form" ngNoForm fxLayout="column" fxLayoutGap="8px">
         <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center">
@@ -121,16 +121,12 @@
 
       <div fxLayout="column" *ngFor="let dialect of dialects">
         <div fxLayout="row">
-          <button mat-raised-button (click)="addConnections(semanticId, dialect.language_id)" [disabled]="etymon.sources.length === 3" fxFlex="10%">
+          <button mat-raised-button (click)="addConnections(semanticId, dialect.language_id)" [disabled]="progress.circular" fxFlex="10%">
             <mat-icon svgIcon="{{dialect.flag}}"></mat-icon> {{dialect.name}}
           </button>
         </div>
-        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantic.connects, dialect.language_id); let connectId = index">
-          <div fxFlex="10%" fxLayoutAlign="center start" style="padding-top: 8px;">
-            <button mat-icon-button color="primary" (click)="removeConnect(semantic.connects, connectId)" matTooltip="Kaldır">
-              <mat-icon svgIcon="remove"></mat-icon>
-            </button>
-          </div>
+        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantic.connects, dialect.language_id);
+          let connectSemanticId = index">
           <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
             <mat-label>Sözcük Türü</mat-label>
             <mat-select [disabled]="progress.circular" [(value)]="connect.type">
@@ -139,21 +135,35 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field appearance="outline" fxFlex="35%">
-            <mat-label>Anlam</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.meaning">
+          <mat-form-field appearance="outline" fxFlex="15%">
+            <mat-label>Sözcük</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Sözcük" [(ngModel)]="connect.lexeme">
           </mat-form-field>
-          <mat-form-field appearance="outline" fxFlex="35%">
+          <mat-form-field appearance="outline" fxFlex="15%">
+            <mat-label>Telaffuz</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Telaffuz" [(ngModel)]="connect.pronunciation">
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="25%">
+            <mat-label>Anlam</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Anlam" [(ngModel)]="connect.meaning">
+          </mat-form-field>
+          <mat-form-field appearance="outline" fxFlex="25%">
             <mat-label>Örnek</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.sample">
+            <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="connect.sample">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="10%">
             <mat-label>Kaynak / Referans</mat-label>
             <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.reference">
           </mat-form-field>
+          <div fxFlex="5%" fxLayoutAlign="center start" style="padding-top: 8px;">
+            <button mat-icon-button color="primary" (click)="removeConnect(semantic.connects, dialect.language_id, connectSemanticId)" matTooltip="Kaldır">
+              <mat-icon svgIcon="remove"></mat-icon>
+            </button>
+          </div>
         </div>
         <mat-divider></mat-divider>
       </div>
+
     </mat-expansion-panel>
   </mat-accordion>
 </div>

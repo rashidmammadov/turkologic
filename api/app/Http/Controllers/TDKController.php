@@ -62,6 +62,7 @@ class TDKController extends ApiController {
     private function setLexeme($result) {
         $lexeme = new Lexeme();
         if (isset($result[0]->madde)) {
+            $lexeme->setLanguageId(TUR_ID);
             $lexeme->setLexeme($result[0]->madde);
             $lexeme->setLatinText($result[0]->madde);
             $lexeme->setPronunciation($result[0]->telaffuz);
@@ -76,7 +77,6 @@ class TDKController extends ApiController {
             $type = null;
             foreach ($result[0]->anlamlarListe as $anlam) {
                 $semantics = new Semantics();
-                $semantics->setLanguageId(TUR_ID);
                 if (isset($anlam->ozelliklerListe)) {
                     $type = $anlam->ozelliklerListe[0]->tam_adi;
                     $type = WordType::getTypeByName($type);

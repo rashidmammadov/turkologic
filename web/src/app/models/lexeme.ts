@@ -7,5 +7,5 @@ export interface Lexeme {
   latin_text: string;
   alphabet: string;
   language_id: number;
-  semantics: Semantics[];
+  semantics_list: Semantics[];
 }

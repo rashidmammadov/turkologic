@@ -1,0 +1,14 @@
+<form class="app-autocomplete-form" fxLayout="row">
+  <mat-form-field appearance="outline" fxFlex="100%">
+    <mat-label>{{label}}</mat-label>
+    <input matInput placeholder="{{label}}" aria-label="State" [matAutocomplete]="auto" [formControl]="AutocompleteCtrl"
+           [(ngModel)]="vvv">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let result of results | async" [value]="result.lexeme"
+                  (onSelectionChange)="setSelectedOption(result)">
+        <span>{{result.lexeme}}</span> | <small>{{result.meaning}}</small>
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+</form>
+{{vvv}}

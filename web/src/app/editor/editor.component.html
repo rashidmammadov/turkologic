@@ -2,6 +2,7 @@
   <button [disabled]="progress.circular || !lexeme.lexeme" mat-fab color="primary" class="fab-button" (click)="saveChanges()">
     <mat-icon svgIcon="save-changes"></mat-icon>
   </button>
+  <app-autocomplete label="Sözcük" [selectedResult]="selected"></app-autocomplete>
   <mat-card>
     <mat-card-content>
       <mat-card-title>Sözcük: {{lexeme.lexeme}}</mat-card-title>
@@ -91,17 +92,17 @@
     </mat-expansion-panel>
   </mat-accordion>
 
-  <mat-accordion *ngFor="let semantic of lexeme.semantics; let semanticId = index">
+  <mat-accordion *ngFor="let semantics of lexeme.semantics_list; let semanticId = index">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title><b style="margin-right: 8px">
-          ({{wordTypes[semantic.type] ? wordTypes[semantic.type].name : '-'}})</b>
-          {{semantic.meaning}}</mat-panel-title>
+          ({{wordTypes[semantics.type] ? wordTypes[semantics.type].name : '-'}})</b>
+          {{semantics.meaning}}</mat-panel-title>
       </mat-expansion-panel-header>
       <form class="word-form" ngNoForm fxLayout="row" fxLayoutGap="8px">
         <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
           <mat-label>Sözcük Türü</mat-label>
-          <mat-select [disabled]="progress.circular" [(value)]="semantic.type">
+          <mat-select [disabled]="progress.circular" [(value)]="semantics.type">
             <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
               <span>{{wordType.name}}</span>
             </mat-option>
@@ -109,15 +110,15 @@
         </mat-form-field>
         <mat-form-field appearance="outline" fxFlex="40%">
           <mat-label>Anlam</mat-label>
-          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantic.meaning">
+          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantics.meaning">
         </mat-form-field>
         <mat-form-field appearance="outline" fxFlex="40%">
           <mat-label>Örnek</mat-label>
-          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantic.sample">
+          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantics.sample">
         </mat-form-field>
         <mat-form-field appearance="outline" fxFlex="10%">
           <mat-label>Kaynak / Referans</mat-label>
-          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantic.reference">
+          <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantics.reference">
         </mat-form-field>
       </form>
       <mat-divider></mat-divider>
@@ -128,7 +129,7 @@
             <mat-icon svgIcon="{{dialect.flag}}"></mat-icon> {{dialect.name}}
           </button>
         </div>
-        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantic.connects, dialect.language_id);
+        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantics.connects, dialect.language_id);
           let connectId = index">
           <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
             <mat-label>Sözcük Türü</mat-label>
@@ -148,18 +149,18 @@
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="25%">
             <mat-label>Anlam</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Anlam" [(ngModel)]="connect.semantics[0].meaning">
+            <input [disabled]="progress.circular" matInput placeholder="Anlam" [(ngModel)]="connect.semantics_list[0].meaning">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="25%">
             <mat-label>Örnek</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="connect.semantics[0].sample">
+            <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="connect.semantics_list[0].sample">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="10%">
             <mat-label>Kaynak / Referans</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.semantics[0].reference">
+            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.semantics_list[0].reference">
           </mat-form-field>
           <div fxFlex="5%" fxLayoutAlign="center start" style="padding-top: 8px;">
-            <button mat-icon-button color="primary" (click)="removeConnect(semantic, dialect.language_id, connectId)" matTooltip="Kaldır">
+            <button mat-icon-button color="primary" (click)="removeConnect(semantics, dialect.language_id, connectId)" matTooltip="Kaldır">
               <mat-icon svgIcon="remove"></mat-icon>
             </button>
           </div>

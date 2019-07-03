@@ -18,6 +18,7 @@ class Lexeme {
     private $alphabet;
     private $languageId;
     private $etymonId;
+    private $semanticsList = array();
 
     public function __construct($parameters = null) {
         !empty($parameters[LEXEME_ID])      && self::setLexemeId($parameters[LEXEME_ID]);
@@ -27,6 +28,7 @@ class Lexeme {
         !empty($parameters[ALPHABET])       && self::setAlphabet($parameters[ALPHABET]);
         !empty($parameters[LANGUAGE_ID])    && self::setLanguageId($parameters[LANGUAGE_ID]);
         !empty($parameters[ETYMON_ID])      && self::setEtymonId($parameters[ETYMON_ID]);
+        !empty($parameters[SEMANTICS_LIST]) && self::setSemanticsList($parameters[SEMANTICS_LIST]);
     }
 
     public function get() {
@@ -37,7 +39,8 @@ class Lexeme {
             LATIN_TEXT => $this->getLatinText(),
             ALPHABET => $this->getAlphabet(),
             LANGUAGE_ID => $this->getLanguageId(),
-            ETYMON_ID => $this->getEtymonId()
+            ETYMON_ID => $this->getEtymonId(),
+            SEMANTICS_LIST => $this->getSemanticsList()
         );
     }
 
@@ -68,5 +71,9 @@ class Lexeme {
     public function getEtymonId() { return $this->etymonId; }
 
     public function setEtymonId($etymonId): void { $this->etymonId = $etymonId; }
+
+    public function getSemanticsList() { return $this->semanticsList; }
+
+    public function setSemanticsList($semanticsList): void { $this->semanticsList = $semanticsList; }
 
 }

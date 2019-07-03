@@ -42,7 +42,10 @@ class TDKController extends ApiController {
         } else {
             $data = array();
             $data[LEXEME] = $this->setLexeme($result);
-            $data[SEMANTICS] = $this->setSemantics($result);
+            if ($data[LEXEME]) {
+                $data[LEXEME][SEMANTICS_LIST] = $this->setSemanticsList($result);
+            }
+//            $data[SEMANTICS] =
             return $this->respondCreated('Sonuç getirildi', $data);
         }
     }
@@ -71,7 +74,7 @@ class TDKController extends ApiController {
         return $lexeme->get();
     }
 
-    private function setSemantics($result) {
+    private function setSemanticsList($result) {
         $semanticsList = array();
         if ($result[0] && isset($result[0]->anlamlarListe)) {
             $type = null;

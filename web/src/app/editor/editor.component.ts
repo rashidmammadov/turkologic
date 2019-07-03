@@ -44,9 +44,8 @@ export class EditorComponent implements OnInit {
     let newConnect = <Lexeme>{};
     let newSemantics = <Semantics>{};
     newConnect.language_id = languageId;
-    newConnect.semantics = [newSemantics];
-    // @ts-ignore
-    this.lexeme.semantics[semanticId].connects.push(newConnect);
+    newConnect.semantics_list = [newSemantics];
+    this.lexeme.semantics_list[semanticId].connects.push(newConnect);
   }
 
   addMoreSource() {
@@ -59,6 +58,10 @@ export class EditorComponent implements OnInit {
     if (connects.length) {
       return connects.filter(c => c.language_id === languageId);
     }
+  }
+
+  selected(value) {
+    value;
   }
 
   getLanguages() {
@@ -83,7 +86,6 @@ export class EditorComponent implements OnInit {
       this.progress.circular = false;
       if (res.status === 'success') {
         this.lexeme = res.data.lexeme;
-        this.lexeme.semantics = res.data.semantics;
         this.notificationService.show(res.message);
       } else {
         this.notificationService.show(res.message);

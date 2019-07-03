@@ -7,13 +7,14 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatIconModule, MatProgressSpinnerModule, MatSnackBarModule, MatToolbarModule } from '@angular/material';
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
+import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 
 /** States */
 
 let editorState = { name: 'editor', url: '/editor',  component: EditorComponent };
 
 @NgModule({
-  declarations: [AppComponent, EditorComponent],
+  declarations: [AppComponent, EditorComponent, AutocompleteComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

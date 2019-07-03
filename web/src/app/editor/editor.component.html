@@ -1,4 +1,7 @@
 <div fxLayout="column" fxLayoutGap="16px">
+  <button [disabled]="progress.circular || !lexeme.lexeme" mat-fab color="primary" class="fab-button" (click)="saveChanges()">
+    <mat-icon svgIcon="save-changes"></mat-icon>
+  </button>
   <mat-card>
     <mat-card-content>
       <mat-card-title>Sözcük: {{lexeme.lexeme}}</mat-card-title>
@@ -126,7 +129,7 @@
           </button>
         </div>
         <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantic.connects, dialect.language_id);
-          let connectSemanticId = index">
+          let connectId = index">
           <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
             <mat-label>Sözcük Türü</mat-label>
             <mat-select [disabled]="progress.circular" [(value)]="connect.type">
@@ -145,18 +148,18 @@
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="25%">
             <mat-label>Anlam</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Anlam" [(ngModel)]="connect.meaning">
+            <input [disabled]="progress.circular" matInput placeholder="Anlam" [(ngModel)]="connect.semantics[0].meaning">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="25%">
             <mat-label>Örnek</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="connect.sample">
+            <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="connect.semantics[0].sample">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="10%">
             <mat-label>Kaynak / Referans</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.reference">
+            <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="connect.semantics[0].reference">
           </mat-form-field>
           <div fxFlex="5%" fxLayoutAlign="center start" style="padding-top: 8px;">
-            <button mat-icon-button color="primary" (click)="removeConnect(semantic.connects, dialect.language_id, connectSemanticId)" matTooltip="Kaldır">
+            <button mat-icon-button color="primary" (click)="removeConnect(semantic, dialect.language_id, connectId)" matTooltip="Kaldır">
               <mat-icon svgIcon="remove"></mat-icon>
             </button>
           </div>

@@ -41,19 +41,12 @@ export class EditorComponent implements OnInit {
   matcher = new InputErrorStateMatcher();
 
   addConnections(semanticId, languageId) {
+    let newConnect = <Lexeme>{};
+    let newSemantics = <Semantics>{};
+    newConnect.language_id = languageId;
+    newConnect.semantics = [newSemantics];
     // @ts-ignore
-    let finder = this.lexeme.semantics[semanticId].connects.find(c => {return c.language_id === languageId});
-    if (!finder) {
-      let newConnect = <Lexeme>{};
-      newConnect.language_id = languageId;
-      newConnect.semantics = [<Semantics>{}];
-      // @ts-ignore
-      this.lexeme.semantics[semanticId].connects.push(newConnect);
-    } else {
-      let newSemantics = <Semantics>{};
-      // @ts-ignore
-      finder.semantics.push(newSemantics);
-    }
+    this.lexeme.semantics[semanticId].connects.push(newConnect);
   }
 
   addMoreSource() {
@@ -64,10 +57,7 @@ export class EditorComponent implements OnInit {
 
   getConnectionsByLanguageId(connects, languageId) {
     if (connects.length) {
-      let filtered = connects.filter(c => c.language_id === languageId);
-      if (filtered && filtered[0] && filtered[0].semantics) {
-        return filtered[0].semantics;
-      }
+      return connects.filter(c => c.language_id === languageId);
     }
   }
 
@@ -81,6 +71,10 @@ export class EditorComponent implements OnInit {
         this.notificationService.show(res.message);
       }
     });
+  }
+
+  getSemantics(connect) {
+    return connect.semantics;
   }
 
   fetchFromTDK(word) {
@@ -97,14 +91,19 @@ export class EditorComponent implements OnInit {
     });
   }
 
-  removeConnect(semantic, languageId, semanticId) {
-    semantic.forEach(s => {
-        s.language_id === languageId && (s.semantics.splice(semanticId, 1));
-    });
+  removeConnect(semantics, languageId, connectId) {
+    let filtered = semantics.connects.filter(c => c.language_id === languageId);
+    semantics.connects = semantics.connects.filter(c => c.language_id !== languageId);
+    filtered.splice(connectId, 1);
+    semantics.connects = semantics.connects.concat(filtered);
   }
 
   removeSource(id) {
     this.etymon.sources.splice(id, 1);
+  }
+
+  saveChanges() {
+    this.lexeme;
   }
 
   ngOnInit() {

@@ -1,3 +1,5 @@
+import {Lexeme} from "./lexeme";
+
 export interface Semantics {
   semantic_id: number;
   lexeme_id: number;
@@ -6,5 +8,5 @@ export interface Semantics {
   sample: string;
   reference: string;
   belong_to: number;
-  connects: Semantics[];
+  connects: Lexeme[];
 }

@@ -1,14 +1,21 @@
-<form class="app-autocomplete-form" fxLayout="row">
+<form class="app-autocomplete-form" fxLayout="column">
   <mat-form-field appearance="outline" fxFlex="100%">
     <mat-label>{{label}}</mat-label>
     <input matInput placeholder="{{label}}" aria-label="State" [matAutocomplete]="auto" [formControl]="AutocompleteCtrl"
-           [(ngModel)]="vvv">
+      [(ngModel)]="searchText">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let result of results | async" [value]="result.lexeme"
-                  (onSelectionChange)="setSelectedOption(result)">
-        <span>{{result.lexeme}}</span> | <small>{{result.meaning}}</small>
-      </mat-option>
+      <mat-progress-bar *ngIf="progress" mode="query"></mat-progress-bar>
+      <mat-optgroup *ngFor="let lexeme of results | async" [label]="lexeme.lexeme + ' (yeni oluştur)'"
+        (click)="setSelectedOption(lexeme)">
+        <mat-option *ngFor="let semantics of lexeme.semantics_list; let semanticsId = index" [value]="semantics"
+                    (onSelectionChange)="setSelectedOption(lexeme, semanticsId)">
+          <small>{{semantics.meaning}}</small>
+        </mat-option>
+      </mat-optgroup>
+      <!--<mat-option *ngFor="let result of results | async" [value]="result.lexeme"-->
+                  <!--(onSelectionChange)="setSelectedOption(result)">-->
+        <!--<span>{{result.lexeme}}</span> | <small>{{result.semantics_list[0].meaning}}</small>-->
+      <!--</mat-option>-->
     </mat-autocomplete>
   </mat-form-field>
 </form>
-{{vvv}}

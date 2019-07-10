@@ -13,6 +13,7 @@ class CreateLexemeTable extends Migration {
     public function up() {
         Schema::create(DB_LEXEME_TABLE, function (Blueprint $table) {
             $table->bigIncrements(LEXEME_ID);
+            $table->integer(ETYMON_ID)->nullable();
             $table->string(LEXEME, 50);
             $table->string(PRONUNCIATION, 50)->nullable();
             $table->string(LATIN_TEXT, 50)->nullable();

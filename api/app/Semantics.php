@@ -16,8 +16,12 @@ class Semantics extends Model {
     protected $primaryKey = SEMANTIC_ID;
 
     protected $fillable = [
-        SEMANTIC_ID, LEXEME_ID, TYPE, MEANING, SAMPLE, REFERENCE, BELONG_TO, CONNECTS
+        SEMANTIC_ID, LEXEME_ID, TYPE, MEANING, SAMPLE, REFERENCE
     ];
+
+    public function belong() {
+        return $this->hasMany('App\Belong');
+    }
 
     public function lexeme() {
         return $this->belongsTo('App\Lexeme');

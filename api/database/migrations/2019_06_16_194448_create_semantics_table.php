@@ -19,7 +19,6 @@ class CreateSemanticsTable extends Migration
             $table->text(MEANING);
             $table->text(SAMPLE)->nullable();
             $table->string(REFERENCE, 100)->nullable();
-            $table->bigInteger(BELONG_TO)->nullable();
             $table->timestamps();
         });
     }

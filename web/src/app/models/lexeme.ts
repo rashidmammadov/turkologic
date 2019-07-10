@@ -8,4 +8,5 @@ export interface Lexeme {
   alphabet: string;
   language_id: number;
   semantics_list: Semantics[];
+  fetched: boolean;
 }

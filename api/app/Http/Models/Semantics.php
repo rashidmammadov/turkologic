@@ -17,7 +17,6 @@ class Semantics {
     private $meaning;
     private $sample;
     private $reference;
-    private $belongTo;
     private $connects = array();
 
     public function __construct($parameters = null) {
@@ -27,8 +26,7 @@ class Semantics {
         !empty($parameters[MEANING])        && self::setMeaning($parameters[MEANING]);
         !empty($parameters[SAMPLE])         && self::setSample($parameters[SAMPLE]);
         !empty($parameters[REFERENCE])      && self::setReference($parameters[REFERENCE]);
-        !empty($parameters[BELONG_TO])      && self::setBelongTo($parameters[BELONG_TO]);
-        !empty($parameters[CONNECTS])       && self::setBelongTo($parameters[CONNECTS]);
+        !empty($parameters[CONNECTS])       && self::setConnects($parameters[CONNECTS]);
     }
 
     public function get() {
@@ -39,7 +37,6 @@ class Semantics {
             MEANING => $this->getMeaning(),
             SAMPLE => $this->getSample(),
             REFERENCE => $this->getReference(),
-            BELONG_TO => $this->getBelongTo(),
             CONNECTS => $this->getConnects()
         );
     }
@@ -67,10 +64,6 @@ class Semantics {
     public function getReference() { return $this->reference; }
 
     public function setReference($reference): void { $this->reference = $reference; }
-
-    public function getBelongTo() { return $this->belongTo; }
-
-    public function setBelongTo($belongTo): void { $this->belongTo = $belongTo; }
 
     public function getConnects() { return $this->connects; }
 

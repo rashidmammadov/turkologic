@@ -16,7 +16,7 @@ class Lexeme extends Model {
     protected $primaryKey = LEXEME_ID;
 
     protected $fillable = [
-        LEXEME_ID, LEXEME, PRONUNCIATION, LATIN_TEXT, ALPHABET, LANGUAGE_ID, ETYMON_ID
+        LEXEME_ID, ETYMON_ID, LEXEME, PRONUNCIATION, LATIN_TEXT, ALPHABET, LANGUAGE_ID
     ];
 
     public function language() {

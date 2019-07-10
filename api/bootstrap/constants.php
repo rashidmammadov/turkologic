@@ -13,6 +13,8 @@ define('CODE', 'code');
 define('CONNECTS', 'connects');
 define('COUNTRY', 'country');
 define('DATA', 'data');
+define('DB_BELONG_TABLE', 'belong');
+define('DB_ETYMON_TABLE', 'etymon');
 define('DB_LANGUAGE_TABLE', 'language');
 define('DB_LEXEME_TABLE', 'lexeme');
 define('DB_SEMANTICS_TABLE', 'semantics');
@@ -21,6 +23,7 @@ define('ERROR', 'error');
 define('ETYMON_ID', 'etymon_id');
 define('FIELDS_VALIDATION_FAILED', 'Alanları doğrulama hatası');
 define('FLAG', 'flag');
+define('FROM', 'from');
 define('ID', 'id');
 define('LANGUAGE_ID', 'language_id');
 define('LATIN', 'latin');
@@ -45,6 +48,7 @@ define('STATUS', 'status');
 define('STATUS_CODE', 'status_code');
 define('SUCCESS', 'success');
 define('TYPE', 'type');
+define('TO', 'to');
 define('WORD', 'word');
 
 /** LANGUAGES ID */

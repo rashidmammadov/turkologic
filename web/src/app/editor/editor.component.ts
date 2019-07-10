@@ -54,14 +54,23 @@ export class EditorComponent implements OnInit {
     }
   }
 
+  set(connect) {
+    if (connect.fetched) {
+      connect.lexeme_id = null;
+      connect.pronunciation = '';
+      connect.fetched = false;
+      connect.semantics_list[0] = <Semantics>{};
+    }
+  }
+
   getConnectionsByLanguageId(connects, languageId) {
     if (connects.length) {
       return connects.filter(c => c.language_id === languageId);
     }
   }
 
-  selected(value) {
-    value;
+  searchedLexeme(data) {
+    this.lexeme.semantics_list[data.params.semanticsId].connects[data.params.connectId] = data.data;
   }
 
   getLanguages() {

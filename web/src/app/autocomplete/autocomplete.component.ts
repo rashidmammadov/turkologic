@@ -1,13 +1,14 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, NgModule, OnInit, Output } from '@angular/core';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatInputModule, MatProgressBarModule } from '@angular/material';
+import { MatAutocompleteModule, MatInputModule } from '@angular/material';
 import { LexemeService } from "../services/lexeme.service";
 import { Observable, of } from 'rxjs'
+import { Semantics } from "../models/semantics";
 import { catchError, debounceTime, map, switchMap } from "rxjs/operators";
 
 @NgModule({
-  imports: [FormsModule, MatAutocompleteModule, MatInputModule, MatProgressBarModule, ReactiveFormsModule],
-  exports: [FormsModule, MatAutocompleteModule, MatInputModule, MatProgressBarModule, ReactiveFormsModule]
+  imports: [FormsModule, MatAutocompleteModule, MatInputModule, ReactiveFormsModule],
+  exports: [FormsModule, MatAutocompleteModule, MatInputModule, ReactiveFormsModule]
 })
 @Component({
   selector: 'app-autocomplete',
@@ -15,27 +16,27 @@ import { catchError, debounceTime, map, switchMap } from "rxjs/operators";
   styleUrls: ['./autocomplete.component.css']
 })
 export class AutocompleteComponent implements OnInit {
-  vvv = '';
-  @Input() label = 'Arama';
-  @Input() selectedResult;
+  @Input() label: string;
+  @Input() params: Object;
+  @Input() searchText: string;
+  @Output() selectedResult = new EventEmitter();
+  @Output() searchTextChange = new EventEmitter();
+
   results: Observable<any> = null;
   AutocompleteCtrl = new FormControl();
   progress = false;
+  defaultSemantics: Semantics;
 
   constructor(private lexemeService: LexemeService) { }
 
   lookup(value: string): Observable<any> {
-    return this.lexemeService.getByLanguage(value, 22).pipe(
+    // @ts-ignore
+    return this.lexemeService.getByLanguage(value, this.params.languageId).pipe(
       map((res: any) => {
         this.progress = false;
         let list = [];
         if (res.status === 'success') {
-          res.data.forEach((d) => {
-            list = list.concat(d.semantics_list.map((semantics) => {
-              semantics.lexeme = d.lexeme;
-              return semantics;
-            }));
-          })
+          list = res.data;
         }
         return list;
       }),
@@ -46,8 +47,18 @@ export class AutocompleteComponent implements OnInit {
     );
   }
 
-  setSelectedOption(result) {
-    this.selectedResult(result);
+  setSelectedOption(data, index) {
+    let dataCopy = {...data};
+    dataCopy.fetched = true;
+    dataCopy.semantics_list = [];
+    if (index >= 0) {
+      dataCopy.semantics_list[0] = {...data.semantics_list[index]};
+      dataCopy.semantics_list[0].fetched = true;
+    } else {
+      dataCopy.semantics_list[0] = <Semantics>{};
+    }
+    let passedData = {params: this.params, data: dataCopy};
+    this.selectedResult.emit(passedData);
   }
 
   ngOnInit() {
@@ -55,6 +66,7 @@ export class AutocompleteComponent implements OnInit {
       .pipe(
         debounceTime(300),
         switchMap((value) => {
+          this.searchTextChange.emit(this.searchText);
           if (!!value) {
             this.progress = true;
             return this.lookup(value);

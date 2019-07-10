@@ -9,4 +9,5 @@ export interface Semantics {
   reference: string;
   belong_to: number;
   connects: Lexeme[];
+  fetched: boolean;
 }

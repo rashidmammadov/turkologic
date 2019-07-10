@@ -2,7 +2,6 @@
   <button [disabled]="progress.circular || !lexeme.lexeme" mat-fab color="primary" class="fab-button" (click)="saveChanges()">
     <mat-icon svgIcon="save-changes"></mat-icon>
   </button>
-  <app-autocomplete label="Sözcük" [selectedResult]="selected"></app-autocomplete>
   <mat-card>
     <mat-card-content>
       <mat-card-title>Sözcük: {{lexeme.lexeme}}</mat-card-title>
@@ -92,7 +91,7 @@
     </mat-expansion-panel>
   </mat-accordion>
 
-  <mat-accordion *ngFor="let semantics of lexeme.semantics_list; let semanticId = index">
+  <mat-accordion *ngFor="let semantics of lexeme.semantics_list; let semanticsId = index">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title><b style="margin-right: 8px">
@@ -125,7 +124,7 @@
 
       <div fxLayout="column" *ngFor="let dialect of dialects">
         <div fxLayout="row">
-          <button mat-raised-button (click)="addConnections(semanticId, dialect.language_id)" [disabled]="progress.circular" fxFlex="10%">
+          <button mat-raised-button (click)="addConnections(semanticsId, dialect.language_id)" [disabled]="progress.circular" fxFlex="10%">
             <mat-icon svgIcon="{{dialect.flag}}"></mat-icon> {{dialect.name}}
           </button>
         </div>
@@ -133,23 +132,25 @@
           let connectId = index">
           <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
             <mat-label>Sözcük Türü</mat-label>
-            <mat-select [disabled]="progress.circular" [(value)]="connect.type">
+            <mat-select [disabled]="progress.circular || connect.semantics_list[0].fetched"
+                        [(value)]="connect.semantics_list[0].type">
               <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
                 <span>{{wordType.name}}</span>
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field appearance="outline" fxFlex="15%">
-            <mat-label>Sözcük</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Sözcük" [(ngModel)]="connect.lexeme">
-          </mat-form-field>
+          <app-autocomplete fxFlex="15%" label="Sözcük" [(searchText)]="connect.lexeme" (selectedResult)="searchedLexeme($event)"
+                            (change)="set(connect)"
+            [params]="{semanticsId: semanticsId, connectId: connectId, languageId: dialect.language_id}"></app-autocomplete>
           <mat-form-field appearance="outline" fxFlex="15%">
             <mat-label>Telaffuz</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Telaffuz" [(ngModel)]="connect.pronunciation">
+            <input [disabled]="progress.circular || connect.fetched" matInput placeholder="Telaffuz"
+                   [(ngModel)]="connect.pronunciation">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="25%">
             <mat-label>Anlam</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Anlam" [(ngModel)]="connect.semantics_list[0].meaning">
+            <input [disabled]="progress.circular || connect.semantics_list[0].fetched" matInput placeholder="Anlam"
+                   [(ngModel)]="connect.semantics_list[0].meaning">
           </mat-form-field>
           <mat-form-field appearance="outline" fxFlex="25%">
             <mat-label>Örnek</mat-label>

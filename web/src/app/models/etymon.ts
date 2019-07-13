@@ -1,12 +1,12 @@
 export interface Etymon {
+  etymon_id: number,
+  language_id: number;
+  word: string;
+  pronunciation: string;
+  type: number;
   description: string;
-  origin: number;
-  reference: string;
   sources: [{
     sample: string,
     reference: string
   }];
-  spelling: string;
-  type: number;
-  word: string;
 }

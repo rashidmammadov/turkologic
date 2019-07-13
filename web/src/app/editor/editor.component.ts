@@ -1,17 +1,16 @@
 import { Component, NgModule, OnInit } from '@angular/core';
-import { FormControl, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatDividerModule, MatExpansionModule, MatFormFieldModule,
   MatInputModule, MatSelectModule, MatTooltipModule } from '@angular/material';
+import { EditorService } from "../services/editor.service";
 import { LanguageService } from "../services/language.service";
 import { NotificationService } from "../services/notification.service";
 import { ProgressService } from "../services/progress.service";
 import { TDKService } from "../services/tdk.service";
-import { Dialect, Dialects } from "../models/dialect";
-import { Etymon } from "../models/etymon";
+import { Dialect } from "../models/dialect";
 import { Lexeme } from "../models/lexeme";
 import { Semantics } from "../models/semantics";
 import { WordType, WordTypes } from "../models/word-type";
-import { InputErrorStateMatcher } from "../services/error.service";
 
 @NgModule({
   imports: [FormsModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatDividerModule, MatExpansionModule,
@@ -25,20 +24,15 @@ import { InputErrorStateMatcher } from "../services/error.service";
   styleUrls: ['./editor.component.css']
 })
 export class EditorComponent implements OnInit {
-  etymon = <Etymon>{};
   lexeme = <Lexeme>{};
-
   languages: Object;
-  show = {etymology: true};
   tdkWord: string;
-  wordForm = new FormControl('', [Validators.required]);
-  dialects: Dialect[] = Dialects;
+  dialects: Dialect[];
   wordTypes: WordType[] = WordTypes;
 
-  constructor(private languageService: LanguageService, private progress: ProgressService, private tdkService: TDKService,
+  constructor(private editorService: EditorService, private languageService: LanguageService,
+              private progress: ProgressService, private tdkService: TDKService,
               private notificationService: NotificationService) {}
-
-  matcher = new InputErrorStateMatcher();
 
   addConnections(semanticId, languageId) {
     let newConnect = <Lexeme>{};
@@ -49,12 +43,12 @@ export class EditorComponent implements OnInit {
   }
 
   addMoreSource() {
-    if (this.etymon.sources.length < 3) {
-      this.etymon.sources.push({sample: '', reference: ''});
+    if (this.lexeme.etymon.sources.length < 3) {
+      this.lexeme.etymon.sources.push({sample: '', reference: ''});
     }
   }
 
-  set(connect) {
+  clearConnect(connect) {
     if (connect.fetched) {
       connect.lexeme_id = null;
       connect.pronunciation = '';
@@ -79,14 +73,15 @@ export class EditorComponent implements OnInit {
       this.progress.circular = false;
       if (res.status === 'success') {
         this.languages = res.data;
+        this.dialects = [];
+        res.data.forEach((lang) => {lang.status && lang.language_id !== 21 && this.dialects.push(lang); });
       } else {
         this.notificationService.show(res.message);
       }
+    }, () => {
+      this.progress.circular = false;
+      this.notificationService.show('Bir şeyler ters gitti.');
     });
-  }
-
-  getSemantics(connect) {
-    return connect.semantics;
   }
 
   fetchFromTDK(word) {
@@ -95,10 +90,16 @@ export class EditorComponent implements OnInit {
       this.progress.circular = false;
       if (res.status === 'success') {
         this.lexeme = res.data.lexeme;
+        if (!this.lexeme.etymon.sources) {
+          this.lexeme.etymon.sources = [{sample: '', reference: ''}];
+        }
         this.notificationService.show(res.message);
       } else {
         this.notificationService.show(res.message);
       }
+    }, () => {
+      this.progress.circular = false;
+      this.notificationService.show('Bir şeyler ters gitti.');
     });
   }
 
@@ -110,16 +111,29 @@ export class EditorComponent implements OnInit {
   }
 
   removeSource(id) {
-    this.etymon.sources.splice(id, 1);
+    this.lexeme.etymon.sources.splice(id, 1);
   }
 
   saveChanges() {
-    this.lexeme;
+    this.progress.circular = true;
+    this.editorService.post(this.lexeme).subscribe((res: any) => {
+      if (res.status === 'success') {
+        this.progress.circular = false;
+        this.lexeme = <Lexeme>{};
+        this.tdkWord = '';
+        this.notificationService.show(res.message);
+      } else {
+        this.progress.circular = false;
+        this.notificationService.show(res.message);
+      }
+    }, () => {
+      this.progress.circular = false;
+      this.notificationService.show('Bir şeyler ters gitti.');
+    });
   }
 
   ngOnInit() {
     this.getLanguages();
-    this.etymon.sources = [{sample: '', reference: ''}];
   }
 
 }

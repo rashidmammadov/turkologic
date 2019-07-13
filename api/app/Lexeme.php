@@ -16,8 +16,12 @@ class Lexeme extends Model {
     protected $primaryKey = LEXEME_ID;
 
     protected $fillable = [
-        LEXEME_ID, ETYMON_ID, LEXEME, PRONUNCIATION, LATIN_TEXT, ALPHABET, LANGUAGE_ID
+        LEXEME_ID, ETYMON_ID, LANGUAGE_ID, LEXEME, PRONUNCIATION, LATIN_TEXT, ALPHABET
     ];
+
+    public function etymon() {
+        return $this->belongsTo('App\Etymon');
+    }
 
     public function language() {
         return $this->belongsTo('App\Language');

@@ -19,7 +19,7 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-accordion>
+  <mat-accordion *ngIf="lexeme.etymon">
     <mat-expansion-panel>
       <mat-expansion-panel-header>
         <mat-panel-title>Etimoloji</mat-panel-title>
@@ -28,22 +28,17 @@
         <div fxLayout.gt-xs="row" fxLayout="column" fxLayoutWrap fxLayoutGap="1%" fxLayoutAlign="center">
           <mat-form-field appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
             <mat-label>Sözcük</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Sözcük" [formControl]="wordForm"
-                   [errorStateMatcher]="matcher" [(ngModel)]="etymon.word">
-            <mat-hint>Etimolojisi Girilecek Sözcük</mat-hint>
-            <mat-error *ngIf="wordForm.hasError('required')">
-              Sözcük girilmesi <strong>zorunludur</strong>
-            </mat-error>
+            <input [disabled]="progress.circular" matInput placeholder="Sözcük" [(ngModel)]="lexeme.etymon.word">
           </mat-form-field>
 
           <mat-form-field appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
-            <mat-label>Orijinal Yazılışı</mat-label>
-            <input [disabled]="progress.circular" matInput placeholder="Orijinal Yazılışı" [(ngModel)]="etymon.spelling">
+            <mat-label>Okunuşu</mat-label>
+            <input [disabled]="progress.circular" matInput placeholder="Okunuşu" [(ngModel)]="lexeme.etymon.pronunciation">
           </mat-form-field>
 
           <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
             <mat-label>Sözcük Türü</mat-label>
-            <mat-select [disabled]="progress.circular" [(value)]="etymon.type">
+            <mat-select [disabled]="progress.circular" [(value)]="lexeme.etymon.type">
               <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
                 <span>{{wordType.name}}</span>
               </mat-option>
@@ -52,7 +47,7 @@
 
           <mat-form-field *ngIf="languages" appearance="outline" fxFlex.gt-xs="25%" fxFlex="100%">
             <mat-label>Köken</mat-label>
-            <mat-select [disabled]="progress.circular" [(value)]="etymon.origin">
+            <mat-select [disabled]="progress.circular" [(value)]="lexeme.etymon.language_id">
               <mat-option *ngFor="let language of languages" [value]="language.language_id">
                 <span>{{language.name}}</span>
               </mat-option>
@@ -62,16 +57,16 @@
 
         <mat-form-field appearance="outline" fxFlex="100%">
           <mat-label>Açıklama</mat-label>
-          <textarea [disabled]="progress.circular" matInput placeholder="Açıklama" [(ngModel)]="etymon.description"></textarea>
+          <textarea [disabled]="progress.circular" matInput placeholder="Açıklama" [(ngModel)]="lexeme.etymon.description"></textarea>
         </mat-form-field>
 
         <div fxLayout="column" class="box-border">
           <div fxLayout="row" fxLayoutAlign="space-between center">
             <p>Kaynaklar</p>
-            <button mat-raised-button color="primary" (click)="addMoreSource()" [disabled]="etymon.sources.length === 3">
+            <button mat-raised-button color="primary" (click)="addMoreSource()" [disabled]="lexeme.etymon.sources.length === 3">
               <mat-icon svgIcon="add"></mat-icon> daha fazla ekle</button>
           </div>
-          <div *ngFor="let source of etymon.sources; let i = index" fxLayoutGap="8px">
+          <div *ngFor="let source of lexeme.etymon.sources; let i = index" fxLayoutGap="8px">
             <mat-form-field appearance="outline" fxFlex.gt-xs="55%" fxFlex="50%">
               <mat-label>Örnek</mat-label>
               <input [disabled]="progress.circular" matInput placeholder="Örnek" [(ngModel)]="source.sample">
@@ -124,7 +119,8 @@
 
       <div fxLayout="column" *ngFor="let dialect of dialects">
         <div fxLayout="row">
-          <button mat-raised-button (click)="addConnections(semanticsId, dialect.language_id)" [disabled]="progress.circular" fxFlex="10%">
+          <button mat-raised-button (click)="addConnections(semanticsId, dialect.language_id)" [disabled]="progress.circular"
+                  fxFlex="15%" fxLayout="row" fxFlexAlign="start start" matTooltip="{{dialect.name}}">
             <mat-icon svgIcon="{{dialect.flag}}"></mat-icon> {{dialect.name}}
           </button>
         </div>
@@ -140,7 +136,7 @@
             </mat-select>
           </mat-form-field>
           <app-autocomplete fxFlex="15%" label="Sözcük" [(searchText)]="connect.lexeme" (selectedResult)="searchedLexeme($event)"
-                            (change)="set(connect)"
+                            (change)="clearConnect(connect)"
             [params]="{semanticsId: semanticsId, connectId: connectId, languageId: dialect.language_id}"></app-autocomplete>
           <mat-form-field appearance="outline" fxFlex="15%">
             <mat-label>Telaffuz</mat-label>

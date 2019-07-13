@@ -38,7 +38,7 @@ class LanguageTableSeeder extends Seeder {
         Language::create([LANGUAGE_ID => 12, NAME => 'Ana Oğuz Türkçesi', CODE => 'aogt', FLAG => null, COUNTRY => null, CENTURY => 10, PARENT_LANGUAGE_ID => 6, STATUS => false ]);
         Language::create([LANGUAGE_ID => 13, NAME => 'Uygur Türkçesi', CODE => 'ugr', FLAG => null, COUNTRY => null, CENTURY => 9, PARENT_LANGUAGE_ID => 6, STATUS => false ]);
         /** Fifth Level **/
-        Language::create([LANGUAGE_ID => 14, NAME => 'Türkmen Türkçesi', CODE => 'trkm', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 12, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 14, NAME => 'Türkmen Türkçesi', CODE => 'trkm', FLAG => 'turkmenistan', COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 12, STATUS => true ]);
         Language::create([LANGUAGE_ID => 15, NAME => 'Eski Oğuz (Anadolu) Türkçesi', CODE => 'eogt', FLAG => null, COUNTRY => null, CENTURY => 13, PARENT_LANGUAGE_ID => 12, STATUS => false ]);
         Language::create([LANGUAGE_ID => 16, NAME => 'Karahanlı Türkçesi', CODE => 'krhn', FLAG => null, COUNTRY => null, CENTURY => 11, PARENT_LANGUAGE_ID => 13, STATUS => false ]);
         /** Sixth Level **/
@@ -47,15 +47,15 @@ class LanguageTableSeeder extends Seeder {
         Language::create([LANGUAGE_ID => 19, NAME => 'Harezm-Kıpçak Türkçesi', CODE => 'hrzm', FLAG => null, COUNTRY => null, CENTURY => 13, PARENT_LANGUAGE_ID => 16, STATUS => false ]);
         /** Seventh Level **/
         Language::create([LANGUAGE_ID => 20, NAME => 'Gagauz Türkçesi', CODE => 'ggz', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 17, STATUS => true ]);
-        Language::create([LANGUAGE_ID => TUR_ID, NAME => 'Türkiye Türkçesi', CODE => 'tur', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 17, STATUS => true ]);
-        Language::create([LANGUAGE_ID => 22, NAME => 'Azerbaycan Türkçesi', CODE => 'aze', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 18, STATUS => true ]);
+        Language::create([LANGUAGE_ID => TUR_ID, NAME => 'Türkiye Türkçesi', CODE => 'tur', FLAG => 'turkey', COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 17, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 22, NAME => 'Azerbaycan Türkçesi', CODE => 'aze', FLAG => 'azerbaijan', COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 18, STATUS => true ]);
         Language::create([LANGUAGE_ID => 23, NAME => 'Çağatay Türkçesi', CODE => 'cgty', FLAG => null, COUNTRY => null, CENTURY => 15, PARENT_LANGUAGE_ID => 19, STATUS => false ]);
         /** Eighth Level **/
-        Language::create([LANGUAGE_ID => 24, NAME => 'Özbek Türkçesi', CODE => 'uzb', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
-        Language::create([LANGUAGE_ID => 25, NAME => 'Çağdaş Uygur Türkçesi', CODE => 'cugr', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
-        Language::create([LANGUAGE_ID => 26, NAME => 'Kırgız Türkçesi', CODE => 'kgz', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 24, NAME => 'Özbek Türkçesi', CODE => 'uzb', FLAG => 'uzbekistan', COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 25, NAME => 'Çağdaş Uygur Türkçesi', CODE => 'cugr', FLAG => 'uyghur', COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 26, NAME => 'Kırgız Türkçesi', CODE => 'kgz', FLAG => 'kyrgyzstan', COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 27, NAME => 'Karakalpak Türkçesi', CODE => 'krk', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
-        Language::create([LANGUAGE_ID => 28, NAME => 'Kazak Türkçesi', CODE => 'kaz', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 28, NAME => 'Kazak Türkçesi', CODE => 'kaz', FLAG => 'kazakhstan', COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 29, NAME => 'Nogay Türkçesi', CODE => 'nog', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 30, NAME => 'Kumuk Türkçesi', CODE => 'kmk', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 31, NAME => 'Karaçay-Malkar Türkçesi', CODE => 'kcmk', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);

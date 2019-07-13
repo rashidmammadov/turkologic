@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Etymon;
 use App\Http\Models\Lexeme;
 use App\Http\Models\Semantics;
 use App\Http\Models\WordType;
@@ -43,9 +44,9 @@ class TDKController extends ApiController {
             $data = array();
             $data[LEXEME] = $this->setLexeme($result);
             if ($data[LEXEME]) {
+                $data[LEXEME][ETYMON] = new Etymon();
                 $data[LEXEME][SEMANTICS_LIST] = $this->setSemanticsList($result);
             }
-//            $data[SEMANTICS] =
             return $this->respondCreated('Sonuç getirildi', $data);
         }
     }

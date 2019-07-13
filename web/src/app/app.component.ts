@@ -20,6 +20,10 @@ export class AppComponent {
     /** flags */
     matIconRegistry.addSvgIcon('azerbaijan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/azerbaijan.svg'));
     matIconRegistry.addSvgIcon('kazakhstan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/kazakhstan.svg'));
+    matIconRegistry.addSvgIcon('kyrgyzstan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/kyrgyzstan.svg'));
+    matIconRegistry.addSvgIcon('turkey', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/turkey.svg'));
+    matIconRegistry.addSvgIcon('turkmenistan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/turkmenistan.svg'));
+    matIconRegistry.addSvgIcon('uyghur', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/uyghur.svg'));
     matIconRegistry.addSvgIcon('uzbekistan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/uzbekistan.svg'));
   }
 

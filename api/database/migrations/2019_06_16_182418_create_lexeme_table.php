@@ -14,11 +14,11 @@ class CreateLexemeTable extends Migration {
         Schema::create(DB_LEXEME_TABLE, function (Blueprint $table) {
             $table->bigIncrements(LEXEME_ID);
             $table->integer(ETYMON_ID)->nullable();
+            $table->integer(LANGUAGE_ID)->reference(LANGUAGE_ID)->on(DB_LANGUAGE_TABLE);
             $table->string(LEXEME, 50);
             $table->string(PRONUNCIATION, 50)->nullable();
             $table->string(LATIN_TEXT, 50)->nullable();
             $table->string(ALPHABET, 20)->nullable();
-            $table->integer(LANGUAGE_ID)->reference(LANGUAGE_ID)->on(DB_LANGUAGE_TABLE);
             $table->timestamps();
         });
     }

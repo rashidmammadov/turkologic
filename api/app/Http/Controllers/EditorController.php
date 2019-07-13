@@ -9,11 +9,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Belong;
+use App\Http\Models\Etymon;
 use App\Http\Models\Lexeme;
 use App\Http\Models\Semantics;
+use App\Http\Models\Source;
 use App\Http\Queries\MySQL\ApiQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use phpDocumentor\Reflection\Types\Integer;
 use Validator;
 
 class EditorController extends ApiController {
@@ -23,9 +26,9 @@ class EditorController extends ApiController {
     public function post(Request $request) {
         try {
             $this->saveLexeme($request);
-            return $this->respondCreated('Data saved successfully');
+            return $this->respondCreated(DATA_SAVED_SUCCESSFULLY);
         } catch (Exception $e) {
-            return $this->respondWithError('Something went wrong while saving data');
+            return $this->respondWithError(SOMETHING_WENT_WRONG_WHILE_SAVING_DATA);
         }
     }
 
@@ -39,7 +42,7 @@ class EditorController extends ApiController {
         if (isset($semantics[CONNECTS])) {
             foreach ($semantics[CONNECTS] as $connect) {
                 $dialectLexemeId = null;
-                if (is_null($connect[LEXEME_ID])) {
+                if (empty($connect[LEXEME_ID]) || is_null($connect[LEXEME_ID])) {
                     $dialectLexeme = new Lexeme($connect);
                     $queryResult = ApiQuery::saveLexeme($dialectLexeme->get());
                     $dialectLexemeId = $queryResult[LEXEME_ID];
@@ -62,11 +65,16 @@ class EditorController extends ApiController {
     private function saveDialectSemanticsList($connect, $dialectLexemeId, $semanticId): void {
         if (isset($connect[SEMANTICS_LIST])) {
             foreach ($connect[SEMANTICS_LIST] as $connectSemantics) {
-                $dialectSemantics = new Semantics($connectSemantics);
-                $dialectSemantics->setLexemeId($dialectLexemeId);
-                $queryResult = ApiQuery::saveSemantics($dialectSemantics->get());
-                $dialectSemanticId = $queryResult[SEMANTIC_ID];
-                Log::info('Dialect`s semantics saved successfully: ' . json_encode($queryResult));
+                $dialectSemanticId = null;
+                if (empty($connectSemantics[SEMANTIC_ID]) || is_null($connectSemantics[SEMANTIC_ID])) {
+                    $dialectSemantics = new Semantics($connectSemantics);
+                    $dialectSemantics->setLexemeId($dialectLexemeId);
+                    $queryResult = ApiQuery::saveSemantics($dialectSemantics->get());
+                    $dialectSemanticId = $queryResult[SEMANTIC_ID];
+                    Log::info('Dialect`s semantics saved successfully: ' . json_encode($queryResult));
+                } else {
+                    $dialectSemanticId = $connectSemantics[SEMANTIC_ID];
+                }
                 $this->saveBelong($semanticId, $dialectSemanticId);
             }
         }
@@ -78,7 +86,9 @@ class EditorController extends ApiController {
      * @return void
      */
     private function saveLexeme($request): void {
+        $etymonId = $this->saveEtymon($request);
         $newLexeme = new Lexeme($request);
+        $newLexeme->setEtymonId($etymonId);
         $queryResult = ApiQuery::saveLexeme($newLexeme->get());
         $lexemeId = $queryResult[LEXEME_ID];
         Log::info('Lexeme saved successfully: ' . json_encode($queryResult));
@@ -114,6 +124,41 @@ class EditorController extends ApiController {
         $belong->setTo($semanticId);
         $queryResult = ApiQuery::saveBelong($belong->get());
         Log::info('Belong saved successfully: ' . json_encode($queryResult));
+    }
+
+    /**
+     * @description save the etymon data and return created etymon`s id.
+     * @param {Request} $request - request data.
+     * @return mixed
+     */
+    private function saveEtymon($request) {
+        $etymonId = null;
+        if (isset($request[ETYMON])) {
+            $newEtymon = new Etymon($request[ETYMON]);
+            $queryResult = ApiQuery::saveEtymon($newEtymon->get());
+            $etymonId = $queryResult[ETYMON_ID];
+            Log::info('Etymon saved successfully: ' . json_encode($queryResult));
+            $this->saveSource($request, $etymonId);
+        }
+        return $etymonId;
+    }
+
+    /**
+     * @description save the source data.
+     * @param {Request} $request - request data.
+     * @param {Integer} $etymonId - the parent etymon id.
+     */
+    private function saveSource($request, $etymonId): void {
+        if (isset($request[ETYMON][SOURCES])) {
+            foreach ($request[ETYMON][SOURCES] as $source) {
+                $newSource = new Source($source);
+                if (!is_null($newSource->getSample())) {
+                    $newSource->setEtymonId($etymonId);
+                    $queryResult = ApiQuery::saveSource($newSource->get());
+                    Log::info('Source saved successfully: ' . json_encode($queryResult));
+                }
+            }
+        }
     }
 
 }

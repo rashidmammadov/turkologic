@@ -1,4 +1,5 @@
 import {Semantics} from "./semantics";
+import {Etymon} from "./etymon";
 
 export interface Lexeme {
   lexeme_id: number;
@@ -7,6 +8,7 @@ export interface Lexeme {
   latin_text: string;
   alphabet: string;
   language_id: number;
+  etymon: Etymon;
   semantics_list: Semantics[];
   fetched: boolean;
 }

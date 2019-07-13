@@ -9,13 +9,26 @@
 namespace App\Http\Queries\MySQL;
 
 use App\Belong;
+use App\Etymon;
 use App\Semantics;
 use App\Language;
 use App\Lexeme;
+use App\Source;
 use Illuminate\Support\Facades\Log;
-use mysql_xdevapi\Exception;
 
 class ApiQuery {
+
+    /** -------------------- ETYMON QUERIES -------------------- **/
+
+    /**
+     * @description query to set etymon data
+     * @param {Array} $etymon - etymon data
+     * @return mixed
+     */
+    public static function saveEtymon($etymon) {
+        $queryResult = Etymon::create($etymon);
+        return $queryResult;
+    }
 
     /** -------------------- BELONG QUERIES -------------------- **/
 
@@ -25,13 +38,8 @@ class ApiQuery {
      * @return mixed
      */
     public static function saveBelong($belong) {
-        try {
-
-            $queryResult = Belong::create($belong);
-            return $queryResult;
-        } catch (Exception $e) {
-            Log::info($e->getMessage());
-        }
+        $queryResult = Belong::create($belong);
+        return $queryResult;
     }
 
     /** -------------------- LANGUAGE QUERIES -------------------- **/
@@ -91,6 +99,18 @@ class ApiQuery {
      */
     public static function saveSemantics($semantics) {
         $queryResult = Semantics::create($semantics);
+        return $queryResult;
+    }
+
+    /** -------------------- SOURCE QUERIES -------------------- **/
+
+    /**
+     * @description query to save given source and return created data.
+     * @param array $source - the source data
+     * @return mixed
+     */
+    public static function saveSource($source) {
+        $queryResult = Source::create($source);
         return $queryResult;
     }
 

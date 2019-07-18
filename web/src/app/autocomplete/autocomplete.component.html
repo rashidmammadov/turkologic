@@ -3,19 +3,25 @@
     <mat-label>{{label}}</mat-label>
     <input matInput placeholder="{{label}}" aria-label="State" [matAutocomplete]="auto" [formControl]="AutocompleteCtrl"
       [(ngModel)]="searchText">
+    <mat-icon *ngIf="type === 'search'" svgIcon="search" matSuffix></mat-icon>
     <mat-autocomplete #auto="matAutocomplete">
       <mat-progress-bar *ngIf="progress" mode="query"></mat-progress-bar>
-      <mat-optgroup *ngFor="let lexeme of results | async" [label]="lexeme.lexeme + ' (yeni oluştur)'"
-        (click)="setSelectedOption(lexeme)">
-        <mat-option *ngFor="let semantics of lexeme.semantics_list; let semanticsId = index" [value]="semantics"
-                    (onSelectionChange)="setSelectedOption(lexeme, semanticsId)">
-          <small>{{semantics.meaning}}</small>
+      <div *ngIf="type === 'search-by-language'">
+        <mat-optgroup *ngFor="let lexeme of results | async"
+                      [label]="lexeme.lexeme + ' (yeni oluştur)'" (click)="setSelectedSubOption(lexeme)">
+          <mat-option *ngFor="let semantics of lexeme.semantics_list; let semanticsId = index" [value]="semantics"
+                      (onSelectionChange)="setSelectedSubOption(lexeme, semanticsId)">
+            <small>{{semantics.meaning}}</small>
+          </mat-option>
+        </mat-optgroup>
+      </div>
+      <div *ngIf="type === 'search'">
+        <mat-option *ngFor="let result of results | async" [value]="result.lexeme"
+                    (onSelectionChange)="setSelectedOption(result)">
+          <mat-icon svgIcon="{{result.flag}}" matSuffix></mat-icon>
+          <span>{{result.lexeme}}</span> <small *ngIf="result.pronunciation">{{' | ' + result.pronunciation}}</small>
         </mat-option>
-      </mat-optgroup>
-      <!--<mat-option *ngFor="let result of results | async" [value]="result.lexeme"-->
-                  <!--(onSelectionChange)="setSelectedOption(result)">-->
-        <!--<span>{{result.lexeme}}</span> | <small>{{result.semantics_list[0].meaning}}</small>-->
-      <!--</mat-option>-->
+      </div>
     </mat-autocomplete>
   </mat-form-field>
 </form>

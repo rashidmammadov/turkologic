@@ -27,5 +27,8 @@ Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
 
     Route::get('/tdk', 'TDKController@get');
 
-    Route::get('/lexeme', 'LexemeController@getLexemesByLanguage');
+    Route::get('/lexemes', 'LexemeController@getLexemesByLanguage');
+    Route::get('/lexeme', 'LexemeController@getLexemeById');
+
+    Route::get('/search', 'SearchController@get');
 });

@@ -1,0 +1,7 @@
+<div fxLayout="row" fxLayoutAlign="center center" fxFlex="100%" class="map-background">
+  <div fxLayout="column" fxLayoutAlign="center center" fxFlex="60%" fxFlex.lt-md="80%" fxFlex.lt-sm="100%">
+    <h2 class="primary-text">Aramak İstediğiniz Sözcüğü Giriniz</h2>
+    <app-autocomplete fxFlex="100%" label="Arama" [(searchText)]="lexeme.lexeme" (selectedResult)="searchedLexeme($event)"
+                      [type] = "'search'" style="width: 100%;"></app-autocomplete>
+  </div>
+</div>

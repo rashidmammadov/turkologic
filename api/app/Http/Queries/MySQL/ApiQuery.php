@@ -62,6 +62,18 @@ class ApiQuery {
     /** -------------------- LEXEME QUERIES -------------------- **/
 
     /**
+     * @description query to get lexeme which is matched given lexeme parameter.
+     * @param string $key - the lexeme data
+     * @return mixed
+     */
+    public static function getLexemes($key) {
+        // TODO: optimize query..
+        $queryResult = Lexeme::where(LEXEME, REGEXP_SIGN, $key)
+            ->orWhere(PRONUNCIATION, REGEXP_SIGN, $key)->get();
+        return $queryResult;
+    }
+
+    /**
      * @description query to save given lexeme and return created data.
      * @param array $lexeme - the lexeme data
      * @return mixed
@@ -72,12 +84,25 @@ class ApiQuery {
     }
 
     /**
+     * @description query to get semantics of given lexeme id
+     * @param integer $lexemeId - the given lexeme id.
+     * @return mixed
+     */
+    public static function getLexemeSemanticsByLexemeId($lexemeId) {
+        $queryResult = Lexeme::where((DB_LEXEME_TABLE . '.' . LEXEME_ID), EQUAL_SIGN, $lexemeId)
+            ->join(DB_SEMANTICS_TABLE, (DB_SEMANTICS_TABLE . '.' . LEXEME_ID), EQUAL_SIGN, (DB_LEXEME_TABLE . '.' . LEXEME_ID))
+            ->get();
+
+        return $queryResult;
+    }
+
+    /**
      * @description query to get semantics of searching lexeme
      * @param string $lexeme - the searching lexeme
      * @param integer $languageId - the language id
      * @return mixed
      */
-    public static function getLexemeSemantics($lexeme, $languageId) {
+    public static function getLexemeSemanticsByLanguageId($lexeme, $languageId) {
         $queryResult = Lexeme::where(LANGUAGE_ID, EQUAL_SIGN, $languageId)
         ->where(function ($query) use ($lexeme, $languageId) {
             $query->where(LEXEME, REGEXP_SIGN, $lexeme)

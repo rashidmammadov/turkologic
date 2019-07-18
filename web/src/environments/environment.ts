@@ -4,11 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://127.0.0.1:8000/api/v1/',
-  tdkUrl: {
-    dialect: 'http://sozluk.gov.tr/lehceler',
-    general: 'http://sozluk.gov.tr/gts'
-  }
+  apiUrl: 'http://127.0.0.1:8000/api/v1/'
 };
 
 

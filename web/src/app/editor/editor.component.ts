@@ -31,7 +31,7 @@ export class EditorComponent implements OnInit {
   wordTypes: WordType[] = WordTypes;
 
   constructor(private editorService: EditorService, private languageService: LanguageService,
-              private progress: ProgressService, private tdkService: TDKService,
+              public progress: ProgressService, private tdkService: TDKService,
               private notificationService: NotificationService) {}
 
   addConnections(semanticId, languageId) {
@@ -74,7 +74,7 @@ export class EditorComponent implements OnInit {
       if (res.status === 'success') {
         this.languages = res.data;
         this.dialects = [];
-        res.data.forEach((lang) => {lang.status && lang.language_id !== 21 && this.dialects.push(lang); });
+        res.data.forEach((lang) => {lang.status && lang.flag && lang.language_id !== 21 && this.dialects.push(lang); });
       } else {
         this.notificationService.show(res.message);
       }

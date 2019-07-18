@@ -1,12 +1,13 @@
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <span>Turkologic</span>
+    <a uiSref="/" uiSrefActive="active">Turkologic</a>
   </mat-toolbar-row>
 </mat-toolbar>
 <div *ngIf="progress.circular" class="progress-circular">
   <mat-spinner></mat-spinner>
 </div>
 <div disabled="true" class="app-container" [ngClass]="{'blur-filter': progress.circular}">
-  <a uiSref="editor" uiSrefActive="active">Editor</a>
+  <!--<a uiSref="editor" uiSrefActive="active">Editor</a>-->
+  <!--<a uiSref="search" [uiParams]="{lexeme_id: ''}" uiSrefActive="active">Search</a>-->
   <ui-view></ui-view>
 </div>

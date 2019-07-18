@@ -93,8 +93,8 @@
           ({{wordTypes[semantics.type] ? wordTypes[semantics.type].name : '-'}})</b>
           {{semantics.meaning}}</mat-panel-title>
       </mat-expansion-panel-header>
-      <form class="word-form" ngNoForm fxLayout="row" fxLayoutGap="8px">
-        <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
+      <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="8px">
+        <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%" fxFlex.lt-md="100%">
           <mat-label>Sözcük Türü</mat-label>
           <mat-select [disabled]="progress.circular" [(value)]="semantics.type">
             <mat-option *ngFor="let wordType of wordTypes" [value]="wordType.id">
@@ -102,31 +102,31 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field appearance="outline" fxFlex="40%">
+        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.lt-md="100%">
           <mat-label>Anlam</mat-label>
           <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantics.meaning">
         </mat-form-field>
-        <mat-form-field appearance="outline" fxFlex="40%">
+        <mat-form-field appearance="outline" fxFlex="40%" fxFlex.lt-md="100%">
           <mat-label>Örnek</mat-label>
           <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantics.sample">
         </mat-form-field>
-        <mat-form-field appearance="outline" fxFlex="10%">
+        <mat-form-field appearance="outline" fxFlex="10%" fxFlex.lt-md="100%">
           <mat-label>Kaynak / Referans</mat-label>
           <input [disabled]="progress.circular" matInput placeholder="Kaynak / Referans" [(ngModel)]="semantics.reference">
         </mat-form-field>
-      </form>
+      </div>
       <mat-divider></mat-divider>
 
       <div fxLayout="column" *ngFor="let dialect of dialects">
         <div fxLayout="row">
           <button mat-raised-button (click)="addConnections(semanticsId, dialect.language_id)" [disabled]="progress.circular"
-                  fxFlex="15%" fxLayout="row" fxFlexAlign="start start" matTooltip="{{dialect.name}}">
+                  fxFlex="15%" fxFlex.lt-md="50%" fxFlex.lt-sm="100%" fxLayout="row" fxFlexAlign="start start" matTooltip="{{dialect.name}}">
             <mat-icon svgIcon="{{dialect.flag}}"></mat-icon> {{dialect.name}}
           </button>
         </div>
-        <div fxLayout="row" fxLayoutGap="8px" *ngFor="let connect of getConnectionsByLanguageId(semantics.connects, dialect.language_id);
-          let connectId = index">
-          <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%">
+        <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="8px" class="dialect-form"
+             *ngFor="let connect of getConnectionsByLanguageId(semantics.connects, dialect.language_id); let connectId = index">
+          <mat-form-field *ngIf="wordTypes" appearance="outline" fxFlex="10%" fxFlex.lt-md="100%">
             <mat-label>Sözcük Türü</mat-label>
             <mat-select [disabled]="progress.circular || connect.semantics_list[0].fetched"
                         [(value)]="connect.semantics_list[0].type">
@@ -136,7 +136,7 @@
             </mat-select>
           </mat-form-field>
           <app-autocomplete fxFlex="15%" label="Sözcük" [(searchText)]="connect.lexeme" (selectedResult)="searchedLexeme($event)"
-                            (change)="clearConnect(connect)"
+                            (change)="clearConnect(connect)" [type]="'search-by-language'"
             [params]="{semanticsId: semanticsId, connectId: connectId, languageId: dialect.language_id}"></app-autocomplete>
           <mat-form-field appearance="outline" fxFlex="15%">
             <mat-label>Telaffuz</mat-label>

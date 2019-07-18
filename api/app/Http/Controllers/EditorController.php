@@ -16,7 +16,6 @@ use App\Http\Models\Source;
 use App\Http\Queries\MySQL\ApiQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use phpDocumentor\Reflection\Types\Integer;
 use Validator;
 
 class EditorController extends ApiController {

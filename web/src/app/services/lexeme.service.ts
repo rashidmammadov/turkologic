@@ -9,8 +9,16 @@ export class LexemeService {
 
   constructor(private httpClient: HttpClient) { }
 
-  public getByLanguage(lexeme, languageId) {
+  public getById(lexemeId) {
     return this.httpClient.get(environment.apiUrl + 'lexeme', {
+      params: {
+        lexeme_id: lexemeId
+      }
+    });
+  }
+
+  public getByLanguage(lexeme, languageId) {
+    return this.httpClient.get(environment.apiUrl + 'lexemes', {
       params: {
         lexeme: lexeme,
         language_id: languageId

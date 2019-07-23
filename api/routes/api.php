@@ -30,5 +30,7 @@ Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
     Route::get('/lexemes', 'LexemeController@getLexemesByLanguage');
     Route::get('/lexeme', 'LexemeController@getLexemeById');
 
+    Route::get('/semantics', 'SemanticsController@getSemanticsById');
+
     Route::get('/search', 'SearchController@get');
 });

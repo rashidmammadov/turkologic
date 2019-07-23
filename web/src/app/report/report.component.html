@@ -1,0 +1,54 @@
+<div fxLayout="row" fxLayout.lt-md="column" fxFlex="100%" fxLayoutGap="16px">
+  <div fxLayout="column" fxFlex="100%" fxLayoutGap="16px">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-subtitle>Aranan Anlam</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-list *ngIf="semantics.meaning">
+          <mat-list-item>
+            <h2 matLine><b>{{wordTypes[semantics.type] ? wordTypes[semantics.type].name : '-'}}</b> - {{semantics.meaning}}</h2>
+            <p matLine>
+              <span *ngIf="semantics.sample">"{{semantics.sample}}"</span>
+              <span *ngIf="semantics.reference"><i> - {{semantics.reference}}</i></span>
+            </p>
+          </mat-list-item>
+        </mat-list>
+        <div *ngIf="!progress.circular && !semantics.meaning" fxLayout="row" fxLayoutAlign="center center">
+          <p>Anlam Bulunamadı.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-subtitle>Diğer Dillerde Karşılığı</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-action-list *ngIf="semantics.connects && semantics.connects.length">
+          <mat-list-item *ngFor="let lexeme of semantics.connects" (click)="redirectToSearch(lexeme.lexeme_id)">
+            <mat-icon matListIcon svgIcon="{{lexeme.flag}}"></mat-icon>
+            <h2 matLine><b>{{lexeme.lexeme}}</b></h2>
+            <p matLine *ngFor="let semantics of lexeme.semantics_list">
+              <span><b>{{wordTypes[semantics.type].name}}</b></span>
+              <span *ngIf="semantics.meaning"> - {{semantics.meaning}}</span>
+            </p>
+          </mat-list-item>
+        </mat-action-list>
+        <div *ngIf="!progress.circular && (!semantics.connects || !semantics.connects.length)" fxLayout="row" fxLayoutAlign="center center">
+          <p>Karşılık Bulunamadı.</p>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxLayout="column" fxFlex="100%">
+    <mat-card>
+      <mat-card-header>
+        <mat-card-subtitle>İlişki Haritası</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-bubble-map></app-bubble-map>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

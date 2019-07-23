@@ -1,4 +1,4 @@
-import { Component, NgModule, OnInit } from '@angular/core';
+import {Component, Input, NgModule, OnInit} from '@angular/core';
 import { UIRouter, StateService } from "@uirouter/angular";
 import { ProgressService } from "../services/progress.service";
 import { NotificationService } from "../services/notification.service";
@@ -17,6 +17,7 @@ import { WordType, WordTypes } from "../models/word-type";
   styleUrls: ['./search.component.css']
 })
 export class SearchComponent implements OnInit {
+  @Input() data;
   lexeme = <Lexeme>{};
   lexemeId: number;
   flag: string;
@@ -25,6 +26,7 @@ export class SearchComponent implements OnInit {
   constructor(public progress: ProgressService, private router: UIRouter, private lexemeService: LexemeService,
               private notificationService: NotificationService, private state: StateService, public root: RootService) {
     this.lexemeId = this.router.globals.params.lexeme_id;
+    this.progress.circular = true;
   }
 
   searchedLexeme(data) {
@@ -32,9 +34,12 @@ export class SearchComponent implements OnInit {
     this.state.go('search', {lexeme_id: this.lexemeId});
   }
 
-  private getLexeme(lexemeId) {
-    this.progress.circular = true;
-    this.lexemeService.getById(lexemeId).subscribe((res: any) => {
+  redirectToReport(semanticId) {
+    this.state.go('report', {semantic_id: semanticId});
+  }
+
+  private getLexeme() {
+    this.data.subscribe((res: any) => {
       this.progress.circular = false;
       if (res.status === 'success') {
         let languages = [];
@@ -51,7 +56,7 @@ export class SearchComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getLexeme(this.lexemeId);
+    this.getLexeme();
   }
 
 }

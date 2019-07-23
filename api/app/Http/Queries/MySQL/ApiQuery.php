@@ -33,6 +33,20 @@ class ApiQuery {
     /** -------------------- BELONG QUERIES -------------------- **/
 
     /**
+     * @description query to get belong data as connects
+     * @param {Integer} $semanticId - semantic id
+     * @return mixed
+     */
+    public static function getBelong($semanticId) {
+        $queryResult = Belong::where(TO, EQUAL_SIGN, $semanticId)
+            ->join(DB_SEMANTICS_TABLE, (DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID), EQUAL_SIGN, (DB_BELONG_TABLE . '.' . FROM))
+            ->join(DB_LEXEME_TABLE, (DB_LEXEME_TABLE . '.' . LEXEME_ID), EQUAL_SIGN, (DB_SEMANTICS_TABLE . '.' . LEXEME_ID))
+            ->get()
+            ->groupBy(LEXEME_ID);
+        return $queryResult;
+    }
+
+    /**
      * @description query to set belong data
      * @param {Array} $belong - belong data
      * @return mixed
@@ -116,6 +130,16 @@ class ApiQuery {
     }
 
     /** -------------------- SEMANTICS QUERIES -------------------- **/
+
+    /**
+     * @description query to get semantics by given semantic id.
+     * @param integer $semanticId - the semantic id
+     * @return mixed
+     */
+    public static function getSemanticsById($semanticId) {
+        $queryResult = Semantics::where(SEMANTIC_ID, EQUAL_SIGN, $semanticId)->first();
+        return $queryResult;
+    }
 
     /**
      * @description query to save given semantics and return created data.

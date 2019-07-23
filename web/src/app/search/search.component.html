@@ -6,8 +6,8 @@
       <mat-card-subtitle *ngIf="lexeme && lexeme.semantics_list">{{lexeme.semantics_list.length}} anlam bulundu</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <mat-list *ngIf="lexeme && lexeme.semantics_list">
-        <mat-list-item *ngFor="let semantics of lexeme.semantics_list">
+      <mat-action-list *ngIf="lexeme && lexeme.semantics_list">
+        <mat-list-item *ngFor="let semantics of lexeme.semantics_list" (click)="redirectToReport(semantics.semantic_id)">
           <mat-icon matListIcon svgIcon="{{flag}}"></mat-icon>
           <h2 matLine><b>{{wordTypes[semantics.type] ? wordTypes[semantics.type].name : '-'}}</b> - {{semantics.meaning}}</h2>
           <p matLine>
@@ -15,7 +15,7 @@
             <span *ngIf="semantics.reference"><i> - {{semantics.reference}}</i></span>
           </p>
         </mat-list-item>
-      </mat-list>
+      </mat-action-list>
       <div *ngIf="!progress.circular && !lexeme.semantics_list" fxLayout="row" fxLayoutAlign="center center">
         <p>Anlam Bulunamadı.</p>
       </div>

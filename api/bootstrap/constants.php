@@ -40,6 +40,7 @@ define('METAPHOR', 'metaphor');
 define('MESSAGE', 'message');
 define('NAME', 'name');
 define('NO_ANY_RESULT', 'Sonuç bulunamadı');
+define('NOT_EQUAL_SIGN', '!=');
 define('PARENT_LANGUAGE_ID', 'parent_language_id');
 define('PRONUNCIATION', 'pronunciation');
 define('REFERENCE', 'reference');

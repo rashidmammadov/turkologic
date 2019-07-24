@@ -21,12 +21,30 @@ class ApiQuery {
     /** -------------------- ETYMON QUERIES -------------------- **/
 
     /**
+     * @description query to check etymon is exist with entered parameters
+     * @param {Array} $etymon - etymon data
+     * @return mixed
+     */
+    public static function checkEtymonWithoutId($etymon) {
+        $queryResult = Etymon::where(function ($query) use ($etymon) {
+            isset($etymon[LANGUAGE_ID]) && $query->where(LANGUAGE_ID, EQUAL_SIGN, $etymon[LANGUAGE_ID]);
+            isset($etymon[WORD]) && $query->where(WORD, EQUAL_SIGN, $etymon[WORD]);
+            isset($etymon[PRONUNCIATION]) && $query->where(PRONUNCIATION, EQUAL_SIGN, $etymon[PRONUNCIATION]);
+            isset($etymon[TYPE]) && $query->where(TYPE, EQUAL_SIGN, $etymon[TYPE]);
+        })
+        ->first();
+        Log::info('Given etymon already exist: ' . json_encode($queryResult));
+        return $queryResult;
+    }
+
+    /**
      * @description query to set etymon data
      * @param {Array} $etymon - etymon data
      * @return mixed
      */
     public static function saveEtymon($etymon) {
         $queryResult = Etymon::create($etymon);
+        Log::info('Etymon saved successfully: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -38,10 +56,28 @@ class ApiQuery {
      * @return mixed
      */
     public static function getBelong($semanticId) {
+        $alternativeId = null;
+        $alternative = Belong::where(FROM, EQUAL_SIGN, $semanticId)->first();
+        /** if semantics is not turkish language */
+        if (isset($alternative)) {
+            $alternativeId = $alternative[FROM];
+            $semanticId = $alternative[TO];
+        }
         $queryResult = Belong::where(TO, EQUAL_SIGN, $semanticId)
-            ->join(DB_SEMANTICS_TABLE, (DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID), EQUAL_SIGN, (DB_BELONG_TABLE . '.' . FROM))
+            ->leftJoin(DB_SEMANTICS_TABLE, function ($join) use ($semanticId) {
+                $join->on((DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID), EQUAL_SIGN, (DB_BELONG_TABLE . '.' . FROM));
+                $join->orOn((DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID), EQUAL_SIGN, (DB_BELONG_TABLE . '.' . TO));
+            })
+            ->where(function ($query) use ($alternativeId, $semanticId) {
+                $query->where((DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID), NOT_EQUAL_SIGN, $alternativeId);
+                /** if semantics is not turkish language */
+                if (is_null($alternativeId)) {
+                    $query->where((DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID), NOT_EQUAL_SIGN, $semanticId);
+                }
+            })
             ->join(DB_LEXEME_TABLE, (DB_LEXEME_TABLE . '.' . LEXEME_ID), EQUAL_SIGN, (DB_SEMANTICS_TABLE . '.' . LEXEME_ID))
             ->get()
+            ->unique(SEMANTIC_ID)
             ->groupBy(LEXEME_ID);
         return $queryResult;
     }
@@ -53,6 +89,7 @@ class ApiQuery {
      */
     public static function saveBelong($belong) {
         $queryResult = Belong::create($belong);
+        Log::info('Belong saved successfully: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -69,11 +106,27 @@ class ApiQuery {
                 $query->where(STATUS, EQUAL_SIGN, $status);
             }
         })->get();
-
         return $queryResult;
     }
 
     /** -------------------- LEXEME QUERIES -------------------- **/
+
+    /**
+     * @description query to save given lexeme and return created data.
+     * @param array $lexeme - the lexeme data
+     * @return mixed
+     */
+    public static function checkLexemeWithoutId($lexeme) {
+        $queryResult = Lexeme::where(function ($query) use ($lexeme) {
+            isset($lexeme[ETYMON_ID]) && $query->where(ETYMON_ID, EQUAL_SIGN, $lexeme[ETYMON_ID]);
+            isset($lexeme[LANGUAGE_ID]) && $query->where(LANGUAGE_ID, EQUAL_SIGN, $lexeme[LANGUAGE_ID]);
+            isset($lexeme[LEXEME_ID]) && $query->where(LEXEME, EQUAL_SIGN, $lexeme[LEXEME]);
+            isset($lexeme[PRONUNCIATION]) && $query->where(PRONUNCIATION, EQUAL_SIGN, $lexeme[PRONUNCIATION]);
+        })
+        ->first();
+        Log::info('Given lexeme already exist: ' . json_encode($queryResult));
+        return $queryResult;
+    }
 
     /**
      * @description query to get lexeme which is matched given lexeme parameter.
@@ -94,6 +147,7 @@ class ApiQuery {
      */
     public static function saveLexeme($lexeme) {
         $queryResult = Lexeme::create($lexeme);
+        Log::info('Lexeme saved successfully: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -132,6 +186,22 @@ class ApiQuery {
     /** -------------------- SEMANTICS QUERIES -------------------- **/
 
     /**
+     * @description query to save given semantics and return created data.
+     * @param array $semantics - the semantics data
+     * @return mixed
+     */
+    public static function checkSemanticsWithoutId($semantics) {
+        $queryResult = Semantics::where(function ($query) use ($semantics) {
+            isset($semantics[LEXEME_ID]) && $query->where(LEXEME_ID, EQUAL_SIGN, $semantics[LEXEME_ID]);
+            isset($semantics[TYPE]) && $query->where(TYPE, EQUAL_SIGN, $semantics[TYPE]);
+            isset($semantics[MEANING]) && $query->where(MEANING, EQUAL_SIGN, $semantics[MEANING]);
+        })
+        ->first();
+        Log::info('Given semantics already exist: ' . json_encode($queryResult));
+        return $queryResult;
+    }
+
+    /**
      * @description query to get semantics by given semantic id.
      * @param integer $semanticId - the semantic id
      * @return mixed
@@ -148,6 +218,7 @@ class ApiQuery {
      */
     public static function saveSemantics($semantics) {
         $queryResult = Semantics::create($semantics);
+        Log::info('Semantics saved successfully: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -158,8 +229,25 @@ class ApiQuery {
      * @param array $source - the source data
      * @return mixed
      */
+    public static function checkSourceWithoutId($source) {
+        $queryResult = Source::where(function ($query) use ($source) {
+            isset($source[ETYMON_ID]) && $query->where(ETYMON_ID, EQUAL_SIGN, $source[ETYMON_ID]);
+            isset($source[SAMPLE]) && $query->where(SAMPLE, EQUAL_SIGN, $source[SAMPLE]);
+            isset($source[REFERENCE]) && $query->where(REFERENCE, EQUAL_SIGN, $source[REFERENCE]);
+        })
+        ->first();
+        Log::info('Given source already exist: ' . json_encode($queryResult));
+        return $queryResult;
+    }
+
+    /**
+     * @description query to save given source and return created data.
+     * @param array $source - the source data
+     * @return mixed
+     */
     public static function saveSource($source) {
         $queryResult = Source::create($source);
+        Log::info('Source saved successfully: ' . json_encode($queryResult));
         return $queryResult;
     }
 

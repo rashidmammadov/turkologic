@@ -49,13 +49,19 @@ export class BubbleMapComponent implements OnInit {
     function ready(data) {
 
       // Create a color scale
-      let allContinent = d3.map(data, d => { return d.name }).keys();
+      let allContinent = d3.map(data, d => {
+        // @ts-ignore
+        return d.name
+      }).keys();
       let color = d3.scaleOrdinal()
         .domain(allContinent)
         .range(d3.schemePaired);
 
       // Add a scale for bubble size
-      let valueExtent = d3.extent(data, d => { return +d.value; });
+      let valueExtent = d3.extent(data, d => {
+        // @ts-ignore
+        return +d.value;
+      });
       let size = d3.scaleSqrt()
         .domain(valueExtent)
         .range([ 5, 10 ]);

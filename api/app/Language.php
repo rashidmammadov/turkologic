@@ -19,6 +19,10 @@ class Language extends Model {
         LANGUAGE_ID, NAME, CODE, FLAG, COUNTRY, CENTURY, PARENT_LANGUAGE_ID, STATUS
     ];
 
+    public function country() {
+        return $this->hasOne('App\Country');
+    }
+
     public function etymon() {
         return $this->hasMany('App\Etymon');
     }

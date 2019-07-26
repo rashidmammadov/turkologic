@@ -42,11 +42,12 @@ class EditorController extends ApiController {
             foreach ($semantics[CONNECTS] as $connect) {
                 $dialectLexemeId = null;
                 if (empty($connect[LEXEME_ID]) || is_null($connect[LEXEME_ID])) {
-                    $checkDialectLexeme = ApiQuery::checkLexemeWithoutId($connect);
+                    $dialectLexeme = new Lexeme($connect);
+
+                    $checkDialectLexeme = ApiQuery::checkLexemeWithoutId($dialectLexeme->get());
                     if (isset($checkDialectLexeme)) {
                         $dialectLexemeId = $checkDialectLexeme[LEXEME_ID];
                     } else {
-                        $dialectLexeme = new Lexeme($connect);
                         $queryResult = ApiQuery::saveLexeme($dialectLexeme->get());
                         $dialectLexemeId = $queryResult[LEXEME_ID];
                     }
@@ -70,12 +71,13 @@ class EditorController extends ApiController {
             foreach ($connect[SEMANTICS_LIST] as $connectSemantics) {
                 $dialectSemanticId = null;
                 if (empty($connectSemantics[SEMANTIC_ID]) || is_null($connectSemantics[SEMANTIC_ID])) {
-                    $checkDialectSemantics = ApiQuery::checkSemanticsWithoutId($connectSemantics);
+                    $dialectSemantics = new Semantics($connectSemantics);
+                    $dialectSemantics->setLexemeId($dialectLexemeId);
+
+                    $checkDialectSemantics = ApiQuery::checkSemanticsWithoutId($dialectSemantics->get());
                     if (isset($checkDialectSemantics)) {
                         $dialectSemanticId = $checkDialectSemantics[SEMANTIC_ID];
                     } else {
-                        $dialectSemantics = new Semantics($connectSemantics);
-                        $dialectSemantics->setLexemeId($dialectLexemeId);
                         $queryResult = ApiQuery::saveSemantics($dialectSemantics->get());
                         $dialectSemanticId = $queryResult[SEMANTIC_ID];
                     }
@@ -95,12 +97,13 @@ class EditorController extends ApiController {
     private function saveLexeme($request): void {
         $etymonId = $this->saveEtymon($request);
         $lexemeId = null;
-        $checkLexeme = ApiQuery::checkLexemeWithoutId($request);
+        $newLexeme = new Lexeme($request);
+        $newLexeme->setEtymonId($etymonId);
+
+        $checkLexeme = ApiQuery::checkLexemeWithoutId($newLexeme->get());
         if (isset($checkLexeme)) {
             $lexemeId = $checkLexeme[LEXEME_ID];
         } else {
-            $newLexeme = new Lexeme($request);
-            $newLexeme->setEtymonId($etymonId);
             $queryResult = ApiQuery::saveLexeme($newLexeme->get());
             $lexemeId = $queryResult[LEXEME_ID];
         }
@@ -116,12 +119,13 @@ class EditorController extends ApiController {
         if (isset($request[SEMANTICS_LIST])) {
             foreach ($request[SEMANTICS_LIST] as $semantics) {
                 $semanticId = null;
-                $checkSemantics = ApiQuery::checkSemanticsWithoutId($semantics);
+                $newSemantics = new Semantics($semantics);
+                $newSemantics->setLexemeId($lexemeId);
+
+                $checkSemantics = ApiQuery::checkSemanticsWithoutId($newSemantics->get());
                 if (isset($checkSemantics)) {
                     $semanticId = $checkSemantics[SEMANTIC_ID];
                 } else {
-                    $newSemantics = new Semantics($semantics);
-                    $newSemantics->setLexemeId($lexemeId);
                     $queryResult = ApiQuery::saveSemantics($newSemantics->get());
                     $semanticId = $queryResult[SEMANTIC_ID];
                 }
@@ -139,7 +143,11 @@ class EditorController extends ApiController {
         $belong = new Belong();
         $belong->setFrom($dialectSemanticId);
         $belong->setTo($semanticId);
-        ApiQuery::saveBelong($belong->get());
+
+        $checkBelong = ApiQuery::checkBelongWithoutId($belong->get());
+        if (!isset($checkBelong)) {
+            ApiQuery::saveBelong($belong->get());
+        }
     }
 
     /**
@@ -150,11 +158,12 @@ class EditorController extends ApiController {
     private function saveEtymon($request) {
         $etymonId = null;
         if (isset($request[ETYMON])) {
-            $checkEtymon = ApiQuery::checkEtymonWithoutId($request[ETYMON]);
+            $newEtymon = new Etymon($request[ETYMON]);
+
+            $checkEtymon = ApiQuery::checkEtymonWithoutId($newEtymon->get());
             if (isset($checkEtymon)) {
                 $etymonId = $checkEtymon[ETYMON_ID];
             } else {
-                $newEtymon = new Etymon($request[ETYMON]);
                 $queryResult = ApiQuery::saveEtymon($newEtymon->get());
                 $etymonId = $queryResult[ETYMON_ID];
             }
@@ -171,9 +180,10 @@ class EditorController extends ApiController {
     private function saveSource($request, $etymonId): void {
         if (isset($request[ETYMON][SOURCES])) {
             foreach ($request[ETYMON][SOURCES] as $source) {
-                $checkSource = ApiQuery::checkSourceWithoutId($source);
+                $newSource = new Source($source);
+
+                $checkSource = ApiQuery::checkSourceWithoutId($newSource->get());
                 if (!isset($checkSource)) {
-                    $newSource = new Source($source);
                     if (!is_null($newSource->getSample())) {
                         $newSource->setEtymonId($etymonId);
                         ApiQuery::saveSource($newSource->get());

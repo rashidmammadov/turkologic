@@ -27,13 +27,12 @@ class ApiQuery {
      */
     public static function checkEtymonWithoutId($etymon) {
         $queryResult = Etymon::where(function ($query) use ($etymon) {
-            isset($etymon[LANGUAGE_ID]) && $query->where(LANGUAGE_ID, EQUAL_SIGN, $etymon[LANGUAGE_ID]);
-            isset($etymon[WORD]) && $query->where(WORD, EQUAL_SIGN, $etymon[WORD]);
-            isset($etymon[PRONUNCIATION]) && $query->where(PRONUNCIATION, EQUAL_SIGN, $etymon[PRONUNCIATION]);
-            isset($etymon[TYPE]) && $query->where(TYPE, EQUAL_SIGN, $etymon[TYPE]);
+            $params = array(LANGUAGE_ID, WORD, PRONUNCIATION, TYPE);
+            $result = self::appendMultiParams($etymon, $params);
+            $query->where($result);
         })
         ->first();
-        Log::info('Given etymon already exist: ' . json_encode($queryResult));
+        isset($queryResult) && Log::info('Given etymon already exist: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -49,6 +48,21 @@ class ApiQuery {
     }
 
     /** -------------------- BELONG QUERIES -------------------- **/
+
+    /**
+     * @description query to save given belong and return created data.
+     * @param array $belong - the $belong data
+     * @return mixed
+     */
+    public static function checkBelongWithoutId($belong) {
+        $queryResult = Belong::where(function ($query) use ($belong) {
+            $params = array(FROM, TO);
+            $result = self::appendMultiParams($belong, $params);
+            $query->where($result);
+        })->first();
+        isset($queryResult) && Log::info('Given belong already exist: ' . json_encode($queryResult));
+        return $queryResult;
+    }
 
     /**
      * @description query to get belong data as connects
@@ -109,6 +123,23 @@ class ApiQuery {
         return $queryResult;
     }
 
+    /**
+     * @description query to get capital cities of all languages country.
+     * @return mixed
+     */
+    public static function getLanguagesCountryCapital() {
+        $queryResult = Language::where(COUNTRY, NOT_EQUAL_SIGN, null)
+            ->leftJoin(DB_COUNTRY_TABLE, function ($join) {
+                $join->on((DB_COUNTRY_TABLE . '.' . COUNTRY_ID), EQUAL_SIGN, (DB_LANGUAGE_TABLE . '.' . COUNTRY));
+            })
+            ->where(DB_COUNTRY_TABLE, NOT_EQUAL_SIGN, null)
+            ->leftJoin(DB_CITY_TABLE, function ($join) {
+                $join->on((DB_COUNTRY_TABLE . '.' . CAPITAL_ID), EQUAL_SIGN, (DB_CITY_TABLE . '.' . CITY_ID));
+            })
+            ->get();
+        return $queryResult;
+    }
+
     /** -------------------- LEXEME QUERIES -------------------- **/
 
     /**
@@ -118,13 +149,12 @@ class ApiQuery {
      */
     public static function checkLexemeWithoutId($lexeme) {
         $queryResult = Lexeme::where(function ($query) use ($lexeme) {
-            isset($lexeme[ETYMON_ID]) && $query->where(ETYMON_ID, EQUAL_SIGN, $lexeme[ETYMON_ID]);
-            isset($lexeme[LANGUAGE_ID]) && $query->where(LANGUAGE_ID, EQUAL_SIGN, $lexeme[LANGUAGE_ID]);
-            isset($lexeme[LEXEME_ID]) && $query->where(LEXEME, EQUAL_SIGN, $lexeme[LEXEME]);
-            isset($lexeme[PRONUNCIATION]) && $query->where(PRONUNCIATION, EQUAL_SIGN, $lexeme[PRONUNCIATION]);
+            $params = array(ETYMON_ID, LANGUAGE_ID, LEXEME, PRONUNCIATION);
+            $result = self::appendMultiParams($lexeme, $params);
+            $query->where($result);
         })
         ->first();
-        Log::info('Given lexeme already exist: ' . json_encode($queryResult));
+        isset($queryResult) && Log::info('Given lexeme already exist: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -192,12 +222,12 @@ class ApiQuery {
      */
     public static function checkSemanticsWithoutId($semantics) {
         $queryResult = Semantics::where(function ($query) use ($semantics) {
-            isset($semantics[LEXEME_ID]) && $query->where(LEXEME_ID, EQUAL_SIGN, $semantics[LEXEME_ID]);
-            isset($semantics[TYPE]) && $query->where(TYPE, EQUAL_SIGN, $semantics[TYPE]);
-            isset($semantics[MEANING]) && $query->where(MEANING, EQUAL_SIGN, $semantics[MEANING]);
+            $params = array(LEXEME_ID, TYPE, MEANING);
+            $result = self::appendMultiParams($semantics, $params);
+            $query->where($result);
         })
         ->first();
-        Log::info('Given semantics already exist: ' . json_encode($queryResult));
+        isset($queryResult) && Log::info('Given semantics already exist: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -231,12 +261,12 @@ class ApiQuery {
      */
     public static function checkSourceWithoutId($source) {
         $queryResult = Source::where(function ($query) use ($source) {
-            isset($source[ETYMON_ID]) && $query->where(ETYMON_ID, EQUAL_SIGN, $source[ETYMON_ID]);
-            isset($source[SAMPLE]) && $query->where(SAMPLE, EQUAL_SIGN, $source[SAMPLE]);
-            isset($source[REFERENCE]) && $query->where(REFERENCE, EQUAL_SIGN, $source[REFERENCE]);
+            $params = array(ETYMON_ID, SAMPLE, REFERENCE);
+            $result = self::appendMultiParams($source, $params);
+            $query->where($result);
         })
         ->first();
-        Log::info('Given source already exist: ' . json_encode($queryResult));
+        isset($queryResult) && Log::info('Given source already exist: ' . json_encode($queryResult));
         return $queryResult;
     }
 
@@ -249,6 +279,22 @@ class ApiQuery {
         $queryResult = Source::create($source);
         Log::info('Source saved successfully: ' . json_encode($queryResult));
         return $queryResult;
+    }
+
+    /** -------------------- PRIVATE METHODS -------------------- **/
+
+    /**
+     * @description query to save given source and return created data.
+     * @param array $data - the given data which checked with parameters
+     * @param array $keys - the params which are checked
+     * @return mixed
+     */
+    private static function appendMultiParams($data, $keys) {
+        $result = array();
+        foreach ($keys as $key) {
+            isset($data[$key]) && array_push($result, array($key, EQUAL_SIGN, $data[$key]));
+        }
+        return $result;
     }
 
 }

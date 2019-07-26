@@ -33,4 +33,6 @@ Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
     Route::get('/semantics', 'SemanticsController@getSemanticsById');
 
     Route::get('/search', 'SearchController@get');
+
+    Route::get('/report', 'ReportController@get');
 });

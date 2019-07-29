@@ -117,13 +117,12 @@ export class EditorComponent implements OnInit {
   saveChanges() {
     this.progress.circular = true;
     this.editorService.post(this.lexeme).subscribe((res: any) => {
+      this.progress.circular = false;
       if (res.status === 'success') {
-        this.progress.circular = false;
-        this.lexeme = <Lexeme>{};
-        this.tdkWord = '';
+        // this.lexeme = <Lexeme>{};
+        // this.tdkWord = '';
         this.notificationService.show(res.message);
       } else {
-        this.progress.circular = false;
         this.notificationService.show(res.message);
       }
     }, () => {

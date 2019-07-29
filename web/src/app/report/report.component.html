@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayout.lt-md="column" fxFlex="100%" fxLayoutGap="16px">
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px">
   <div fxLayout="column" fxFlex="100%" fxLayoutGap="16px">
     <mat-card>
       <mat-card-header>
@@ -47,7 +47,7 @@
         <mat-card-subtitle>İlişki Haritası</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <app-bubble-map *ngIf="correlationDistributionData" [data]="correlationDistributionData"></app-bubble-map>
+        <app-bubble-map [data]="correlationDistributionData"></app-bubble-map>
       </mat-card-content>
     </mat-card>
   </div>

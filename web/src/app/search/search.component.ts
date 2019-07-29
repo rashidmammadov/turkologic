@@ -45,7 +45,9 @@ export class SearchComponent implements OnInit {
         let languages = [];
         this.root.getData('languages').subscribe((data: any) => { languages = data; });
         this.lexeme = res.data;
-        this.flag = languages.find(language => { return language.language_id === this.lexeme.language_id; }).flag;
+        this.flag = languages.find(language => {
+          return Number(language.language_id) === Number(this.lexeme.language_id);
+        }).flag;
       } else {
         this.lexeme = <Lexeme>{};
         this.notificationService.show(res.message);

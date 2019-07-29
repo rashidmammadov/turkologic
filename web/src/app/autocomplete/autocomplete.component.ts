@@ -40,7 +40,10 @@ export class AutocompleteComponent implements OnInit {
         let list = [];
         if (res.status === 'success') {
           list = res.data;
-          list.forEach(item => {item.flag = languages.find(language => { return language.language_id === item.language_id; }).flag;});
+          list.forEach(item => {item.flag = languages.find(language => {
+            return Number(language.language_id) === Number(item.language_id);
+          }).flag;
+        });
         }
         return list;
       }),

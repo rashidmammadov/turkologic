@@ -6,7 +6,7 @@ import { RootService } from "../services/root.service";
 import { Semantics } from "../models/semantics";
 import { NotificationService } from "../services/notification.service";
 import { WordType, WordTypes } from "../models/word-type";
-import {ReportService} from "../services/report.service";
+import { ReportService } from "../services/report.service";
 import {Observable} from "rxjs";
 
 @NgModule({
@@ -80,7 +80,7 @@ export class ReportComponent implements OnInit {
         data: []
       };
       this.semantics.connects.forEach(connect => {
-        (connect.language_id === language.language_id) && (data.data.push(connect));
+        (Number(connect.language_id) === Number(language.language_id)) && (data.data.push(connect));
       });
       data.data.length && this.groupedConnects.push(data);
     });

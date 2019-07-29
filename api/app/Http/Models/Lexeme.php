@@ -42,6 +42,7 @@ class Lexeme {
             PRONUNCIATION => $this->getPronunciation(),
             LATIN_TEXT => $this->getLatinText(),
             ALPHABET => $this->getAlphabet(),
+            ETYMON => $this->getEtymon(),
             SEMANTICS_LIST => $this->getSemanticsList()
         );
     }

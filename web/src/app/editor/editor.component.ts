@@ -64,7 +64,11 @@ export class EditorComponent implements OnInit {
   }
 
   searchedLexeme(data) {
-    this.lexeme.semantics_list[data.params.semanticsId].connects[data.params.connectId] = data.data;
+    let connects = this.lexeme.semantics_list[data.params.semanticsId].connects;
+    let groupedConnects = this.getConnectionsByLanguageId(connects, data.params.languageId);
+    let filtered = connects.filter(c => c.language_id !== data.params.languageId);
+    groupedConnects[data.params.connectId] = data.data;
+    this.lexeme.semantics_list[data.params.semanticsId].connects = filtered.concat(groupedConnects);
   }
 
   getLanguages() {
@@ -89,7 +93,7 @@ export class EditorComponent implements OnInit {
     this.tdkService.getMeans(word).subscribe((res : any) => {
       this.progress.circular = false;
       if (res.status === 'success') {
-        this.lexeme = res.data.lexeme;
+        this.lexeme = res.data;
         if (!this.lexeme.etymon.sources) {
           this.lexeme.etymon.sources = [{sample: '', reference: ''}];
         }
@@ -118,13 +122,7 @@ export class EditorComponent implements OnInit {
     this.progress.circular = true;
     this.editorService.post(this.lexeme).subscribe((res: any) => {
       this.progress.circular = false;
-      if (res.status === 'success') {
-        // this.lexeme = <Lexeme>{};
-        // this.tdkWord = '';
-        this.notificationService.show(res.message);
-      } else {
-        this.notificationService.show(res.message);
-      }
+      this.notificationService.show(res.message);
     }, () => {
       this.progress.circular = false;
       this.notificationService.show('Bir şeyler ters gitti.');

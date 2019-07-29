@@ -11,7 +11,9 @@ namespace App\Http\Controllers;
 use App\Http\Models\Etymon;
 use App\Http\Models\Lexeme;
 use App\Http\Models\Semantics;
+use App\Http\Models\Source;
 use App\Http\Models\WordType;
+use App\Http\Queries\MySQL\ApiQuery;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Validator;
@@ -31,8 +33,7 @@ class TDKController extends ApiController {
             return $this->respondValidationError(FIELDS_VALIDATION_FAILED, $validator->errors());
         } else {
             $word = $request[WORD];
-            $response = $this->fetchFromTDK($word);
-            return $this->convertFromTDKFormat($response);
+            return $this->fetchLexeme($word);
         }
     }
 
@@ -41,13 +42,12 @@ class TDKController extends ApiController {
         if (isset($result->error)) {
             return $this->respondWithError($result->error);
         } else {
-            $data = array();
-            $data[LEXEME] = $this->setLexeme($result);
-            if ($data[LEXEME]) {
-                $data[LEXEME][ETYMON] = new Etymon();
-                $data[LEXEME][SEMANTICS_LIST] = $this->setSemanticsList($result);
+            $lexeme = $this->setLexeme($result);
+            if (isset($lexeme)) {
+                $lexeme[ETYMON] = new Etymon();
+                $lexeme[SEMANTICS_LIST] = $this->setSemanticsList($result);
             }
-            return $this->respondCreated('Sonuç getirildi', $data);
+            return $this->respondCreated('Sonuç getirildi', $lexeme);
         }
     }
 
@@ -99,5 +99,91 @@ class TDKController extends ApiController {
             }
         }
         return $semanticsList;
+    }
+
+    /**
+     * @description fetch given word from local db if exist or get form tdk.
+     * @param $word - the searched
+     * @return mixed
+     */
+    private function fetchLexeme($word) {
+        $fromDB = ApiQuery::checkLexemeIfExist($word);
+        if (isset($fromDB) && isset($fromDB[0])) {
+            return $this->setLexemeFromDB($fromDB);
+        } else {
+            $response = $this->fetchFromTDK($word);
+            return $this->convertFromTDKFormat($response);
+        }
+    }
+
+    /**
+     * @description fetch lexeme data from db.
+     * @param $fromDB - the query result
+     * @return mixed
+     */
+    private function setLexemeFromDB($fromDB) {
+        $lexeme = new Lexeme($fromDB[0]);
+        $semanticsList = $this->setSemanticsListFromDB($fromDB);
+        $lexeme->setSemanticsList($semanticsList);
+        $etymon = $this->setLexemeEtymonFromDB($lexeme->getEtymonId());
+        $lexeme->setEtymon($etymon->get());
+        return $this->respondCreated('', $lexeme->get());
+    }
+
+    /**
+     * @description fetch etymon data from db.
+     * @param {Integer} $etymonId - the etymon id.
+     * @return Etymon
+     */
+    private function setLexemeEtymonFromDB($etymonId): Etymon {
+        $queryResult = ApiQuery::getEtymon($etymonId);
+        $etymon = new Etymon();
+        if (isset($queryResult) && isset($queryResult[0])) {
+            $etymon = new Etymon($queryResult[0]);
+            $etymonSources = array();
+            foreach ($queryResult as $item) {
+                $source = new Source($item);
+                array_push($etymonSources, $source->get());
+            }
+            $etymon->setSources($etymonSources);
+        }
+        return $etymon;
+    }
+
+    /**
+     * @description fetch semantics list data from db.
+     * @param $fromDB - the query result
+     * @return array
+     */
+    private function setSemanticsListFromDB($fromDB): array {
+        $semanticsList = array();
+        foreach ($fromDB as $item) {
+            $semantics = new Semantics($item);
+            $semanticsConnects = $this->setSemanticsConnectsFromDB($semantics);
+            $semantics->setConnects($semanticsConnects);
+            array_push($semanticsList, $semantics->get());
+        }
+        return $semanticsList;
+    }
+
+    /**
+     * @description fetch semantics connect data from db.
+     * @param Semantics $semantics - the semantics data.
+     * @return array
+     */
+    private function setSemanticsConnectsFromDB(Semantics $semantics): array {
+        $semanticsConnects = array();
+        $connects = ApiQuery::getBelong($semantics->getSemanticId());
+        foreach ($connects as $connect) {
+            $connectLexeme = new Lexeme($connect[0]);
+            $connectSemanticsList = array();
+            foreach ($connect as $semanticData) {
+                $connectSemantics = new Semantics($semanticData);
+                array_push($connectSemanticsList, $connectSemantics->get());
+            }
+            $connectLexeme->setSemanticsList($connectSemanticsList);
+            array_push($semanticsConnects, $connectLexeme->get());
+        }
+        return $semanticsConnects;
     }
 }

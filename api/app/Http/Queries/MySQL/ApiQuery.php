@@ -21,6 +21,20 @@ class ApiQuery {
     /** -------------------- ETYMON QUERIES -------------------- **/
 
     /**
+     * @description query to check etymon with etymon id
+     * @param {Integer} $etymon - etymon id
+     * @return mixed
+     */
+    public static function getEtymon($etymonId) {
+        $queryResult = Etymon::where((DB_ETYMON_TABLE . '.' . ETYMON_ID), EQUAL_SIGN, $etymonId)
+            ->leftJoin(DB_SOURCE_TABLE, function ($join) {
+                $join->on((DB_SOURCE_TABLE . '.' . ETYMON_ID), EQUAL_SIGN, (DB_ETYMON_TABLE . '.' . ETYMON_ID));
+            })
+            ->get();
+        return $queryResult;
+    }
+
+    /**
      * @description query to check etymon is exist with entered parameters
      * @param {Array} $etymon - etymon data
      * @return mixed
@@ -143,7 +157,23 @@ class ApiQuery {
     /** -------------------- LEXEME QUERIES -------------------- **/
 
     /**
-     * @description query to save given lexeme and return created data.
+     * @description query to check given word in exist local db.
+     * @param string $word - the searched word
+     * @return mixed
+     */
+    public static function checkLexemeIfExist($word) {
+        $queryResult = Lexeme::where(function ($query) use ($word) {
+            $query->where([[LANGUAGE_ID, EQUAL_SIGN, TUR_ID], [LEXEME, EQUAL_SIGN, $word]]);
+        })
+        ->leftJoin(DB_SEMANTICS_TABLE, function ($join) {
+            $join->on((DB_SEMANTICS_TABLE . '.' . LEXEME_ID), EQUAL_SIGN, (DB_LEXEME_TABLE . '.' . LEXEME_ID));
+        })
+        ->get();
+        return $queryResult;
+    }
+
+    /**
+     * @description query to check given lexeme.
      * @param array $lexeme - the lexeme data
      * @return mixed
      */

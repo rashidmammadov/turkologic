@@ -38,6 +38,7 @@ define('FIELDS_VALIDATION_FAILED', 'Alanları doğrulama hatası');
 define('FLAG', 'flag');
 define('FROM', 'from');
 define('ID', 'id');
+define('KEY', 'key');
 define('LANGUAGE_ID', 'language_id');
 define('LATIN', 'latin');
 define('LATIN_TEXT', 'latin_text');

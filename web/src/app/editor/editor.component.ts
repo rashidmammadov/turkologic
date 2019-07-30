@@ -29,6 +29,7 @@ export class EditorComponent implements OnInit {
   tdkWord: string;
   dialects: Dialect[];
   wordTypes: WordType[] = WordTypes;
+  editable: Boolean = false;
 
   constructor(private editorService: EditorService, private languageService: LanguageService,
               public progress: ProgressService, private tdkService: TDKService,
@@ -94,6 +95,7 @@ export class EditorComponent implements OnInit {
       this.progress.circular = false;
       if (res.status === 'success') {
         this.lexeme = res.data;
+        this.editable = !!this.lexeme.lexeme_id;
         if (!this.lexeme.etymon.sources) {
           this.lexeme.etymon.sources = [{sample: '', reference: ''}];
         }
@@ -120,7 +122,25 @@ export class EditorComponent implements OnInit {
 
   saveChanges() {
     this.progress.circular = true;
+    if (this.editable) {
+      this.update();
+    } else {
+      this.save();
+    }
+  }
+
+  private save() {
     this.editorService.post(this.lexeme).subscribe((res: any) => {
+      this.progress.circular = false;
+      this.notificationService.show(res.message);
+    }, () => {
+      this.progress.circular = false;
+      this.notificationService.show('Bir şeyler ters gitti.');
+    });
+  }
+
+  private update() {
+    this.editorService.put(this.lexeme).subscribe((res: any) => {
       this.progress.circular = false;
       this.notificationService.show(res.message);
     }, () => {

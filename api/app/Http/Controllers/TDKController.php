@@ -127,7 +127,7 @@ class TDKController extends ApiController {
         $lexeme->setSemanticsList($semanticsList);
         $etymon = $this->setLexemeEtymonFromDB($lexeme->getEtymonId());
         $lexeme->setEtymon($etymon->get());
-        return $this->respondCreated('', $lexeme->get());
+        return $this->respondCreated('Sonuç getirildi', $lexeme->get());
     }
 
     /**

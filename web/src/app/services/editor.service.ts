@@ -12,4 +12,13 @@ export class EditorService {
   public post(lexeme) {
     return this.httpClient.post(environment.apiUrl + 'editor', lexeme);
   }
+
+  public put(lexeme) {
+    return this.httpClient.put(environment.apiUrl + 'editor', lexeme);
+  }
+
+  public delete(params) {
+    return this.httpClient.delete(environment.apiUrl + 'editor', params);
+  }
+
 }

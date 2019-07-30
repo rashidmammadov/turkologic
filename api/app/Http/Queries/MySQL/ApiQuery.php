@@ -133,6 +133,18 @@ class ApiQuery {
         return $queryResult;
     }
 
+    /**
+     * @description query to delete belong data
+     * @param $from - the semantic if of from
+     * @param $to - the semantic of of to
+     */
+    public static function deleteBelong($from, $to) {
+        Belong::where(function ($query) use ($from, $to) {
+            $query->where([[FROM, EQUAL_SIGN, $from], [TO, EQUAL_SIGN, $to]]);
+        })->delete();
+        Log::info('Belong deleted successfully: from - ' . $from . ' to - ' . $to);
+    }
+
     /** -------------------- LANGUAGE QUERIES -------------------- **/
 
     /**
@@ -223,6 +235,12 @@ class ApiQuery {
         return $queryResult;
     }
 
+    public static function updateLexeme($lexeme) {
+        Log::info('Lexeme updated successfully: ' . json_encode($lexeme));
+        Lexeme::where(LEXEME_ID, EQUAL_SIGN, $lexeme[LEXEME_ID])
+            ->update([LEXEME => $lexeme[LEXEME], PRONUNCIATION => $lexeme[PRONUNCIATION]]);
+    }
+
     /**
      * @description query to get semantics of given lexeme id
      * @param integer $lexemeId - the given lexeme id.
@@ -294,6 +312,26 @@ class ApiQuery {
         return $queryResult;
     }
 
+    /**
+     * @description query to update given semantics data.
+     * @param array $semantics - the semantics data
+     */
+    public static function updateSemantics($semantics) {
+        Log::info('Semantics updated successfully: ' . json_encode($semantics));
+        Semantics::where(SEMANTIC_ID, EQUAL_SIGN, $semantics[SEMANTIC_ID])
+            ->update([TYPE => $semantics[TYPE], MEANING => $semantics[MEANING], SAMPLE => $semantics[SAMPLE],
+                REFERENCE => $semantics[REFERENCE]]);
+    }
+
+    /**
+     * @description query to delete given semantics id.
+     * @param $semanticsId - the semantics id
+     */
+    public static function deleteSemantics($semanticsId) {
+        Semantics::where(SEMANTIC_ID, EQUAL_SIGN, $semanticsId)->delete();
+        Log::info('Semantics deleted successfully: ' . json_encode($semanticsId));
+    }
+
     /** -------------------- SOURCE QUERIES -------------------- **/
 
     /**
@@ -332,6 +370,16 @@ class ApiQuery {
         Log::info('Source updated successfully: ' . json_encode($source));
         Source::where(SOURCE_ID, EQUAL_SIGN, $source[SOURCE_ID])
             ->update([SAMPLE => $source[SAMPLE], REFERENCE => $source[REFERENCE]]);
+    }
+
+    /**
+     * @description query to delete given source source id.
+     * @param int $sourceId - the source id
+     * @return mixed
+     */
+    public static function deleteSource($sourceId) {
+        Source::where(SOURCE_ID, EQUAL_SIGN, $sourceId)->delete();
+        Log::info('Source deleted successfully: ' . json_encode($sourceId));
     }
 
     /** -------------------- PRIVATE METHODS -------------------- **/

@@ -22,6 +22,7 @@ header('Access-Control-Allow-Methods:*');
 
 Route::group(['middleware' => 'cors', 'prefix' => '/v1'], function () {
     Route::post('/editor', 'EditorController@post');
+    Route::put('/editor', 'EditorController@put');
 
     Route::get('/languages', 'LanguageController@get');
 

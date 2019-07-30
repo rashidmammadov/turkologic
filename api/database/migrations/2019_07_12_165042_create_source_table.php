@@ -13,6 +13,7 @@ class CreateSourceTable extends Migration
      */
     public function up() {
         Schema::create(DB_SOURCE_TABLE, function (Blueprint $table) {
+            $table->bigInteger(SOURCE_ID);
             $table->bigIncrements(ETYMON_ID)->reference(ETYMON_ID)->on(DB_ETYMON_TABLE);
             $table->text(SAMPLE);
             $table->string(REFERENCE)->nullable();

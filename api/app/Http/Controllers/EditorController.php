@@ -31,15 +31,24 @@ class EditorController extends ApiController {
         }
     }
 
+    public function put(Request $request) {
+        try {
+            $this->updateLexeme($request);
+            return $this->respondCreated(DATA_UPDATED_SUCCESSFULLY);
+        } catch (Exception $e) {
+            return $this->respondWithError(SOMETHING_WENT_WRONG_WHILE_SAVING_DATA);
+        }
+    }
+
     /**
      * @description save the dialect lexeme of saved semantics.
-     * @param {Array} $semantics - semantics data
+     * @param {Array} $connects - semantics connects data
      * @param {Integer} $semanticId - parent semantics id
      * @return void
      */
-    private function saveDialectLexemes($semantics, $semanticId): void {
-        if (isset($semantics[CONNECTS])) {
-            foreach ($semantics[CONNECTS] as $connect) {
+    private function saveDialectLexemes($connects, $semanticId): void {
+        if (isset($connects)) {
+            foreach ($connects as $connect) {
                 $dialectLexemeId = null;
                 if (empty($connect[LEXEME_ID]) || is_null($connect[LEXEME_ID])) {
                     $dialectLexeme = new Lexeme($connect);
@@ -54,21 +63,21 @@ class EditorController extends ApiController {
                 } else {
                     $dialectLexemeId = $connect[LEXEME_ID];
                 }
-                $this->saveDialectSemanticsList($connect, $dialectLexemeId, $semanticId);
+                $this->saveDialectSemanticsList($connect[SEMANTICS_LIST], $dialectLexemeId, $semanticId);
             }
         }
     }
 
     /**
      * @description save the semantics list of saved dialect lexeme.
-     * @param {Array} $connect - dialect array of semantics.
+     * @param {Array} $semanticsList - dialect array of semantics.
      * @param {Integer} $dialectLexemeId - parent lexeme id.
      * @param {Integer} $semanticId - parent semantics id.
      * @return void
      */
-    private function saveDialectSemanticsList($connect, $dialectLexemeId, $semanticId): void {
-        if (isset($connect[SEMANTICS_LIST])) {
-            foreach ($connect[SEMANTICS_LIST] as $connectSemantics) {
+    private function saveDialectSemanticsList($semanticsList, $dialectLexemeId, $semanticId): void {
+        if (isset($semanticsList)) {
+            foreach ($semanticsList as $connectSemantics) {
                 $dialectSemanticId = null;
                 if (empty($connectSemantics[SEMANTIC_ID]) || is_null($connectSemantics[SEMANTIC_ID])) {
                     $dialectSemantics = new Semantics($connectSemantics);
@@ -107,17 +116,17 @@ class EditorController extends ApiController {
             $queryResult = ApiQuery::saveLexeme($newLexeme->get());
             $lexemeId = $queryResult[LEXEME_ID];
         }
-        $this->saveSemanticsList($request, $lexemeId);
+        $this->saveSemanticsList($request[SEMANTICS_LIST], $lexemeId);
     }
 
     /**
      * @description save the related lexeme`s semantics list and dialects.
-     * @param {Request} $request - parameters of request that holds the lexeme`s semantics list.
+     * @param {Request} $semanticsList - the lexeme`s semantics list.
      * @param {Integer} $lexemeId - saved lexeme id
      */
-    private function saveSemanticsList($request, $lexemeId): void {
-        if (isset($request[SEMANTICS_LIST])) {
-            foreach ($request[SEMANTICS_LIST] as $semantics) {
+    private function saveSemanticsList($semanticsList, $lexemeId): void {
+        if (isset($semanticsList)) {
+            foreach ($semanticsList as $semantics) {
                 $semanticId = null;
                 $newSemantics = new Semantics($semantics);
                 $newSemantics->setLexemeId($lexemeId);
@@ -129,7 +138,7 @@ class EditorController extends ApiController {
                     $queryResult = ApiQuery::saveSemantics($newSemantics->get());
                     $semanticId = $queryResult[SEMANTIC_ID];
                 }
-                $this->saveDialectLexemes($semantics, $semanticId);
+                $this->saveDialectLexemes($semantics[CONNECTS], $semanticId);
             }
         }
     }
@@ -189,6 +198,21 @@ class EditorController extends ApiController {
                         ApiQuery::saveSource($newSource->get());
                     }
                 }
+            }
+        }
+    }
+
+    private function updateLexeme($request) {
+        $etymon = new Etymon($request[ETYMON]);
+        ApiQuery::updateEtymon($etymon->get());
+        $sources = $etymon->getSources();
+        foreach ($sources as $source) {
+            $sourceData = new Source($source);
+            if (is_null($sourceData->getSourceId())) {
+                $sourceData->setEtymonId($etymon->getEtymonId());
+                ApiQuery::saveSource($sourceData->get());
+            } else {
+                ApiQuery::updateSource($sourceData->get());
             }
         }
     }

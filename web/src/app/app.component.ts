@@ -3,7 +3,7 @@ import { ProgressService } from 'src/app/services/progress.service';
 import { DomSanitizer } from "@angular/platform-browser";
 import { MatIconRegistry } from "@angular/material";
 import { LanguageService } from "./services/language.service";
-import {RootService} from "./services/root.service";
+import { RootService } from "./services/root.service";
 
 @Component({
   selector: 'app-root',
@@ -25,6 +25,7 @@ export class AppComponent {
     matIconRegistry.addSvgIcon('azerbaijan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/azerbaijan.svg'));
     matIconRegistry.addSvgIcon('kazakhstan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/kazakhstan.svg'));
     matIconRegistry.addSvgIcon('kyrgyzstan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/kyrgyzstan.svg'));
+    matIconRegistry.addSvgIcon('tatarstan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/tatarstan.svg'));
     matIconRegistry.addSvgIcon('turkey', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/turkey.svg'));
     matIconRegistry.addSvgIcon('turkmenistan', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/turkmenistan.svg'));
     matIconRegistry.addSvgIcon('uyghur', domSanitizer.bypassSecurityTrustResourceUrl('assets/icons/flags/uyghur.svg'));

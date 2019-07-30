@@ -11,11 +11,13 @@ namespace App\Http\Models;
 
 class Source {
 
+    private $sourceId;
     private $etymonId;
     private $sample;
     private $reference;
 
     public function __construct($parameters = null) {
+        !empty($parameters[SOURCE_ID])  && self::setSourceId($parameters[SOURCE_ID]);
         !empty($parameters[ETYMON_ID])  && self::setEtymonId($parameters[ETYMON_ID]);
         !empty($parameters[SAMPLE])     && self::setSample($parameters[SAMPLE]);
         !empty($parameters[REFERENCE])  && self::setReference($parameters[REFERENCE]);
@@ -23,11 +25,16 @@ class Source {
 
     public function get() {
         return array(
+            SOURCE_ID => $this->getSourceId(),
             ETYMON_ID => $this->getEtymonId(),
             SAMPLE => $this->getSample(),
             REFERENCE => $this->getReference()
         );
     }
+
+    public function getSourceId() { return $this->sourceId; }
+
+    public function setSourceId($sourceId): void { $this->sourceId = $sourceId; }
 
     public function getEtymonId() { return $this->etymonId; }
 

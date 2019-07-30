@@ -1329,74 +1329,80 @@
       <ColNames>semantic_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="314" parent="252" name="etymon_id">
+    <column id="314" parent="252" name="source_id">
       <Position>1</Position>
-      <DataType>bigint(20) unsigned|0s</DataType>
+      <DataType>bigint(20)|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="315" parent="252" name="sample">
+    <column id="315" parent="252" name="etymon_id">
       <Position>2</Position>
+      <DataType>bigint(20)|0s</DataType>
+      <NotNull>1</NotNull>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <column id="316" parent="252" name="sample">
+      <Position>3</Position>
       <DataType>text|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="316" parent="252" name="reference">
-      <Position>3</Position>
+    <column id="317" parent="252" name="reference">
+      <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="317" parent="252" name="created_at">
-      <Position>4</Position>
-      <DataType>timestamp|0s</DataType>
-      <ColumnKind>normal</ColumnKind>
-    </column>
-    <column id="318" parent="252" name="updated_at">
+    <column id="318" parent="252" name="created_at">
       <Position>5</Position>
       <DataType>timestamp|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="319" parent="252" name="PRIMARY">
+    <column id="319" parent="252" name="updated_at">
+      <Position>6</Position>
+      <DataType>timestamp|0s</DataType>
+      <ColumnKind>normal</ColumnKind>
+    </column>
+    <key id="320" parent="252" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
-      <ColNames>etymon_id</ColNames>
+      <ColNames>source_id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="320" parent="253" name="id">
+    <column id="321" parent="253" name="id">
       <Position>1</Position>
       <DataType>bigint(20) unsigned|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="321" parent="253" name="name">
+    <column id="322" parent="253" name="name">
       <Position>2</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="322" parent="253" name="password">
+    <column id="323" parent="253" name="password">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <NotNull>1</NotNull>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="323" parent="253" name="remember_token">
+    <column id="324" parent="253" name="remember_token">
       <Position>4</Position>
       <DataType>varchar(500)|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="324" parent="253" name="created_at">
+    <column id="325" parent="253" name="created_at">
       <Position>5</Position>
       <DataType>timestamp|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <column id="325" parent="253" name="updated_at">
+    <column id="326" parent="253" name="updated_at">
       <Position>6</Position>
       <DataType>timestamp|0s</DataType>
       <ColumnKind>normal</ColumnKind>
     </column>
-    <key id="326" parent="253" name="PRIMARY">
+    <key id="327" parent="253" name="PRIMARY">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>id</ColNames>
       <Primary>1</Primary>

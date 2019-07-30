@@ -20,6 +20,7 @@ define('COUNTRY_ID', 'country_id');
 define('COUNTRY_NAME', 'country_name');
 define('DATA', 'data');
 define('DATA_SAVED_SUCCESSFULLY', 'Veri başarıyla eklendi');
+define('DATA_UPDATED_SUCCESSFULLY', 'Veri başarıyla güncellendi');
 define('DB_BELONG_TABLE', 'belong');
 define('DB_CITY_TABLE', 'city');
 define('DB_COUNTRY_TABLE', 'country');
@@ -65,15 +66,33 @@ define('STATUS', 'status');
 define('STATUS_CODE', 'status_code');
 define('SOMETHING_WENT_WRONG_WHILE_SAVING_DATA', 'Veri kaydedilirken bir hata oluştu');
 define('SOURCES', 'sources');
+define('SOURCE_ID', 'source_id');
 define('SUCCESS', 'success');
 define('TYPE', 'type');
 define('TO', 'to');
 define('VALUE', 'value');
 define('WORD', 'word');
 
+/** CITIES ID */
+define('CITY_ANKARA_ID', 1);
+define('CITY_ASHGABAT_ID', 2);
+define('CITY_BAKU_ID', 3);
+define('CITY_BISHKEK_ID', 4);
+define('CITY_KAZAN_ID', 5);
+define('CITY_ASTANA_ID', 6);
+define('CITY_TASHKENT_ID', 7);
+define('CITY_URUMQI_ID', 8);
+
+/** COUNTRIES ID */
+define('COUNTRY_AZERBAIJAN_ID', 1);
+define('COUNTRY_KAZAKHSTAN_ID', 2);
+define('COUNTRY_KYRGYZSTAN_ID', 3);
+define('COUNTRY_TATARSTAN_ID', 4);
+define('COUNTRY_TURKEY_ID', 5);
+define('COUNTRY_TURKMENISTAN_ID', 6);
+define('COUNTRY_UZBEKISTAN_ID', 7);
+define('COUNTRY_UYGHUR_ID', 8);
+
 /** LANGUAGES ID */
 define('TUR_ID', 21);
-
-/** constants on tdk standards. */
-define('TDK_MEANING_LIST', 'anlamlarListe');
 

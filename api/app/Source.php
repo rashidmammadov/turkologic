@@ -13,10 +13,9 @@ use Illuminate\Database\Eloquent\Model;
 class Source extends Model {
 
     protected $table = DB_SOURCE_TABLE;
-    protected $primaryKey = null;
-    public $incrementing = false;
+    protected $primaryKey = SOURCE_ID;
 
-    protected $fillable = [ETYMON_ID, SAMPLE, REFERENCE];
+    protected $fillable = [SOURCE_ID, ETYMON_ID, SAMPLE, REFERENCE];
 
     public function etymon() {
         return $this->belongsTo('App\Etymon');

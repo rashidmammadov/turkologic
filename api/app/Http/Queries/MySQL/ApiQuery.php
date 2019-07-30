@@ -61,6 +61,18 @@ class ApiQuery {
         return $queryResult;
     }
 
+    /**
+     * @description query to update etymon data
+     * @param {Array} $etymon - etymon data
+     * @return mixed
+     */
+    public static function updateEtymon($etymon) {
+        Log::info('Etymon updated successfully: ' . json_encode($etymon));
+        Etymon::where(ETYMON_ID, EQUAL_SIGN, $etymon[ETYMON_ID])
+            ->update([LANGUAGE_ID => $etymon[LANGUAGE_ID], WORD => $etymon[WORD], PRONUNCIATION => $etymon[PRONUNCIATION],
+                TYPE => $etymon[TYPE], DESCRIPTION => $etymon[DESCRIPTION]]);
+    }
+
     /** -------------------- BELONG QUERIES -------------------- **/
 
     /**
@@ -309,6 +321,17 @@ class ApiQuery {
         $queryResult = Source::create($source);
         Log::info('Source saved successfully: ' . json_encode($queryResult));
         return $queryResult;
+    }
+
+    /**
+     * @description query to update given source.
+     * @param array $source - the source data
+     * @return mixed
+     */
+    public static function updateSource($source) {
+        Log::info('Source updated successfully: ' . json_encode($source));
+        Source::where(SOURCE_ID, EQUAL_SIGN, $source[SOURCE_ID])
+            ->update([SAMPLE => $source[SAMPLE], REFERENCE => $source[REFERENCE]]);
     }
 
     /** -------------------- PRIVATE METHODS -------------------- **/

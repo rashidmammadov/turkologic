@@ -1,4 +1,4 @@
-import {Component, ElementRef, Input, OnChanges, ViewChild} from '@angular/core';
+import { Component, ElementRef, HostListener, Input, OnChanges, ViewChild } from '@angular/core';
 import { geoMap } from "../../assets/data/geo-map";
 import * as d3 from 'd3';
 
@@ -93,6 +93,7 @@ export class BubbleMapComponent implements OnChanges {
     tooltip.style('display', 'none');
   }
 
+  @HostListener('window:resize', ['$event'])
   onResize() {
     this.prepare();
     this.draw(this.data);

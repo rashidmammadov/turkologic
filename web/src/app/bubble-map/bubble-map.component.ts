@@ -29,7 +29,7 @@ export class BubbleMapComponent implements OnChanges {
       .scale(160)
       .translate([ width / 2, height / 2 ]);
 
-    tooltip = d3.select('app-bubble-map').append('div')
+    tooltip = d3.select(element).append('div')
       .attr('class', 'directive-tooltip')
       .style('display', 'none');
   }
@@ -81,8 +81,8 @@ export class BubbleMapComponent implements OnChanges {
 
   private showTooltip(d) {
     let event = d3.event;
-    tooltip.style("left", event.offsetX + "px");
-    tooltip.style("top", event.offsetY + "px");
+    tooltip.style('left', event.offsetX + 'px');
+    tooltip.style('top', event.offsetY + 'px');
 
     tooltip.style('display', 'inline-block');
     tooltip.html('<b>' + d.country + '</b><br/>' +

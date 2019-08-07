@@ -14,6 +14,7 @@ import { MainComponent } from './main/main.component';
 import { ReportComponent } from './report/report.component';
 import { LexemeService } from "./services/lexeme.service";
 import { SemanticsService } from "./services/semantics.service";
+import { HeatMapComponent } from './heat-map/heat-map.component';
 
 /** States */
 export function getSemantics(trans, semanticsService) {
@@ -43,7 +44,8 @@ const states = [
 
 @NgModule({
   declarations: [AppComponent, EditorComponent, AutocompleteComponent, BubbleMapComponent, SearchComponent, MainComponent,
-    ReportComponent],
+    ReportComponent,
+    HeatMapComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

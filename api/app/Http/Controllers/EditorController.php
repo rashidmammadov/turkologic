@@ -131,6 +131,9 @@ class EditorController extends ApiController {
         $lexemeId = null;
         $newLexeme = new Lexeme($request);
         $newLexeme->setEtymonId($etymonId);
+        if (is_null($newLexeme->getPronunciation())) {
+            $newLexeme->setPronunciation($newLexeme->getLexeme());
+        }
 
         $checkLexeme = ApiQuery::checkLexemeWithoutId($newLexeme->get());
         if (isset($checkLexeme)) {

@@ -63,6 +63,7 @@ define('SAMPLE', 'sample');
 define('SEMANTICS', 'semantics');
 define('SEMANTIC_ID', 'semantic_id');
 define('SEMANTICS_LIST', 'semantics_list');
+define('SIMILARITY_RATIO', 'similarity_ration');
 define('STATUS', 'status');
 define('STATUS_CODE', 'status_code');
 define('SOMETHING_WENT_WRONG_WHILE_SAVING_DATA', 'Veri kaydedilirken bir hata oluştu');

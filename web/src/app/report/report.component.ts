@@ -1,4 +1,4 @@
-import {Component, Input, NgModule, OnInit} from '@angular/core';
+import { Component, Input, NgModule, OnInit } from '@angular/core';
 import { StateService } from '@uirouter/angular';
 import { MatExpansionModule } from '@angular/material';
 import { ProgressService } from "../services/progress.service";
@@ -7,7 +7,6 @@ import { Semantics } from "../models/semantics";
 import { NotificationService } from "../services/notification.service";
 import { WordType, WordTypes } from "../models/word-type";
 import { ReportService } from "../services/report.service";
-import {Observable} from "rxjs";
 
 @NgModule({
   imports: [MatExpansionModule],
@@ -24,6 +23,7 @@ export class ReportComponent implements OnInit {
   groupedConnects: any;
   wordTypes: WordType[] = WordTypes;
   correlationDistributionData: any;
+  similarityRatioData: any;
 
   constructor(public progress: ProgressService, public root: RootService, private notificationService: NotificationService,
               private state: StateService, private reportService: ReportService) {
@@ -49,7 +49,25 @@ export class ReportComponent implements OnInit {
       }
     }, () => {
       this.progress.circular = false;
-    })
+    });
+  }
+
+  private similarityRatioReport() {
+    let params = {
+      report_type: 'similarity_ration',
+      semantic_id: this.semantics.semantic_id
+    };
+    this.progress.circular = true;
+    this.reportService.get(params).subscribe((res: any) => {
+      this.progress.circular = false;
+      if (res.status === 'success') {
+        this.similarityRatioData = res.data;
+      } else {
+        this.notificationService.show(res.message);
+      }
+    }, () => {
+      this.progress.circular = false;
+    });
   }
 
   private getSemantics() {
@@ -59,6 +77,7 @@ export class ReportComponent implements OnInit {
         this.semantics = res.data;
         this.groupConnectsByLanguage();
         this.correlationDistributionReport();
+        this.similarityRatioReport();
       } else {
         this.semantics = <Semantics>{};
         this.notificationService.show(res.message);

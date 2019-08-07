@@ -8,6 +8,13 @@ body { font-family: GoogleSans, serif !important; background-color: #f9f9f9; mar
 
 app-autocomplete .mat-form-field-outline { background-color: rgba(255, 255, 255, 0.8) !important; }
 
+app-heat-map .axisX,
+  app-heat-map .axisY { text-anchor: middle; }
+app-heat-map .axisX .domain,
+  app-heat-map .axisY .domain { display: none; }
+app-heat-map .axisX text { font-size: 11px; transform: rotate(-30deg); }
+app-heat-map .axisY text { font-size: 11px; transform: rotate(-30deg); }
+
 app-main { height: 100%; }
 
 .blur-filter { filter: blur(2px); }

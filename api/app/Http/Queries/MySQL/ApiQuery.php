@@ -14,6 +14,7 @@ use App\Semantics;
 use App\Language;
 use App\Lexeme;
 use App\Source;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 class ApiQuery {
@@ -238,7 +239,7 @@ class ApiQuery {
     public static function updateLexeme($lexeme) {
         Log::info('Lexeme updated successfully: ' . json_encode($lexeme));
         Lexeme::where(LEXEME_ID, EQUAL_SIGN, $lexeme[LEXEME_ID])
-            ->update([LEXEME => $lexeme[LEXEME], PRONUNCIATION => $lexeme[PRONUNCIATION]]);
+            ->update([LEXEME => $lexeme[LEXEME], PRONUNCIATION => $lexeme[PRONUNCIATION], LATIN_TEXT => $lexeme[LATIN_TEXT]]);
     }
 
     /**
@@ -250,7 +251,6 @@ class ApiQuery {
         $queryResult = Lexeme::where((DB_LEXEME_TABLE . '.' . LEXEME_ID), EQUAL_SIGN, $lexemeId)
             ->join(DB_SEMANTICS_TABLE, (DB_SEMANTICS_TABLE . '.' . LEXEME_ID), EQUAL_SIGN, (DB_LEXEME_TABLE . '.' . LEXEME_ID))
             ->get();
-
         return $queryResult;
     }
 
@@ -297,7 +297,29 @@ class ApiQuery {
      * @return mixed
      */
     public static function getSemanticsById($semanticId) {
-        $queryResult = Semantics::where(SEMANTIC_ID, EQUAL_SIGN, $semanticId)->first();
+        $queryResult = Semantics::where(SEMANTIC_ID, EQUAL_SIGN, $semanticId)
+            ->leftJoin(DB_LEXEME_TABLE, function ($join) {
+                $join->on(DB_SEMANTICS_TABLE . '.' . LEXEME_ID, EQUAL_SIGN, DB_LEXEME_TABLE . '.' . LEXEME_ID);
+            })->first();
+        return $queryResult;
+    }
+
+    public static function getUnrelatedSemantics($lexeme) {
+        $queryResult = Lexeme::where(function ($query) use ($lexeme) {
+                $query->where(DB_LEXEME_TABLE . '.' . LATIN_TEXT, EQUAL_SIGN, $lexeme);
+            })
+            ->leftJoin(DB_SEMANTICS_TABLE, function ($join) {
+                $join->on(DB_SEMANTICS_TABLE . '.' . LEXEME_ID, EQUAL_SIGN, DB_LEXEME_TABLE . '.' . LEXEME_ID);
+            })
+            ->leftJoin(DB_BELONG_TABLE, function ($join) {
+                $join->on(DB_BELONG_TABLE . '.' . FROM, EQUAL_SIGN, DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID)
+                    ->orOn(DB_BELONG_TABLE . '.' . TO, EQUAL_SIGN, DB_SEMANTICS_TABLE . '.' . SEMANTIC_ID);
+            })
+            ->where(DB_BELONG_TABLE . '.' . FROM, NOT_EQUAL_SIGN, null)
+            ->where(DB_BELONG_TABLE . '.' . TO, NOT_EQUAL_SIGN, null)
+            ->get()
+            ->groupBy(TO)
+        ;
         return $queryResult;
     }
 

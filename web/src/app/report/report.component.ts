@@ -7,6 +7,7 @@ import { Semantics } from "../models/semantics";
 import { NotificationService } from "../services/notification.service";
 import { WordType, WordTypes } from "../models/word-type";
 import { ReportService } from "../services/report.service";
+import {Lexeme} from "../models/lexeme";
 
 @NgModule({
   imports: [MatExpansionModule],
@@ -19,10 +20,12 @@ import { ReportService } from "../services/report.service";
 })
 export class ReportComponent implements OnInit {
   @Input() data;
+  lexeme = <Lexeme>{};
   semantics = <Semantics>{};
   groupedConnects: any;
   wordTypes: WordType[] = WordTypes;
   correlationDistributionData: any;
+  fakeEquivalentData: any;
   similarityRatioData: any;
 
   constructor(public progress: ProgressService, public root: RootService, private notificationService: NotificationService,
@@ -52,9 +55,27 @@ export class ReportComponent implements OnInit {
     });
   }
 
+  private fakeEquivalentReport() {
+    let params = {
+      report_type: 'fake_equivalent',
+      lexeme: this.lexeme.lexeme
+    };
+    this.progress.circular = true;
+    this.reportService.get(params).subscribe((res: any) => {
+      this.progress.circular = false;
+      if (res.status === 'success') {
+        this.fakeEquivalentData = res.data;
+      } else {
+        this.notificationService.show(res.message);
+      }
+    }, () => {
+      this.progress.circular = false;
+    });
+  }
+
   private similarityRatioReport() {
     let params = {
-      report_type: 'similarity_ration',
+      report_type: 'similarity_ratio',
       semantic_id: this.semantics.semantic_id
     };
     this.progress.circular = true;
@@ -74,10 +95,14 @@ export class ReportComponent implements OnInit {
     this.data.subscribe((res: any) => {
       this.progress.circular = false;
       if (res.status === 'success') {
-        this.semantics = res.data;
-        this.groupConnectsByLanguage();
-        this.correlationDistributionReport();
-        this.similarityRatioReport();
+        this.lexeme = res.data;
+        if (this.lexeme) {
+          this.semantics = this.lexeme.semantics_list[0];
+          this.groupConnectsByLanguage();
+          this.correlationDistributionReport();
+          this.fakeEquivalentReport();
+          this.similarityRatioReport();
+        }
       } else {
         this.semantics = <Semantics>{};
         this.notificationService.show(res.message);

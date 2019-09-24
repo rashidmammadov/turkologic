@@ -39,10 +39,14 @@ class SemanticsController extends ApiController {
     private function getSemantics(Request $request) {
         $queryResult = ApiQuery::getSemanticsById($request[SEMANTIC_ID]);
         if (isset($queryResult)) {
+            $newLexeme = new Lexeme($queryResult);
+            $newLexemeSemanticsList = array();
             $newSemantics = new Semantics($queryResult);
             $newConnects = $this->getConnects($request);
             $newSemantics->setConnects($newConnects);
-            return $this->respondCreated('', $newSemantics->get());
+            array_push($newLexemeSemanticsList, $newSemantics->get());
+            $newLexeme->setSemanticsList($newLexemeSemanticsList);
+            return $this->respondCreated('', $newLexeme->get());
         } else {
             return $this->respondWithError(NO_ANY_RESULT);
         }

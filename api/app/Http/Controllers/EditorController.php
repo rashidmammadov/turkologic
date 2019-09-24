@@ -75,6 +75,7 @@ class EditorController extends ApiController {
                 $dialectLexemeId = null;
                 if (empty($connect[LEXEME_ID]) || is_null($connect[LEXEME_ID])) {
                     $dialectLexeme = new Lexeme($connect);
+                    $dialectLexeme->setLatinText($this->convertToLatinText($dialectLexeme->getPronunciation()));
 
                     $checkDialectLexeme = ApiQuery::checkLexemeWithoutId($dialectLexeme->get());
                     if (isset($checkDialectLexeme)) {
@@ -131,6 +132,7 @@ class EditorController extends ApiController {
         $lexemeId = null;
         $newLexeme = new Lexeme($request);
         $newLexeme->setEtymonId($etymonId);
+        $newLexeme->setLatinText($this->convertToLatinText($newLexeme->getPronunciation()));
         if (is_null($newLexeme->getPronunciation())) {
             $newLexeme->setPronunciation($newLexeme->getLexeme());
         }
@@ -291,6 +293,7 @@ class EditorController extends ApiController {
     private function updateOrSaveDialectLexeme(array $connects, int $semanticId): void {
         foreach ($connects as $connectData) {
             $dialectLexeme = new Lexeme($connectData);
+            $dialectLexeme->setLatinText($this->convertToLatinText($dialectLexeme->getPronunciation()));
             $dialectLexemeId = $dialectLexeme->getLexemeId();
             if (is_null($dialectLexemeId)) {
                 $queryResult = ApiQuery::saveLexeme($dialectLexeme->get());
@@ -322,5 +325,7 @@ class EditorController extends ApiController {
             }
         }
     }
+
+    private function convertToLatinText($text) { return iconv('UTF-8', 'ASCII//TRANSLIT', $text); }
 
 }

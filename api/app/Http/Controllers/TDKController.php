@@ -20,7 +20,7 @@ use Validator;
 
 class TDKController extends ApiController {
 
-    private $tdkDictionaryUri = 'http://sozluk.gov.tr/gts?ara=';
+    private $tdkDictionaryUri = 'https://sozluk.gov.tr/gts?ara=';
 
     public function __construct() { }
 

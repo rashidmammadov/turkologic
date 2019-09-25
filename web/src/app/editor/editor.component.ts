@@ -60,14 +60,14 @@ export class EditorComponent implements OnInit {
 
   getConnectionsByLanguageId(connects, languageId) {
     if (connects.length) {
-      return connects.filter(c => c.language_id === languageId);
+      return connects.filter(c => Number(c.language_id) === Number(languageId));
     }
   }
 
   searchedLexeme(data) {
     let connects = this.lexeme.semantics_list[data.params.semanticsId].connects;
     let groupedConnects = this.getConnectionsByLanguageId(connects, data.params.languageId);
-    let filtered = connects.filter(c => c.language_id !== data.params.languageId);
+    let filtered = connects.filter(c => Number(c.language_id) !== Number(data.params.languageId));
     groupedConnects[data.params.connectId] = data.data;
     this.lexeme.semantics_list[data.params.semanticsId].connects = filtered.concat(groupedConnects);
   }
@@ -79,7 +79,7 @@ export class EditorComponent implements OnInit {
       if (res.status === 'success') {
         this.languages = res.data;
         this.dialects = [];
-        res.data.forEach((lang) => {lang.status && lang.flag && lang.language_id !== 21 && this.dialects.push(lang); });
+        res.data.forEach((lang) => {lang.status && lang.flag && Number(lang.language_id) !== 21 && this.dialects.push(lang); });
       } else {
         this.notificationService.show(res.message);
       }
@@ -95,7 +95,7 @@ export class EditorComponent implements OnInit {
       this.progress.circular = false;
       if (res.status === 'success') {
         this.lexeme = res.data;
-        this.editable = !!this.lexeme.lexeme_id;
+        this.editable = !!Number(this.lexeme.lexeme_id);
         if (!this.lexeme.etymon.sources) {
           this.lexeme.etymon.sources = [{sample: '', reference: ''}];
         }
@@ -110,8 +110,8 @@ export class EditorComponent implements OnInit {
   }
 
   removeConnect(semantics, languageId, connectId) {
-    let filtered = semantics.connects.filter(c => c.language_id === languageId);
-    semantics.connects = semantics.connects.filter(c => c.language_id !== languageId);
+    let filtered = semantics.connects.filter(c => Number(c.language_id) === Number(languageId));
+    semantics.connects = semantics.connects.filter(c => Number(c.language_id) !== Number(languageId));
     filtered.splice(connectId, 1);
     semantics.connects = semantics.connects.concat(filtered);
   }

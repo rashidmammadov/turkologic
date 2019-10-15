@@ -1,6 +1,5 @@
-import { Component, Input, NgModule, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { StateService } from '@uirouter/angular';
-import { MatExpansionModule } from '@angular/material';
 import { ProgressService } from "../services/progress.service";
 import { RootService } from "../services/root.service";
 import { Semantics } from "../models/semantics";
@@ -9,10 +8,6 @@ import { WordType, WordTypes } from "../models/word-type";
 import { ReportService } from "../services/report.service";
 import {Lexeme} from "../models/lexeme";
 
-@NgModule({
-  imports: [MatExpansionModule],
-  exports: [MatExpansionModule]
-})
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',

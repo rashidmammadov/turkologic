@@ -1,5 +1,4 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
 import { EditorService } from "../services/editor.service";
 import { LanguageService } from "../services/language.service";
 import { NotificationService } from "../services/notification.service";
@@ -10,10 +9,6 @@ import { Lexeme } from "../models/lexeme";
 import { Semantics } from "../models/semantics";
 import { WordType, WordTypes } from "../models/word-type";
 
-@NgModule({
-  imports: [FormsModule, ReactiveFormsModule],
-  exports: [FormsModule, ReactiveFormsModule]
-})
 @Component({
   selector: 'app-editor',
   templateUrl: './editor.component.html',

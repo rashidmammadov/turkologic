@@ -1,4 +1,4 @@
-import {Component, Input, NgModule, OnInit} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { UIRouter, StateService } from "@uirouter/angular";
 import { ProgressService } from "../services/progress.service";
 import { NotificationService } from "../services/notification.service";
@@ -7,10 +7,6 @@ import { RootService } from "../services/root.service";
 import { Lexeme } from "../models/lexeme";
 import { WordType, WordTypes } from "../models/word-type";
 
-@NgModule({
-  imports: [],
-  exports: []
-})
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',

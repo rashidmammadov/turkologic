@@ -128,10 +128,10 @@ class EditorController extends ApiController {
      * @return void
      */
     private function saveLexeme($request): void {
-        $etymonId = $this->saveEtymon($request);
+//        $etymonId = $this->saveEtymon($request);
         $lexemeId = null;
         $newLexeme = new Lexeme($request);
-        $newLexeme->setEtymonId($etymonId);
+//        $newLexeme->setEtymonId($etymonId);
         $newLexeme->setLatinText($this->convertToLatinText($newLexeme->getPronunciation()));
         if (is_null($newLexeme->getPronunciation())) {
             $newLexeme->setPronunciation($newLexeme->getLexeme());
@@ -235,7 +235,7 @@ class EditorController extends ApiController {
      * @param {Request} $request - request data.
      */
     private function updateLexeme($request) {
-        $this->updateEtymon($request[ETYMON]);
+        //$this->updateEtymon($request[ETYMON]);
         $this->updateSemantics($request[SEMANTICS_LIST]);
     }
 
@@ -326,6 +326,13 @@ class EditorController extends ApiController {
         }
     }
 
-    private function convertToLatinText($text) { return iconv('UTF-8', 'ASCII//TRANSLIT', $text); }
+    /**
+     * @description Convert lexeme pronunciation to ascii characters.
+     * @param string $text - the pronunciation of lexeme
+     * @return string
+     */
+    private function convertToLatinText(string $text): string {
+        return iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+    }
 
 }

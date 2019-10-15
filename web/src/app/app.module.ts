@@ -4,7 +4,6 @@ import { UIRouterModule, Transition } from "@uirouter/angular";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatIconModule, MatProgressBarModule, MatProgressSpinnerModule, MatListModule, MatSnackBarModule, MatToolbarModule } from '@angular/material';
 import { AppComponent } from './app.component';
 import { EditorComponent } from './editor/editor.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
@@ -15,6 +14,8 @@ import { ReportComponent } from './report/report.component';
 import { LexemeService } from "./services/lexeme.service";
 import { SemanticsService } from "./services/semantics.service";
 import { HeatMapComponent } from './heat-map/heat-map.component';
+import { AngularMaterialModule } from "./modules/angular-material.module";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 /** States */
 export function getSemantics(trans, semanticsService) {
@@ -43,21 +44,24 @@ const states = [
 ];
 
 @NgModule({
-  declarations: [AppComponent, EditorComponent, AutocompleteComponent, BubbleMapComponent, SearchComponent, MainComponent,
+  declarations: [
+    AppComponent,
+    EditorComponent,
+    AutocompleteComponent,
+    BubbleMapComponent,
+    SearchComponent,
+    MainComponent,
     ReportComponent,
-    HeatMapComponent],
+    HeatMapComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    EditorComponent,
     FlexLayoutModule,
+    FormsModule,
     HttpClientModule,
-    MatIconModule,
-    MatProgressBarModule,
-    MatProgressSpinnerModule,
-    MatListModule,
-    MatSnackBarModule,
-    MatToolbarModule,
+    AngularMaterialModule,
+    ReactiveFormsModule,
     UIRouterModule.forRoot({ states: states, useHash: true, otherwise: '/' }),
   ],
   providers: [],

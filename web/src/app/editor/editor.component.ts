@@ -1,7 +1,5 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatDividerModule, MatExpansionModule, MatFormFieldModule,
-  MatInputModule, MatSelectModule, MatTooltipModule } from '@angular/material';
 import { EditorService } from "../services/editor.service";
 import { LanguageService } from "../services/language.service";
 import { NotificationService } from "../services/notification.service";
@@ -13,10 +11,8 @@ import { Semantics } from "../models/semantics";
 import { WordType, WordTypes } from "../models/word-type";
 
 @NgModule({
-  imports: [FormsModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatDividerModule, MatExpansionModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatTooltipModule],
-  exports: [FormsModule, MatAutocompleteModule, MatButtonModule, MatCardModule, MatDividerModule, MatExpansionModule,
-    MatFormFieldModule, MatInputModule, MatSelectModule, ReactiveFormsModule, MatTooltipModule]
+  imports: [FormsModule, ReactiveFormsModule],
+  exports: [FormsModule, ReactiveFormsModule]
 })
 @Component({
   selector: 'app-editor',

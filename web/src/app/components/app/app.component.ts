@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { ProgressService } from 'src/app/services/progress.service';
 import { DomSanitizer } from "@angular/platform-browser";
 import { MatIconRegistry } from "@angular/material";
-import { LanguageService } from "./services/language.service";
-import { RootService } from "./services/root.service";
+import { LanguageService } from "../../services/language.service";
+import { RootService } from "../../services/root.service";
 
 @Component({
   selector: 'app-root',

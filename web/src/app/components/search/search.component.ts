@@ -1,11 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { UIRouter, StateService } from "@uirouter/angular";
-import { ProgressService } from "../services/progress.service";
-import { NotificationService } from "../services/notification.service";
-import { LexemeService } from "../services/lexeme.service";
-import { RootService } from "../services/root.service";
-import { Lexeme } from "../models/lexeme";
-import { WordType, WordTypes } from "../models/word-type";
+import { ProgressService } from "../../services/progress.service";
+import { NotificationService } from "../../services/notification.service";
+import { LexemeService } from "../../services/lexeme.service";
+import { RootService } from "../../services/root.service";
+import { Lexeme } from "../../models/lexeme";
+import { WordType, WordTypes } from "../../models/word-type";
 
 @Component({
   selector: 'app-search',

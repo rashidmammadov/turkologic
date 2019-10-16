@@ -1,12 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StateService } from '@uirouter/angular';
-import { ProgressService } from "../services/progress.service";
-import { RootService } from "../services/root.service";
-import { Semantics } from "../models/semantics";
-import { NotificationService } from "../services/notification.service";
-import { WordType, WordTypes } from "../models/word-type";
-import { ReportService } from "../services/report.service";
-import {Lexeme} from "../models/lexeme";
+import { ProgressService } from "../../services/progress.service";
+import { RootService } from "../../services/root.service";
+import { Semantics } from "../../models/semantics";
+import { NotificationService } from "../../services/notification.service";
+import { WordType, WordTypes } from "../../models/word-type";
+import { ReportService } from "../../services/report.service";
+import {Lexeme} from "../../models/lexeme";
 
 @Component({
   selector: 'app-report',

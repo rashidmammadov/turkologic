@@ -1,5 +1,5 @@
 import { Component, ElementRef, HostListener, Input, OnChanges, ViewChild } from '@angular/core';
-import { geoMap } from "../../assets/data/geo-map";
+import { geoMap } from "../../../assets/data/geo-map";
 import * as d3 from 'd3';
 
 let svg, cities, color, height, projection, tooltip, width, margin = 8;

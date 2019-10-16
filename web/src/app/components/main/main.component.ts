@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Lexeme } from "../models/lexeme";
+import { Lexeme } from "../../models/lexeme";
 import { StateService } from "@uirouter/angular";
-import { Dialect } from "../models/dialect";
+import { Dialect } from "../../models/dialect";
 
 @Component({
   selector: 'app-main',

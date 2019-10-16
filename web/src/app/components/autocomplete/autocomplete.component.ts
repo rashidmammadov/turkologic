@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { LexemeService } from "../services/lexeme.service";
-import { SearchService } from "../services/search.service";
+import { LexemeService } from "../../services/lexeme.service";
+import { SearchService } from "../../services/search.service";
 import { Observable, of } from 'rxjs'
-import { Semantics } from "../models/semantics";
+import { Semantics } from "../../models/semantics";
 import { catchError, debounceTime, map, switchMap } from "rxjs/operators";
-import { RootService } from "../services/root.service";
+import { RootService } from "../../services/root.service";
 
 @Component({
   selector: 'app-autocomplete',

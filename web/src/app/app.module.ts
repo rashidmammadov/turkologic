@@ -4,18 +4,19 @@ import { UIRouterModule, Transition } from "@uirouter/angular";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { AppComponent } from './app.component';
-import { EditorComponent } from './editor/editor.component';
-import { AutocompleteComponent } from './autocomplete/autocomplete.component';
-import { BubbleMapComponent } from './bubble-map/bubble-map.component';
-import { SearchComponent } from './search/search.component';
-import { MainComponent } from './main/main.component';
-import { ReportComponent } from './report/report.component';
+import { AppComponent } from './components/app/app.component';
+import { EditorComponent } from './components/editor/editor.component';
+import { AutocompleteComponent } from './components/autocomplete/autocomplete.component';
+import { BubbleMapComponent } from './components/bubble-map/bubble-map.component';
+import { SearchComponent } from './components/search/search.component';
+import { MainComponent } from './components/main/main.component';
+import { ReportComponent } from './components/report/report.component';
 import { LexemeService } from "./services/lexeme.service";
 import { SemanticsService } from "./services/semantics.service";
-import { HeatMapComponent } from './heat-map/heat-map.component';
+import { HeatMapComponent } from './components/heat-map/heat-map.component';
 import { AngularMaterialModule } from "./modules/angular-material.module";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CountryInfoComponent } from './components/country-info/country-info.component';
 
 /** States */
 export function getSemantics(trans, semanticsService) {
@@ -52,7 +53,8 @@ const states = [
     SearchComponent,
     MainComponent,
     ReportComponent,
-    HeatMapComponent
+    HeatMapComponent,
+    CountryInfoComponent
   ],
   imports: [
     BrowserModule,

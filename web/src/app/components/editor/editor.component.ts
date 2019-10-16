@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { EditorService } from "../services/editor.service";
-import { LanguageService } from "../services/language.service";
-import { NotificationService } from "../services/notification.service";
-import { ProgressService } from "../services/progress.service";
-import { TDKService } from "../services/tdk.service";
-import { Dialect } from "../models/dialect";
-import { Lexeme } from "../models/lexeme";
-import { Semantics } from "../models/semantics";
-import { WordType, WordTypes } from "../models/word-type";
+import { EditorService } from "../../services/editor.service";
+import { LanguageService } from "../../services/language.service";
+import { NotificationService } from "../../services/notification.service";
+import { ProgressService } from "../../services/progress.service";
+import { TDKService } from "../../services/tdk.service";
+import { Dialect } from "../../models/dialect";
+import { Lexeme } from "../../models/lexeme";
+import { Semantics } from "../../models/semantics";
+import { WordType, WordTypes } from "../../models/word-type";
 
 @Component({
   selector: 'app-editor',

@@ -8,6 +8,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Models\Country;
 use App\Http\Models\Language;
 use App\Http\Models\Lexeme;
 use App\Http\Models\Semantics;
@@ -31,6 +32,8 @@ class ReportController extends ApiController {
             $response = null;
             if ($request[REPORT_TYPE] == CORRELATION_DISTRIBUTION) {
                 $response = $this->correlationDistributionReport($request);
+            } else if ($request[REPORT_TYPE] == COUNTRY_INFO) {
+                $response = $this->countryInfo($request);
             } else if ($request[REPORT_TYPE] == FAKE_EQUIVALENT) {
                 $response = $this->fakeEquivalentReport($request);
             } else if ($request[REPORT_TYPE] == SIMILARITY_RATIO) {
@@ -63,6 +66,27 @@ class ReportController extends ApiController {
             $responseData[VALUE] > 0 && array_push($response, $responseData);
         }
         return $response;
+    }
+
+    /**
+     * @param Request $request
+     * @return mixed
+     */
+    private function countryInfo(Request $request) {
+        $response = new Country();
+        $queryResult = ApiQuery::getLanguagesCountryCapital($request[LANGUAGE_ID]);
+        if ($queryResult && $queryResult->first()) {
+            $result = $queryResult->first();
+            $response->setCountryName($result[COUNTRY_NAME]);
+            $response->setFlag($result[FLAG]);
+            $response->setDescription($result[DESCRIPTION]);
+            $response->setCapital($result[CITY_NAME]);
+//            $response->setCurrencyUnit($result[CURRENCY_UNIT]);
+//            $response->setPopulation($result[POPULATION]);
+            $response->setLanguage($result[NAME]);
+//            $response->setLanguageRelation(array());
+        }
+        return $response->get();
     }
 
     /**

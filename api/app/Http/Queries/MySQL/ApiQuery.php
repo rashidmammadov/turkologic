@@ -164,10 +164,17 @@ class ApiQuery {
 
     /**
      * @description query to get capital cities of all languages country.
+     * @param integer $languageId - the id of given language.
      * @return mixed
      */
-    public static function getLanguagesCountryCapital() {
-        $queryResult = Language::where(COUNTRY, NOT_EQUAL_SIGN, null)
+    public static function getLanguagesCountryCapital($languageId = null) {
+        $queryResult = Language::where(function ($query) use ($languageId) {
+                if ($languageId) {
+                    $query->where(LANGUAGE_ID, EQUAL_SIGN, $languageId);
+                } else {
+                    $query->where(COUNTRY, NOT_EQUAL_SIGN, null);
+                }
+            })
             ->leftJoin(DB_COUNTRY_TABLE, function ($join) {
                 $join->on((DB_COUNTRY_TABLE . '.' . COUNTRY_ID), EQUAL_SIGN, (DB_LANGUAGE_TABLE . '.' . COUNTRY));
             })

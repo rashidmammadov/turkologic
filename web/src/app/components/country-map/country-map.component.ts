@@ -1,6 +1,7 @@
 import {Component, ElementRef, HostListener, Input, OnChanges, OnInit, ViewChild} from '@angular/core';
 import * as d3 from "d3";
 import {geoMap} from "../../../assets/data/geo-map";
+import {max} from "rxjs/operators";
 
 let svg, height, projection, tooltip, width, margin = 8;
 @Component({
@@ -20,24 +21,25 @@ export class CountryMapComponent implements OnInit, OnChanges {
         const element = this.chartContainer.nativeElement;
 
         width = element.clientWidth;
-        height = width / 2.5;
+        height = width / 4;
         svg = d3.select(element).append('svg').classed('country-map', true)
             .attr('width', width - margin).attr('height', height - margin);
-
-        projection = d3.geoMercator()
-            .center([40, 40])
-            .scale(1500)
-            .translate([ 0, height / 2 ]);
-
-        tooltip = d3.select(element).append('div')
-            .attr('class', 'directive-tooltip')
-            .style('display', 'none');
     }
 
     private draw(countryName: string) {
         const data = geoMap.features.find((country) => {
             return country.properties.name === countryName;
         });
+
+        const points = this.getPoints(data.geometry.type, data.geometry.coordinates);
+
+        projection = d3.geoMercator()
+            .center([
+              (points.minLongitude + points.maxLongitude) / 2,
+              (points.minLatitude + points.maxLatitude) / 2
+            ])
+            .scale(this.getScale(points))
+            .translate([ width / 2, height / 2 ]);
 
         svg.append("g")
             .selectAll("path")
@@ -49,6 +51,39 @@ export class CountryMapComponent implements OnInit, OnChanges {
                   .projection(projection)
                 )
                 .style("stroke", "none")
+    }
+
+    private getPoints(type, coordinates) {
+        let points = {
+            minLatitude: 0,
+            minLongitude: 0,
+            maxLatitude: 0,
+            maxLongitude: 0
+        };
+        let findMinMax = (coordinate) => {
+            coordinate.forEach((mapPoints) => {
+                mapPoints.forEach((point) => {
+                    (points.minLongitude === 0 || points.minLongitude > point[0]) && (points.minLongitude = point[0]);
+                    points.maxLongitude < point[0] && (points.maxLongitude = point[0]);
+                    (points.minLatitude === 0 || points.minLatitude > point[1]) && (points.minLatitude = point[1]);
+                    points.maxLatitude < point[1] && (points.maxLatitude = point[1]);
+                });
+            });
+        };
+
+        if (type === 'MultiPolygon') {
+            coordinates.forEach(findMinMax);
+        } else if (type === 'Polygon') {
+            findMinMax(coordinates);
+        }
+        return points;
+    }
+
+    private getScale(points) {
+        const diffLatitude = points.maxLatitude - points.minLatitude;
+        const diffLongitude = points.maxLongitude - points.minLongitude;
+        const result = d3.max([diffLatitude, diffLongitude]);
+        return (1 / result) * 5000;
     }
 
     @HostListener('window:resize', ['$event'])

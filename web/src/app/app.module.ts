@@ -17,6 +17,7 @@ import { MainComponent } from './components/main/main.component';
 import { ReportComponent } from './components/report/report.component';
 import { SearchComponent } from './components/search/search.component';
 import { SemanticsService } from "./services/semantics.service";
+import { CountryMapComponent } from './components/country-map/country-map.component';
 
 /** States */
 export function getSemantics(trans, semanticsService) {
@@ -54,7 +55,8 @@ const states = [
     MainComponent,
     ReportComponent,
     HeatMapComponent,
-    CountryInfoComponent
+    CountryInfoComponent,
+    CountryMapComponent
   ],
   imports: [
     BrowserModule,

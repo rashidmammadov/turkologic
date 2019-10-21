@@ -97,9 +97,9 @@ class LanguageTableSeeder extends Seeder {
         Language::create([LANGUAGE_ID => 29, NAME => 'Nogay Türkçesi', CODE => 'nog', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 30, NAME => 'Kumuk Türkçesi', CODE => 'kmk', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 31, NAME => 'Karaçay-Malkar Türkçesi', CODE => 'kcmk', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
-        Language::create([LANGUAGE_ID => 32, NAME => 'Kırım Tatarcası', CODE => 'krm', FLAG => 'tatarstan', COUNTRY => COUNTRY_TATARSTAN_ID, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 32, NAME => 'Kazan Tatar Türkçesi', CODE => 'kzn', FLAG => 'tatarstan', COUNTRY => COUNTRY_TATARSTAN_ID, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 33, NAME => 'Karay Türkçesi', CODE => 'kry', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
-        Language::create([LANGUAGE_ID => 34, NAME => 'Kazan Tatarcası', CODE => 'kzn', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
+        Language::create([LANGUAGE_ID => 34, NAME => 'Kırım Tatarcası', CODE => 'krm', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
         Language::create([LANGUAGE_ID => 35, NAME => 'Başkurt Türkçesi', CODE => 'bskt', FLAG => null, COUNTRY => null, CENTURY => 20, PARENT_LANGUAGE_ID => 23, STATUS => true ]);
     }
 }

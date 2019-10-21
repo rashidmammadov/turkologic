@@ -3,6 +3,7 @@
         <mat-card-title fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
             <mat-icon svgIcon="{{country.flag}}"></mat-icon>
             <p>{{country.country_name}}</p>
+            <app-country-map fxFlex [countryName]="'Azerbaijan'"></app-country-map>
         </mat-card-title>
     </mat-card-header>
     <mat-divider></mat-divider>

@@ -328,10 +328,10 @@ class EditorController extends ApiController {
 
     /**
      * @description Convert lexeme pronunciation to ascii characters.
-     * @param string $text - the pronunciation of lexeme
+     * @param $text - the pronunciation of lexeme
      * @return string
      */
-    private function convertToLatinText(string $text): string {
+    private function convertToLatinText($text) {
         return iconv('UTF-8', 'ASCII//TRANSLIT', $text);
     }
 

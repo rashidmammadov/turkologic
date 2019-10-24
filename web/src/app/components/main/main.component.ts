@@ -9,16 +9,21 @@ import { Dialect } from "../../models/dialect";
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-  lexeme = <Lexeme>{};
-  languages: Dialect;
+    lexeme: Lexeme;
+    languages: Dialect;
+    languageIdMap = [14, 21, 22, 24, 25, 26, 28, 32];
+    selectedLanguageId: number;
 
-  constructor(private state: StateService) { }
+    constructor(private state: StateService) {
+        this.lexeme = <Lexeme>{};
+        this.selectedLanguageId = this.languageIdMap[Math.floor(Math.random() * this.languageIdMap.length)];
+    }
 
-  searchedLexeme(data) {
-    this.lexeme = data;
-    this.state.go('search', {lexeme_id: this.lexeme.lexeme_id});
-  }
+    searchedLexeme(data) {
+        this.lexeme = data;
+        this.state.go('search', {lexeme_id: this.lexeme.lexeme_id});
+    }
 
-  ngOnInit() {}
+    ngOnInit() {}
 
 }

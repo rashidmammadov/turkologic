@@ -84,7 +84,15 @@ class ReportController extends ApiController {
 //            $response->setCurrencyUnit($result[CURRENCY_UNIT]);
 //            $response->setPopulation($result[POPULATION]);
             $response->setLanguage($result[NAME]);
-//            $response->setLanguageRelation(array());
+            $languages = ApiQuery::getLanguagesCountryCapital();
+            $languageRelation = array();
+            $searchingLanguageId = $request[LANGUAGE_ID];
+            foreach ($languages as $language) {
+                if ($language[LANGUAGE_ID] == $searchingLanguageId) {
+                    array_push($languageRelation, $language[NAME]);
+                }
+            }
+//            $response->setLanguageRelation($languageRelation);
         }
         return $response->get();
     }

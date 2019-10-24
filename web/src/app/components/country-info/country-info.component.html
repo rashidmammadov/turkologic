@@ -1,14 +1,13 @@
 <mat-card *ngIf="country">
-    <mat-card-header>
-        <mat-card-title fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="16px">
-            <mat-icon svgIcon="{{country.flag}}"></mat-icon>
-            <p>{{country.country_name}}</p>
-        </mat-card-title>
+    <mat-card-header *ngIf="country.flag">
+        <app-country-map fxFlex [countryName]="country.flag"></app-country-map>
     </mat-card-header>
     <mat-divider></mat-divider>
     <mat-card-content fxLayout="column" fxLayoutGap="8px" style="padding: 16px;">
-        <app-country-map fxFlex [countryName]="'Kazakhstan'"></app-country-map>
         <p *ngIf="country.description">{{country.description}}</p>
+        <p fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="8px">
+            <mat-icon svgIcon="{{country.flag}}"></mat-icon> <b>{{country.country_name}}</b>
+        </p>
         <p><b>Başkent: </b> {{country.capital}}</p>
         <p *ngIf="country.currency_unit"><b>Para Birimi: </b> {{country.currency_unit}}</p>
         <p *ngIf="country.population"><b>Nüfus: </b> {{country.population}}</p>

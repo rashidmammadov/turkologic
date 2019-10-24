@@ -28,29 +28,33 @@ export class CountryMapComponent implements OnInit, OnChanges {
 
     private draw(countryName: string) {
         const data = geoMap.features.find((country) => {
-            return country.properties.name === countryName;
+            return country.properties.name.toLowerCase() === countryName.toLowerCase();
         });
 
-        const points = this.getPoints(data.geometry.type, data.geometry.coordinates);
+        if (data) {
+            const points = this.getPoints(data.geometry.type, data.geometry.coordinates);
 
-        projection = d3.geoMercator()
-            .center([
-              (points.minLongitude + points.maxLongitude) / 2,
-              (points.minLatitude + points.maxLatitude) / 2
-            ])
-            .scale(this.getScale(points))
-            .translate([ width / 2, height / 2 ]);
+            projection = d3.geoMercator()
+                .center([
+                    (points.minLongitude + points.maxLongitude) / 2,
+                    (points.minLatitude + points.maxLatitude) / 2
+                ])
+                .scale(this.getScale(points))
+                .translate([width / 2, height / 2]);
 
-        svg.append("g")
-            .selectAll("path")
-            .data([data])
-            .enter()
+            svg.append("g")
+                .selectAll("path")
+                .data([data])
+                .enter()
                 .append("path")
-                .attr("fill", "grey")
+                .attr("fill", "#673ab7")
                 .attr("d", d3.geoPath()
                   .projection(projection)
                 )
-                .style("stroke", "none")
+                .style("stroke", "none");
+        } else {
+            svg.remove();
+        }
     }
 
     private getPoints(type, coordinates) {

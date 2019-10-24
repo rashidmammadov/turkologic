@@ -19,8 +19,8 @@ export class CountryInfoComponent implements OnChanges {
 
     private fetchCountryInfo(languageId: number) {
         let params = {
-          report_type: 'country_info',
-          language_id: this.languageId
+            report_type: 'country_info',
+            language_id: this.languageId
         };
         this.progress.circular = true;
         this.reportService.get(params).subscribe((res: any) => {

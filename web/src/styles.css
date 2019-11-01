@@ -51,6 +51,8 @@ app-main { height: 100%; }
 
 .progress-circular .mat-progress-spinner { position: absolute; z-index: 99; top: 40%; left: calc(50% - 48px); }
 
+.logo { font-weight: 600; font-size: 16px; }
+
 .map-background { background: url("assets/images/background.png") no-repeat center; background-size: 50%; }
 .mat-card-title { font-size: 18px; }
 .mat-list-base .mat-list-item .mat-line { white-space: normal; }

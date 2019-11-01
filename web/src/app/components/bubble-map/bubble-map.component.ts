@@ -2,7 +2,7 @@ import { Component, ElementRef, HostListener, Input, OnChanges, ViewChild } from
 import { geoMap } from "../../../assets/data/geo-map";
 import * as d3 from 'd3';
 
-let svg, cities, color, height, projection, tooltip, width, margin = 8;
+let svg, legend, cities, color, height, projection, tooltip, width, margin = 8;
 @Component({
   selector: 'app-bubble-map',
   templateUrl: './bubble-map.html',
@@ -24,6 +24,9 @@ export class BubbleMapComponent implements OnChanges {
         svg = d3.select(element).append('svg').classed('bubble-map', true)
             .attr('width', width - margin).attr('height', height - margin);
 
+        legend = svg.append('g').attr('transform', 'translate(' + margin + ',' + margin + ')')
+            .selectAll('.legend');
+
         projection = d3.geoMercator()
             .center([50, 50])
             .scale(160)
@@ -42,7 +45,7 @@ export class BubbleMapComponent implements OnChanges {
 
         color = d3.scaleOrdinal()
             .domain(cities)
-            .range(d3.schemePaired);
+            .range(d3.schemeCategory10);
 
         let valueExtent = d3.extent(data, d => {
           // @ts-ignore
@@ -77,6 +80,20 @@ export class BubbleMapComponent implements OnChanges {
                 .on('mouseenter', this.showTooltip)
                 .on('mousemove', this.showTooltip)
                 .on('mouseleave', this.hideTooltip);
+
+        legend.data(data).enter().append('rect').classed('legend', true)
+            .attr('y', (d, i) => {return (height / (data.length * 2)) * i})
+            .attr('rx', 4)
+            .attr('ry', 4)
+            .attr('width', 16)
+            .attr('height', height / (data.length * 4))
+            .attr('fill', (d) => color(d.name));
+
+        legend.data(data).enter().append('text')
+            .style('font-size', '10px')
+            .attr('x', margin * 2 + 4)
+            .attr('y', (d, i) => {return (height / (data.length * 2)) * i + height / (data.length * 6)})
+            .text((d) => { return d.country; });
     }
 
     private showTooltip(d) {

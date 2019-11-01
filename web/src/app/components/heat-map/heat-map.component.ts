@@ -29,7 +29,7 @@ export class HeatMapComponent implements OnChanges {
             .selectAll('.legend').data(legendData);
 
         // @ts-ignore
-        color = d3.scaleLinear().domain([0, 1]).range(['#ffd300', '#586949']);
+        color = d3.scaleLinear().domain([0, 1]).range(['#f0f0f0', '#111c8b']);
 
         // d3.selectAll('.directive-tooltip').remove();
         tooltip = d3.select(element).append('div')

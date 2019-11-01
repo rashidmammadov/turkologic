@@ -31,6 +31,7 @@ export class HeatMapComponent implements OnChanges {
         // @ts-ignore
         color = d3.scaleLinear().domain([0, 1]).range(['#ffd300', '#586949']);
 
+        // d3.selectAll('.directive-tooltip').remove();
         tooltip = d3.select(element).append('div')
             .attr('class', 'directive-tooltip')
             .style('display', 'none');
@@ -39,11 +40,12 @@ export class HeatMapComponent implements OnChanges {
     private draw(data) {
         let keys = d3.map(data,(d: any) => { return d.fromLexeme + ':' + d.fromLanguage; }).keys();
 
-        const x = d3.scaleBand().range([ 0, width - margin * 6 ]).domain(keys).padding(0.05);
+        const x = d3.scaleBand().range([ 0, width - margin * 6 ]).domain(keys).padding(0.1);
 
         svg.append('g').classed('axisX', true)
             .call(d3.axisBottom(x).tickSize(0))
-            .selectAll('text').text(d => d.split(':')[0]);
+            .selectAll('text').text(d => d.split(':')[0])
+            .attr('text-anchor', 'middle');
 
         const y = d3.scaleBand().range([ 0, height ]).domain(keys).padding(0.05);
 
@@ -69,14 +71,23 @@ export class HeatMapComponent implements OnChanges {
             .classed('rects', true).selectAll().data(data);
 
         rects.exit().remove();
-        rects.enter().append('rect')
-            .attr('x', (d) => { return rectX(d.fromLexeme + ':' + d.fromLanguage) })
-            .attr('y', (d) => { return rectY(d.toLexeme + ':' + d.toLanguage) })
-            .attr('rx', 4)
-            .attr('ry', 4)
-            .attr('width', rectX.bandwidth())
-            .attr('height', rectY.bandwidth())
-            .style('fill', (d) => { return color(d.ratio); })
+        // rects.enter().append('rect')
+        //     .attr('x', (d) => { return rectX(d.fromLexeme + ':' + d.fromLanguage) })
+        //     .attr('y', (d) => { return rectY(d.toLexeme + ':' + d.toLanguage) })
+        //     .attr('rx', 4)
+        //     .attr('ry', 4)
+        //     .attr('width', rectX.bandwidth())
+        //     .attr('height', rectY.bandwidth())
+        //     .style('fill', (d) => { return color(d.ratio); })
+        //     .on('mouseenter', this.showTooltip)
+        //     .on('mousemove', this.showTooltip)
+        //     .on('mouseleave', this.hideTooltip);
+
+        rects.enter().append('circle')
+            .attr('cx', (d) => { return rectX(d.fromLexeme + ':' + d.fromLanguage) + rectX.bandwidth() / 2 })
+            .attr('cy', (d) => { return rectY(d.toLexeme + ':' + d.toLanguage) + rectY.bandwidth() / 2 })
+            .attr('r', (d) => { return (rectY.bandwidth() / 2) * Number(d.ratio) })
+            .style('fill', (d) => { return color(d.ratio) })
             .on('mouseenter', this.showTooltip)
             .on('mousemove', this.showTooltip)
             .on('mouseleave', this.hideTooltip);

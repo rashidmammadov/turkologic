@@ -1,63 +1,63 @@
 <div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px" fxFlex="100%">
-  <div fxLayout="column" fxFlex="100%" fxLayoutGap="16px">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-subtitle>Aranan Anlam</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <mat-list *ngIf="semantics.meaning">
-          <mat-list-item>
-            <h2 matLine><b>{{wordTypes[semantics.type] ? wordTypes[semantics.type].name : '-'}}</b> - {{semantics.meaning}}</h2>
-            <p matLine>
-              <span *ngIf="semantics.sample">"{{semantics.sample}}"</span>
-              <span *ngIf="semantics.reference"><i> - {{semantics.reference}}</i></span>
-            </p>
-          </mat-list-item>
-        </mat-list>
-        <div *ngIf="!progress.circular && !semantics.meaning" fxLayout="row" fxLayoutAlign="center center">
-          <p>Anlam Bulunamadı.</p>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <div fxLayout="column" fxFlex fxLayoutGap="16px">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-subtitle>Aranan Anlam</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <mat-list *ngIf="semantics.meaning">
+                    <mat-list-item>
+                        <h2 matLine><b>{{wordTypes[semantics.type] ? wordTypes[semantics.type].name : '-'}}</b> - {{semantics.meaning}}</h2>
+                        <p matLine>
+                            <span *ngIf="semantics.sample">"{{semantics.sample}}"</span>
+                            <span *ngIf="semantics.reference"><i> - {{semantics.reference}}</i></span>
+                        </p>
+                    </mat-list-item>
+                </mat-list>
+                <div *ngIf="!progress.circular && !semantics.meaning" fxLayout="row" fxLayoutAlign="center center">
+                    <p>Anlam Bulunamadı.</p>
+                </div>
+            </mat-card-content>
+        </mat-card>
 
-    <mat-accordion *ngFor="let connects of groupedConnects">
-      <mat-expansion-panel [expanded]="false">
-        <mat-expansion-panel-header>
-          <mat-panel-title fxLayout="row" fxLayoutAlign="start center">
-            <mat-icon style="margin-right: 8px" matListIcon svgIcon="{{connects.flag}}"></mat-icon>
-            {{connects.name}} {{connects.data.length}} - adet
-          </mat-panel-title>
-        </mat-expansion-panel-header>
-        <mat-action-list>
-          <mat-list-item *ngFor="let lexeme of connects.data" (click)="redirectToSearch(lexeme.lexeme_id)">
-            <h2 matLine><b>{{lexeme.lexeme}}</b>  {{lexeme.pronunciation}}</h2>
-            <p matLine *ngFor="let semantics of lexeme.semantics_list">
-              <span *ngIf="lexeme.pronunciation"><b>{{wordTypes[semantics.type].name}}</b></span>
-              <span *ngIf="semantics.meaning"> - {{semantics.meaning}}</span>
-            </p>
-          </mat-list-item>
-        </mat-action-list>
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+        <mat-accordion *ngFor="let connects of groupedConnects">
+            <mat-expansion-panel [expanded]="false">
+                <mat-expansion-panel-header>
+                    <mat-panel-title fxLayout="row" fxLayoutAlign="start center">
+                        <mat-icon style="margin-right: 8px" matListIcon svgIcon="{{connects.flag}}"></mat-icon>
+                        {{connects.name}} {{connects.data.length}} - adet
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-action-list>
+                    <mat-list-item *ngFor="let lexeme of connects.data" (click)="redirectToSearch(lexeme.lexeme_id)">
+                        <h2 matLine><b>{{lexeme.lexeme}}</b>  {{lexeme.pronunciation}}</h2>
+                        <p matLine *ngFor="let semantics of lexeme.semantics_list">
+                            <span *ngIf="lexeme.pronunciation"><b>{{wordTypes[semantics.type].name}}</b></span>
+                            <span *ngIf="semantics.meaning"> - {{semantics.meaning}}</span>
+                        </p>
+                    </mat-list-item>
+                </mat-action-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
 
-  <div fxLayout="column" fxFlex="100%" fxLayoutGap="16px">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-subtitle>İlişki Haritası</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-bubble-map [data]="correlationDistributionData"></app-bubble-map>
-      </mat-card-content>
-    </mat-card>
+    <div fxLayout="column" fxFlex fxLayoutGap="16px">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-subtitle>İlişki Haritası</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <app-bubble-map [data]="correlationDistributionData"></app-bubble-map>
+            </mat-card-content>
+        </mat-card>
 
-    <mat-card>
-      <mat-card-header>
-        <mat-card-subtitle>İlişki Oranı</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <app-heat-map [data]="similarityRatioData"></app-heat-map>
-      </mat-card-content>
-    </mat-card>
-  </div>
+        <mat-card>
+            <mat-card-header>
+                <mat-card-subtitle>İlişki Oranı</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                <app-heat-map [data]="similarityRatioData"></app-heat-map>
+            </mat-card-content>
+        </mat-card>
+    </div>
 </div>

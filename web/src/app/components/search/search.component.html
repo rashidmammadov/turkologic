@@ -1,8 +1,8 @@
-<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px" fxLayoutAlign="start start">
-    <div fxLayout="column" fxFlex="60%" fxFlex.lt-md="80%" fxFlex.lt-sm="100%">
-        <app-autocomplete fxFlex="100%" label="Sözcük" [(searchText)]="lexeme.lexeme" (selectedResult)="searchedLexeme($event)"
+<div fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="16px" fxLayoutAlign="start start" fxLayoutAlign.lt-md="start">
+    <div fxLayout="column" fxFlex="60%" fxFlex.lt-md="70%" fxFlex.lt-sm="100%">
+        <app-autocomplete fxFlex label="Sözcük" [(searchText)]="lexeme.lexeme" (selectedResult)="searchedLexeme($event)"
                       [type] = "'search'"></app-autocomplete>
-        <mat-card>
+        <mat-card fxFlex>
             <mat-card-header>
                 <mat-card-subtitle *ngIf="lexeme && lexeme.semantics_list">{{lexeme.semantics_list.length}} anlam bulundu</mat-card-subtitle>
             </mat-card-header>
@@ -23,5 +23,5 @@
             </mat-card-content>
         </mat-card>
     </div>
-    <app-country-info [languageId]="lexeme.language_id" fxFlex></app-country-info>
+    <app-country-info [languageId]="lexeme.language_id" fxFlex="40%" fxFlex.lt-md="30%" fxFlex.lt-sm="100%"></app-country-info>
 </div>

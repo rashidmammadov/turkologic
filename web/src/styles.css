@@ -12,8 +12,8 @@ app-heat-map .axisX,
   app-heat-map .axisY { text-anchor: middle; }
 app-heat-map .axisX .domain,
   app-heat-map .axisY .domain { display: none; }
-app-heat-map .axisX text { font-size: 11px; transform: rotate(-30deg); }
-app-heat-map .axisY text { font-size: 11px; transform: rotate(-30deg); }
+app-heat-map .axisX text { font-size: 11px; }
+app-heat-map .axisY text { font-size: 11px; }
 
 app-main { height: 100%; }
 
@@ -53,9 +53,11 @@ app-main { height: 100%; }
 
 .map-background { background: url("assets/images/background.png") no-repeat center; background-size: 50%; }
 .mat-card-title { font-size: 18px; }
+.mat-list-base .mat-list-item .mat-line { white-space: normal; }
 
 .mat-optgroup-label { cursor: pointer !important; }
 
 @media screen and (max-width: 992px)  {
   .map-background { background-size: 100%; }
+  .mat-list-base .mat-list-item.mat-2-line, .mat-list-base .mat-list-option.mat-2-line { margin: 8px 0; }
 }

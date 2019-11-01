@@ -21,7 +21,7 @@ export class CountryMapComponent implements OnInit, OnChanges {
         const element = this.chartContainer.nativeElement;
 
         width = element.clientWidth;
-        height = width / 4;
+        height = width / 4 >= 80 ? width / 4 : 80;
         svg = d3.select(element).append('svg').classed('country-map', true)
             .attr('width', width - margin).attr('height', height - margin);
     }
